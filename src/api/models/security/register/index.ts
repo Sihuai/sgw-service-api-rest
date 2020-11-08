@@ -1,5 +1,5 @@
 import executor from './executor';
-import ds from '../../../lib/connect-to-arangodb-v2';
+import ds from '../../../../lib/connect-to-arangodb-v2';
 
 const model: any = {}
 

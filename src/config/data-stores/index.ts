@@ -20,13 +20,13 @@ const configDataStores = {
             dbName : 'TianGong'
         },
         {
-            name: 'api-pms',
+            name: 'api-sgw',
             type: 'arangodb',
             application: 'webapp',
             url: 'http://localhost:8529',
             userid: 'zulu',
             password: 'Zu1u.12345',
-            dbName : 'JAS'
+            dbName : 'SGW'
         }
     ],
     stage : [

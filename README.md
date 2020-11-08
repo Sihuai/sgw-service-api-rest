@@ -1,1 +1,1 @@
-sgw-service-api-rest
+REST API Service for SGW App system.

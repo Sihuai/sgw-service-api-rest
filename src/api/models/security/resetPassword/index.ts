@@ -1,4 +1,4 @@
-import { isEmptyObject } from '../../../lib/validators';
+import { isEmptyObject } from '../../../../lib/validators';
 import executor from './executor';
 
 const model: any = {}

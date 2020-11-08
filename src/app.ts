@@ -5,8 +5,10 @@ import cors from 'cors';
 import dotEnv from 'dotenv';
 
 import routeRoot from './routes';
-import routeUsers from './routes/users';
-import routeAuthenticate from './routes/authenticate';
+import routeUsers from './routes/security/users';
+import routeAuthenticate from './routes/security/authenticate';
+import routeTrails from './routes/app/trails';
+import routeCategories from './routes/app/categories';
 
 dotEnv.config();
 const app = express();
@@ -135,6 +137,8 @@ const authenticateToken = (req, res, next) => {
 // routes
 
 app.use('/authenticate', routeAuthenticate );
+app.use('/categories', routeCategories);
+app.use('/trails', routeTrails);
 app.use('/users', authenticateToken, routeUsers);
 app.use('/', routeRoot);
 

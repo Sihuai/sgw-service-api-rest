@@ -1,5 +1,5 @@
-import dataStore from '../../../lib/connect-to-arangodb-v2';
-import { addItem, getList, executeScript, parseFilter } from '../../../lib/arangodb-helper';
+import dataStore from '../../../../lib/connect-to-arangodb-v2';
+import { addItem, getList, executeScript, parseFilter } from '../../../../lib/arangodb-helper';
 
 const executor: any = {};
 

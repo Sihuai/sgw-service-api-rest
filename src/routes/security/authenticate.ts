@@ -3,7 +3,7 @@
 */
 
 import express from 'express';
-import ctlr from '../api/controllers/authenticate';
+import ctlr from '../../api/controllers/authenticate';
 
 const router = express.Router();
 

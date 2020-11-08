@@ -1,6 +1,6 @@
 import moment from 'moment';
-import ds from '../../../lib/connect-to-arangodb-v2';
-import { executeScript, getList, parseFilter } from '../../../lib/arangodb-helper';
+import ds from '../../../../lib/connect-to-arangodb-v2';
+import { executeScript, getList, parseFilter } from '../../../../lib/arangodb-helper';
 
 const executor: any = {};
 

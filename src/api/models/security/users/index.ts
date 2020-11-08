@@ -1,6 +1,6 @@
 import executor from './executor';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+// import jwt from '../authenticate/node_modules/jsonwebtoken';
+// import dotenv from 'dotenv';
 
 const model: any = {}
 

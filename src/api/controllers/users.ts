@@ -1,4 +1,4 @@
-import model from '../models/users';
+import model from '../models/security/users';
 
 // import dotenv from 'dotenv';
 // dotenv.config();

@@ -3,7 +3,7 @@
 */
 
 import express from 'express';
-import ctlr from '../api/controllers/users';
+import ctlr from '../../api/controllers/users';
 
 const router = express.Router();
 

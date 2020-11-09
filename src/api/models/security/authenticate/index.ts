@@ -80,7 +80,7 @@ model.authenticate = async(params: any) => {
             key: process.env.ACCESS_TOKEN_SECRET,
             expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
         }
-        console.log(`inputAccess -> ${JSON.stringify(inputAccess)}`);
+        // console.log(`inputAccess -> ${JSON.stringify(inputAccess)}`);
         const tokenAccess = generateToken(inputAccess);
         
         const inputRefresh = {

@@ -16,6 +16,8 @@ ctlr.authenticate = async(req, res) => {
         const {refresh, ...rest } = outcome.token;
         outcome.token = {...rest};
 
+        // const {refresh} = outcome.token;
+
         const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production'? true: false
@@ -52,7 +54,9 @@ ctlr.getToken = async (req, res) => {
 ctlr.logout = async(req, res) => {
 
     // function to logout a user.
-    const outcome = await model.logout(req.body);
+    const token = req.cookies['r-token'];
+    // const outcome = await model.logout(req.body);
+    const outcome = await model.logout({token, email: req.body.email});
     if( outcome.ok){
 
         // token handling. clear the cookie.

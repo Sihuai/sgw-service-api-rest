@@ -1,4 +1,4 @@
-import model from '../models/security/authenticate';
+import model from '../../models/security/authenticate';
 
 import dotenv from 'dotenv';
 dotenv.config();

@@ -3,12 +3,15 @@ import { getList, parseFilter, addItem } from '../../../../lib/arangodb-helper';
 
 const executor: any = {};
 
-executor.add = async(params) => {
+executor.add = async (params) => {
+    // method to add a Media Content record
 
+    // exceptions handling
+    
     const ds = await dataStore.connect();
     const input = {
         insert: params.add,
-        into: 'Trails',
+        into: 'MediaContents',
         return: 'NEW'
     }
 
@@ -21,5 +24,4 @@ executor.add = async(params) => {
         throw err;
     }
 }
-
 export default executor;

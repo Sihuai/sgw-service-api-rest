@@ -1,4 +1,4 @@
-import model from '../models/security/resetPassword';
+import model from '../../models/security/resetPassword';
 
 const ctlr: any = {};
 

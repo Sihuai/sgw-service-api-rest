@@ -3,9 +3,9 @@
 */
 
 import express from 'express';
-import ctlrRegister from '../api/controllers/register';
-import ctlrAuthenticate from '../api/controllers/authenticate';
-import ctlrResetPassword from '../api/controllers/resetPassword';
+import ctlrRegister from '../api/controllers/security/register';
+import ctlrAuthenticate from '../api/controllers/security/authenticate';
+import ctlrResetPassword from '../api/controllers/security/resetPassword';
 
 const router = express.Router();
 

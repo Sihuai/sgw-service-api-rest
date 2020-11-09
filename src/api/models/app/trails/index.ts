@@ -1,4 +1,5 @@
 import executor from './executor';
+import media from '../../utility/mediaContents';
 
 const model: any = {};
 
@@ -39,7 +40,22 @@ model.get = async(params) => {
 
 model.add = async(params) => {
     // function to add a Trail record
+
+    // exceptions handling
+
+    // ok.
+    const {media, ...add} = params.add;
+    const promises: any[] = [];
+
     try{
+        const inputTrail = {add};
+        const inputMedia = {add: media};
+
+        // const outcome = await executor.add(inputTrail);
+        promises.push(await executor.add(inputTrail));
+        promises.push(await media.add(inputMedia));
+
+        const fullfilled = await Promise.all(promises);
 
         const rtn = {
             ok: true,

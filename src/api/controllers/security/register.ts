@@ -1,4 +1,4 @@
-import model from '../models/security/register';
+import model from '../../models/security/register';
 
 const ctlr: any = {};
 

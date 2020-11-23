@@ -1,0 +1,7 @@
+export enum SectionTypes {
+    PRICE = 'PRICE',
+    BILLBOARD = 'BILLBOARD',
+    COPY = 'COPY',
+    LISTHORIZONTAL = 'LIST-HORIZONTAL',
+    LISTVERTICAL = 'LIST-VERTICAL'
+}

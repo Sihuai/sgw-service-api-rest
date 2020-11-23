@@ -92,6 +92,10 @@ const authenticateToken = (req, res, next) => {
         return res.status(401).json(rtn);
     }
 
+    // private getExpiresAt(): Date {
+    //     const now = +new Date();
+    //     return new Date(now + (1000 * config.get<number>('attachment.ttl')));
+    //   }
     // ok.  
     // test the jwt.
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) =>{
@@ -130,7 +134,6 @@ const authenticateToken = (req, res, next) => {
         req.query['user'] = u;
         next();
     })
-    
 }
 
 

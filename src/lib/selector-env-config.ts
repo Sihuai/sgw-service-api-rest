@@ -2,10 +2,7 @@
 ** Script to determine the specific environment configuration
 ** file to use.
 */
-
 const loadConfig = async (env: string): Promise<any> => {
-    
-    
     switch(env){
         case 'STAGE':
             return await import('../config/env/stage');;
@@ -44,13 +41,5 @@ export const getEnvConfig = async (): Promise<any> => {
     }catch(err) {
         // error.
         throw err;
-    }
-    
-    
-    
+    }   
 }
-
-
-
-
-

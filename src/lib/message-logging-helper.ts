@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 export const logError = (messages: string[]) => {
-    
     // function to console.log out a set of error messages
     const now = moment().format('YYYY-MM-DD HH:mm:ss ZZ');
     console.log(`[ERROR] ${now}`);
@@ -11,11 +10,9 @@ export const logError = (messages: string[]) => {
         console.log(m);
     })
     console.log(`----------`);
-    return;
 }
 
 export const logInfo = (messages: string[]) => {
-    
     // function to console.log out a set of info messages
     const now = moment().format('YYYY-MM-DD HH:mm:ss ZZ');
     console.log(`[INFO] ${now}`);
@@ -25,5 +22,4 @@ export const logInfo = (messages: string[]) => {
         console.log(m);
     })
     console.log(`----------`);
-    return;
 }

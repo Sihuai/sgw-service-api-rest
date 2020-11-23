@@ -11,7 +11,7 @@ import { provide } from 'inversify-binding-decorators';
 
 @provide(IOC_TYPE.TokenServiceImpl)
 export class TokenServiceImpl extends AbstractBaseService<Token> implements TokenService {
-    async find(model: User) : Promise<Token> {
+    async search(model: User) : Promise<Token> {
       const token = Tokens.select({email:model.email});
 
       const newToken = jwt.verify(token.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -29,7 +29,7 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
       return token;
     }
 
-    async add(model: User): Promise<Token> {
+    async create(model: User): Promise<Token> {
       try {
         // 1. Clean all this email's token in Token table.
         await this.remove({email:model.email});

@@ -21,8 +21,8 @@ export class SigninAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserService) public userService: UserService,
-    @inject(IOC_TYPE.TokenService) public tokenService: TokenService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
   ) { }
   async execute(request: IRequest) {
     const filters = {email:request.email, pwhash:request.pwhash};
@@ -30,6 +30,6 @@ export class SigninAuthAction implements IAction {
     const user = await this.userService.find(filters);
     if (user == null) return null;
 
-    return this.tokenService.add(user);
+    return this.tokenService.create(user);
   }
 }

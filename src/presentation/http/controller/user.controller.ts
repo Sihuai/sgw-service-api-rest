@@ -15,7 +15,6 @@ import {
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
 import { ERROR2STATUS_CODE } from '../constants/errors';
-import ctlr from '../../../api/controllers/users';
 import { APP_ERRORS } from '../../../app/errors/error.interface';
 import { GetUserAction } from '../../actions/user/get';
 

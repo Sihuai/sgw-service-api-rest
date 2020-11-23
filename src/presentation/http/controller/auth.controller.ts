@@ -55,7 +55,7 @@ export class AuthController implements interfaces.Controller {
       // const {refresh, ...rest } = result.token;
       // const cookieOptions = {httpOnly: true, secure: process.env.NODE_ENV === 'production'? true: false}
       // response.cookie('r-token', refresh, cookieOptions)
-      response.sendStatus(200).json({ token: result.token });
+      response.sendStatus(200).json({ token: result == null ? "" : result.token });
     } catch (e) {
       const code = ERROR2STATUS_CODE[e.name];
       if (code) {
@@ -71,8 +71,7 @@ export class AuthController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const req = {token: authHeader};
-      await this.signoutAuthAction.execute(req);
+      await this.signoutAuthAction.execute(authHeader);
       
       // token handling. clear the cookie.
       // response.clearCookie('r-token', {path: '/'});

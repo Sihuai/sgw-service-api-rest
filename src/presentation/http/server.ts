@@ -1,25 +1,34 @@
 const debug = require('debug')('express:server');
 
+import https from 'https';
 import { Application } from 'express';
 import { Container } from 'inversify';
-import { IORMConnection } from '../../infra/utils/create-orm-connection';
+// import { IORMConnection } from '../../infra/utils/orm.connection';
+import { logError } from '../../lib/logger';
 import { configAppFactory, errorConfigAppFactory } from './express';
+import moment from 'moment';
 
 export class ApplicationServer {
   private port: any;
-  connection: IORMConnection;
-
+  private isHttps: boolean;
+  private httpsOptions: any;
+  // connection: IORMConnection;
+  connection: any;
   app: Application;
   container: Container;
 
   constructor({
     createHttpServer,
     port,
+    isHttps,
+    httpsOptions,
     connection,
     container,
   }) {
     this.container = container;
     this.port = port;
+    this.isHttps = isHttps;
+    this.httpsOptions = httpsOptions;
     this.connection = connection;
     const config = configAppFactory({ port: this.port });
     const errorConfig = errorConfigAppFactory();
@@ -31,35 +40,47 @@ export class ApplicationServer {
   }
 
   listen() {
-    this.app.listen(this.port);
+    if (this.isHttps == true){
+      const httpsServer = https.createServer(this.httpsOptions, this.app);
+      httpsServer.listen(this.port);
+    } else {
+      this.app.listen(this.port);
+    }
+    
     this.app.on('error', this.onError);
     this.app.on('listening', this.onListening);
   }
 
   private onError = (error) => {
-    if (error.syscall !== 'listen') {
-      throw error;
-    }
+    if (error.syscall !== 'listen') throw error;
 
     const bind = typeof this.port === 'string'
       ? `Pipe ${this.port}`
       : `Port ${this.port}`;
 
     // handle specific listen errors with friendly messages
+    const messages: string[] = [];
     switch (error.code) {
       case 'EACCES':
-        console.error(`${bind} requires elevated privileges`);
+        messages.push(`${bind} requires elevated privileges`);
+        logError(messages);
         process.exit(1);
-        break;
       case 'EADDRINUSE':
-        console.error(`${bind} is already in use`);
+        messages.push(`${bind} is already in use`);
+        logError(messages);
         process.exit(1);
-        break;
+      case 'ERR_OSSL_EVP_BAD_DECRYPT':
+        messages.push(`${bind} passphrase used for Key is invalid.`);
+        messages.push('HTTPS Service fail to start.');
+        logError(messages);
+        process.exit(1);
       default:
         throw error;
     }
   }
+
   private onListening = () => {
-    debug(`Listening on ${this.port}`);
+    debug(`[OK] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+    debug((this.isHttps == true ? `HTTPS` : `HTTP`) + ` Service listening on port ${this.port} ...`);
   }
 }

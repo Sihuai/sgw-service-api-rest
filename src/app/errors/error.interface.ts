@@ -19,8 +19,8 @@ export interface IAppError<D = any> {
    * @type {AppErrorName}
    * @memberof IAppError
    */
-
   name: AppErrorName;
+
   /**
    * User friendly message
    *
@@ -28,6 +28,7 @@ export interface IAppError<D = any> {
    * @memberof IAppError
    */
   message: string;
+  
   /**
    * Original error for debug purpose
    *
@@ -54,8 +55,8 @@ export abstract class AppErrorAbstract<D = any> implements IAppError {
  * @type {AppErrorName}
  * @memberof AppErrorAbstract
  */
+  name: AppErrorName = "Unexpected";
 
-  name: AppErrorName;
   /**
    * User friendly message
    *
@@ -63,6 +64,7 @@ export abstract class AppErrorAbstract<D = any> implements IAppError {
    * @memberof AppErrorAbstract
    */
   message = '';
+
   /**
    * Original error for debug purpose
    *

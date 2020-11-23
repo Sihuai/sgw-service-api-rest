@@ -4,12 +4,18 @@ import { Category } from './category';
 
 @Document()
 export class BillBoard extends BaseModel {
+    constructor() {
+        super();
+        this.type = -1;
+        this.contents = [];
+    }
+
     @Index()
     @Attribute()
-    type?: number;
+    type: number;
     @Attribute()
     @OneToMany(type => Category, Category => Category.owner)
-    contents?: Related<Category[]>;
+    contents: Related<Category[]>;
 }
 
 export interface IBillBoardMainFields {

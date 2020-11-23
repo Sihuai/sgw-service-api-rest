@@ -4,18 +4,27 @@ import { Card } from './card';
 
 @Document()
 export class Section extends BaseModel {
+    constructor() {
+        super();
+        this.sequence = -1;
+        this.header = '';
+        this.uri = '';
+        this.color = '';
+        this.cards = [];
+    }
+
     @Index()
     @Attribute()
-    sequence?: number;
+    sequence: number;
     @Attribute()
-    header?: string;
+    header: string;
     @Attribute()
-    uri?: string;
+    uri: string;
     @Attribute()
-    color?: string;
+    color: string;
     @Attribute()
     @OneToMany(type => Card, Card => Card.owner)
-    cards?: Related<Card[]>;
+    cards: Related<Card[]>;
     // @OneToOne(type => Pagination, Pagination => Pagination.owner)
     // pagination?: Related<Pagination>;
 }

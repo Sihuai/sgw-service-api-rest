@@ -4,14 +4,21 @@ import { Media } from './media';
 
 @Document()
 export class Card extends BaseModel {
+    constructor() {
+        super();
+        this.sequence = -1;
+        this.title = '';
+        this.media = [];
+    }
+
     @Index()
     @Attribute()
-    sequence?: number;
+    sequence: number;
     @Attribute()
-    title?: string;
+    title: string;
     @Attribute()
     @OneToOne(type => Media, Media => Media.owner)
-    media?: Related<Media>;
+    media: Related<Media>;
 }
 
 export interface ICardMainFields {

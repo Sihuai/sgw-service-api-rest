@@ -6,10 +6,10 @@ import { IOC_TYPE } from '../../../config/type';
 import { ITokenDTO } from '../../../domain/models/token';
 import { INullable } from '../../../infra/utils/types';
 
-interface IRequest extends INullable<ITokenDTO> {
-  // email: string;
-  token: string;
-}
+// interface IRequest extends INullable<ITokenDTO> {
+//   // email: string;
+//   token: string;
+// }
 
 @provide(IOC_TYPE.SignoutAuthAction, true)
 @provide('action', true)
@@ -19,10 +19,10 @@ export class SignoutAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TokenService) public tokenService: TokenService,
+    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
   ) { }
-  async execute(request: IRequest) {
-    const filters = {token:request.token};
+  async execute(token: string) {
+    const filters = {token:token};
     this.tokenService.remove(filters);
   }
 }

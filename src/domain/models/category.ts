@@ -3,13 +3,20 @@ import { Media } from './media';
 
 @Document()
 export class Category extends Media {
+    constructor() {
+        super();
+        this.sequence = -1;
+        this.name = '';
+        this.tag = '';
+    }
+
     @Index()
     @Attribute()
-    sequence?: number;
+    sequence: number;
     @Attribute()
-    name?: string;
+    name: string;
     @Attribute()
-    tag?: string;
+    tag: string;
 }
 
 export interface ICategoryMainFields {

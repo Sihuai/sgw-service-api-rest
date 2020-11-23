@@ -3,26 +3,34 @@ import { BaseModel } from './base.model';
 
 @Document()
 export class Media extends BaseModel {
+    constructor() {
+        super();
+        this.type = -1;
+        this.orientation = -1;
+        this.format = -1;
+        this.uri = "";
+    }
+
     @Attribute()
-    type?: number;
+    type: number;
     @Attribute()
-    orientation?: number;
+    orientation: number;
     @Attribute()
-    format?: number;
+    format: number;
     @Attribute()
-    uri?: string;
+    uri: string;
 }
 
-export interface IMediaMainFields {
-    body: string;
-    subject?: string;
-}
+// export interface IMediaMainFields {
+//     body: string;
+//     subject?: string;
+// }
   
-export interface IMediaDTO extends IMediaMainFields {
-    attachmentIds: number[];
-    references: number[];
-    threadId: number;
-}
+// export interface IMediaDTO extends IMediaMainFields {
+//     attachmentIds: number[];
+//     references: number[];
+//     threadId: number;
+// }
 
 
 @Collection(of => Media)

@@ -1,15 +1,24 @@
 import { Attribute, Entity, Type } from "type-arango";
 
-export declare class BaseModel extends Entity {
+export class BaseModel extends Entity {
+    constructor() {
+        super();
+        this.isActive = false;
+        this.datetimeCreated = '1900-01-01';
+        this.datetimeLastEdited = '1900-01-01';
+        this.userCreated = '';
+        this.userLastUpdated = '';
+    }
+
     @Attribute()
-    _isActive?: boolean;
+    isActive: boolean;
     @Attribute()
-    _datetimeCreated?: Type.DateInsert;
+    datetimeCreated: Type.DateInsert;
     @Attribute()
-    _datetimeLastEdited?: Type.DateUpdate;
+    datetimeLastEdited: Type.DateUpdate;
     @Attribute()
-    _userCreated?: string;
+    userCreated: string;
     @Attribute()
-    _userLastUpdated?: string;
+    userLastUpdated: string;
 }
-export {};
+// export {};

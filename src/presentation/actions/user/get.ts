@@ -20,7 +20,7 @@ export class GetUserAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserService) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
   ) { }
   async execute(request: IRequest) {
     const filters = {email:request.email, isActive:request.isActive};

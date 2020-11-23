@@ -1,6 +1,6 @@
 export const IOC_TYPE = {
   // 1. infra
-  ORMConnection: Symbol.for('ORMConnection'),
+  // ORMConnection: Symbol.for('ORMConnection'),
 
   FileFactory: Symbol.for('FileFactory'),
 

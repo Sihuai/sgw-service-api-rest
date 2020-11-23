@@ -2,15 +2,17 @@ import { Document, Entity, Collection, Entities, Index, Attribute } from 'type-a
 
 @Document()
 export class Token extends Entity {
-    @Index()                            // creates a hash index on User.email
-    @Attribute(type => type.email())    // validates changes to user.email to be email addresses
-    email?: string;
-    @Attribute()
-    token?: string;
-
-    static create(email: string, token: string) {
-        return new Token({ email, token });
+    constructor() {
+        super();
+        this.email = '';
+        this.token = '';
     }
+
+    @Index()
+    @Attribute(type => type.email())
+    email: string;
+    @Attribute()
+    token: string;
 }
 
 export interface ITokenMainFields {

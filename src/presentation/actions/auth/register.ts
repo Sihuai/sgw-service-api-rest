@@ -8,9 +8,9 @@ import { INullable } from '../../../infra/utils/types';
 
 interface IRequest extends INullable<IUserDTO> {
   email: string;
-  firstname: string;
-  lastname: string;
-  username: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
   nick: string;
   pwhash: string;
 }
@@ -20,7 +20,8 @@ interface IRequest extends INullable<IUserDTO> {
 export class RegisterUserAction implements IAction {
   payloadExample = `
   "email": "email@sgw.com",
-  "name": "{"first":"first name", "last":"last name"}",
+  "firstName": "firstName",
+  "lastName": "lastName",
   "username": "username",
   "nick": "nick",
   "pwhash": "48ab1d7a4f1d0f231ca46d9cc865c66f"
@@ -28,10 +29,17 @@ export class RegisterUserAction implements IAction {
   description = '';
 
   constructor(
-    @inject(IOC_TYPE.UserService) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
   ) { }
   async execute(request: IRequest) {
-    const user = User.create(request.email, request.firstname, request.lastname, request.username, request.nick, request.pwhash);
+    const user = new User();
+    user.email = request.email;
+    user.firstName = request.firstName;
+    user.lastName = request.lastName;
+    user.userName = request.userName;
+    user.nick = request.nick;
+    user.pwhash = request.pwhash;
+
     return this.userService.add(user);
   }
 }

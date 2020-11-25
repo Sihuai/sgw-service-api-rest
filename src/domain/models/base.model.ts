@@ -1,8 +1,12 @@
-import { Attribute, Entity, Type } from "type-arango";
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
+import { Type } from "../../infra/utils/oct-orm/models/type.models";
 
-export class BaseModel extends Entity {
+@Entity()
+export class BaseModel {
     constructor() {
-        super();
+        this._id = '';
+        this._key = '';
+        this._rev = '';
         this.isActive = false;
         this.datetimeCreated = '1900-01-01';
         this.datetimeLastEdited = '1900-01-01';
@@ -10,6 +14,12 @@ export class BaseModel extends Entity {
         this.userLastUpdated = '';
     }
 
+    @Attribute()
+    public _id?: string;
+    @Attribute()
+    public _key?: string;
+    @Attribute()
+	public _rev?: string;
     @Attribute()
     isActive: boolean;
     @Attribute()
@@ -21,4 +31,3 @@ export class BaseModel extends Entity {
     @Attribute()
     userLastUpdated: string;
 }
-// export {};

@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../../../app/interfaces/action';
-import { UserService } from '../../../app/service/user.service';
+import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
 import { IUserDTO } from '../../../domain/models/user';
 import { INullable } from '../../../infra/utils/types';
@@ -20,7 +20,7 @@ export class GetUserAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserServiceImpl,
   ) { }
   async execute(request: IRequest) {
     const filters = {email:request.email, isActive:request.isActive};

@@ -92,7 +92,6 @@ export const createApplicationServer = async () => {
   };
 
   return new ApplicationServer({
-    // port: config.get<number>('server.port') || 3000,
     port: config.default.https.port,
     isHttps: false,
     httpsOptions: httpsOptions,

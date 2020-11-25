@@ -6,7 +6,7 @@ import { IOC_TYPE } from './type';
 // import { AuthorRepository } from '../infra/repository/author.repo';
 // import { createORMConnection, IORMConnection } from '../infra/utils/create-orm-connection';
 
-import { AppConfigService } from '../app/service/app-config.service';
+// import { AppConfigService } from '../app/service/app-config.service';
 
 export const bindings = new AsyncContainerModule(
   async (bind: interfaces.Bind, unbind: interfaces.Unbind) => {
@@ -15,11 +15,11 @@ export const bindings = new AsyncContainerModule(
     await require('../presentation/http/controller/home.controller');
     await require('../presentation/http/controller/user.controller');
 
-    bind<any>(IOC_TYPE.AppConfigService).toDynamicValue(() => {
-      return new AppConfigService({
+    // bind<any>(IOC_TYPE.AppConfigService).toDynamicValue(() => {
+    //   return new AppConfigService({
 
-      });
-    }).inSingletonScope();
+    //   });
+    // }).inSingletonScope();
 
     // bind<Repository<Author>>(IOC_TYPE.AuthorRepository).toDynamicValue(() => {
     //   return getCustomRepository(AuthorRepository);

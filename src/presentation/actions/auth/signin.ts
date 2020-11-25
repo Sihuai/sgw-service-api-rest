@@ -1,8 +1,8 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../../../app/interfaces/action';
-import { TokenService } from '../../../app/service/token.service';
-import { UserService } from '../../../app/service/user.service';
+import { TokenServiceImpl } from '../../../app/service/impl/token.service.impl';
+import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
 import { ITokenDTO } from '../../../domain/models/token';
 import { INullable } from '../../../infra/utils/types';
@@ -21,8 +21,8 @@ export class SigninAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
-    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserServiceImpl,
+    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenServiceImpl,
   ) { }
   async execute(request: IRequest) {
     const filters = {email:request.email, pwhash:request.pwhash};

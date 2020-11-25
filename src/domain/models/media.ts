@@ -1,7 +1,7 @@
-import { Document, Collection, Entities, Attribute } from 'type-arango'
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 
-@Document()
+@Entity()
 export class Media extends BaseModel {
     constructor() {
         super();

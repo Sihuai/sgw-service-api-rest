@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../../../app/interfaces/action';
-import { UserService } from '../../../app/service/user.service';
+import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
 import { IUserDTO, User } from '../../../domain/models/user';
 import { INullable } from '../../../infra/utils/types';
@@ -29,7 +29,7 @@ export class RegisterUserAction implements IAction {
   description = '';
 
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserServiceImpl,
   ) { }
   async execute(request: IRequest) {
     const user = new User();

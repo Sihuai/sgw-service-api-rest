@@ -1,8 +1,8 @@
-import { Document, Collection, Entities, Index, Attribute, Related, OneToOne, OneToMany } from 'type-arango'
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Card } from './card';
 
-@Document()
+@Entity()
 export class Section extends BaseModel {
     constructor() {
         super();
@@ -13,7 +13,7 @@ export class Section extends BaseModel {
         this.cards = [];
     }
 
-    @Index()
+    // @Index()
     @Attribute()
     sequence: number;
     @Attribute()
@@ -23,10 +23,11 @@ export class Section extends BaseModel {
     @Attribute()
     color: string;
     @Attribute()
-    @OneToMany(type => Card, Card => Card.owner)
-    cards: Related<Card[]>;
-    // @OneToOne(type => Pagination, Pagination => Pagination.owner)
-    // pagination?: Related<Pagination>;
+    // @OneToMany(type => Card, Card => Card.owner)
+    // cards: Related<Card[]>;
+    // // @OneToOne(type => Pagination, Pagination => Pagination.owner)
+    // // pagination?: Related<Pagination>;
+    cards: Card[];
 }
 
 export interface ISectionMainFields {

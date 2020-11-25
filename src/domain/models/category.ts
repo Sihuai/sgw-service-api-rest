@@ -1,7 +1,7 @@
-import { Document, Collection, Entities, Index, Attribute } from 'type-arango'
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { Media } from './media';
 
-@Document()
+@Entity()
 export class Category extends Media {
     constructor() {
         super();
@@ -10,7 +10,7 @@ export class Category extends Media {
         this.tag = '';
     }
 
-    @Index()
+    // @Index()
     @Attribute()
     sequence: number;
     @Attribute()

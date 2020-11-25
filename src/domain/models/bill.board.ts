@@ -1,8 +1,8 @@
-import { Document, Entity, Collection, Entities, Index, Attribute, Related, OneToMany } from 'type-arango'
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Category } from './category';
 
-@Document()
+@Entity()
 export class BillBoard extends BaseModel {
     constructor() {
         super();
@@ -10,12 +10,13 @@ export class BillBoard extends BaseModel {
         this.contents = [];
     }
 
-    @Index()
+    // @Index()
     @Attribute()
     type: number;
     @Attribute()
-    @OneToMany(type => Category, Category => Category.owner)
-    contents: Related<Category[]>;
+    // @OneToMany(type => Category, Category => Category.owner)
+    // contents: Related<Category[]>;
+    contents: Category[];
 }
 
 export interface IBillBoardMainFields {

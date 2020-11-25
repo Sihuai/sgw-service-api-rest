@@ -25,7 +25,7 @@ export class UserController implements interfaces.Controller {
   ) { }
 
 
-  @httpGet('/:profile')
+  @httpGet('/')// :profile
   private async get(
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {

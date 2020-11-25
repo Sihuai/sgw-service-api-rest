@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../../../app/interfaces/action';
-import { TokenService } from '../../../app/service/token.service';
+import { TokenServiceImpl } from '../../../app/service/impl/token.service.impl';
 import { IOC_TYPE } from '../../../config/type';
 import { ITokenDTO } from '../../../domain/models/token';
 import { INullable } from '../../../infra/utils/types';
@@ -19,7 +19,7 @@ export class SignoutAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
+    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenServiceImpl,
   ) { }
   async execute(token: string) {
     const filters = {token:token};

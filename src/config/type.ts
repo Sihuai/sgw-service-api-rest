@@ -2,12 +2,12 @@ export const IOC_TYPE = {
   // 1. infra
   // ORMConnection: Symbol.for('ORMConnection'),
 
-  FileFactory: Symbol.for('FileFactory'),
+  // FileFactory: Symbol.for('FileFactory'),
 
   // AuthorRepository: Symbol.for('AuthorRepository'),
 
   // 2. app
-  AppConfigService: Symbol.for('AppConfigService'),
+  // AppConfigService: Symbol.for('AppConfigService'),
 
   // User
   GetUserAction: Symbol.for('GetUserAction'),

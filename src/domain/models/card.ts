@@ -1,24 +1,25 @@
-import { Document, Collection, Entities, Index, Attribute, Related, OneToOne } from 'type-arango'
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Media } from './media';
 
-@Document()
+@Entity()
 export class Card extends BaseModel {
     constructor() {
         super();
         this.sequence = -1;
         this.title = '';
-        this.media = [];
+        this.media = new Media();
     }
 
-    @Index()
+    // @Index()
     @Attribute()
     sequence: number;
     @Attribute()
     title: string;
     @Attribute()
-    @OneToOne(type => Media, Media => Media.owner)
-    media: Related<Media>;
+    // @OneToOne(type => Media, Media => Media.owner)
+    // media: Related<Media>;
+    media: Media;
 }
 
 export interface ICardMainFields {

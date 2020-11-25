@@ -1,15 +1,23 @@
-import { Document, Entity, Collection, Entities, Index, Attribute } from 'type-arango'
+import { Entity, Attribute } from "../../infra/utils/oct-orm";
 
-@Document()
-export class Token extends Entity {
+@Entity()
+export class Token {
     constructor() {
-        super();
+        this._id = '';
+        this._key = '';
+        this._rev = '';
         this.email = '';
         this.token = '';
     }
 
-    @Index()
-    @Attribute(type => type.email())
+    @Attribute()
+    public _id?: string;
+    @Attribute()
+    public _key?: string;
+    @Attribute()
+	public _rev?: string;
+    // @Index()type => type.email()
+    @Attribute()
     email: string;
     @Attribute()
     token: string;

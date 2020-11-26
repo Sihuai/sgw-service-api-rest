@@ -1,4 +1,4 @@
-import { Entity, Attribute } from "../../infra/utils/oct-orm";
+import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 
 @Entity()
 export class Token {
@@ -16,7 +16,7 @@ export class Token {
     public _key?: string;
     @Attribute()
 	public _rev?: string;
-    // @Index()type => type.email()
+    @HashIndex({ unique: true, name: "ix_token_email" })
     @Attribute()
     email: string;
     @Attribute()
@@ -32,19 +32,4 @@ export interface ITokenDTO extends ITokenMainFields {
     attachmentIds: number[];
     references: number[];
     threadId: number;
-}
-
-
-@Collection(of => Token)
-export class Tokens extends Entities {
-    static select(filters) {
-        const token = Tokens.findOne({filter:filters});
-        if(!token) return null;
-		return token;
-    }
-
-    static delete(filters) {
-        const token = this.select(filters);
-        token.remove();
-    }
 }

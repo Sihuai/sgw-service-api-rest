@@ -13,7 +13,7 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { ERROR2STATUS_CODE } from '../constants/errors';
 import { APP_ERRORS } from '../../../app/errors/error.interface';
-import { GetUserAction } from '../../actions/user/get';
+// import { GetUserAction } from '../../actions/user/get';
 import { RegisterUserAction } from '../../actions/auth/register';
 import { SigninAuthAction } from '../../actions/auth/signin';
 // import { GetTokenAction } from '../../actions/auth/get.token';
@@ -23,13 +23,13 @@ import { SignoutAuthAction } from '../../actions/auth/signout';
 export class AuthController implements interfaces.Controller {
   constructor(
     @inject(IOC_TYPE.RegisterUserAction) public registerUserAction: RegisterUserAction,
-    @inject(IOC_TYPE.GetUserAction) public getUserAction: GetUserAction,
+    // @inject(IOC_TYPE.GetUserAction) public getUserAction: GetUserAction,
     @inject(IOC_TYPE.SigninAuthAction) public signinAuthAction: SigninAuthAction,
     @inject(IOC_TYPE.SignoutAuthAction) public signoutAuthAction: SignoutAuthAction,
     // @inject(IOC_TYPE.GetTokenAction) public getTokenAction: GetTokenAction,
   ) { }
 
-  @httpPost('/:register')
+  @httpPost('/register')
   private async register(
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
@@ -44,7 +44,7 @@ export class AuthController implements interfaces.Controller {
     }
   }
 
-  @httpPost('/:signin')
+  @httpPost('/signin')
   private async signin(
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {

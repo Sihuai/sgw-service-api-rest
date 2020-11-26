@@ -1,4 +1,4 @@
-import { Entity, Attribute } from "../../infra/utils/oct-orm";
+import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { Media } from './media';
 
 @Entity()
@@ -10,7 +10,7 @@ export class Category extends Media {
         this.tag = '';
     }
 
-    // @Index()
+    @HashIndex({ unique: true, name: "ix_media_sequence" })
     @Attribute()
     sequence: number;
     @Attribute()
@@ -31,11 +31,11 @@ export interface ICategoryDTO extends ICategoryMainFields {
 }
 
 
-@Collection(of => Category)
-export class Categorys extends Entities {
-    static select(filters) {
-        const result = Categorys.findOne({filter:filters});
-        if(!result) return null;
-		return result;
-    }
-}
+// @Collection(of => Category)
+// export class Categorys extends Entities {
+//     static select(filters) {
+//         const result = Categorys.findOne({filter:filters});
+//         if(!result) return null;
+// 		return result;
+//     }
+// }

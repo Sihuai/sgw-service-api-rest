@@ -1,10 +1,15 @@
 export const IOC_TYPE = {
   // 1. infra
-  // ORMConnection: Symbol.for('ORMConnection'),
+  TGORMConnection: Symbol.for('TGORMConnection'),
+  SGWORMConnection: Symbol.for('SGWORMConnection'),
 
   // FileFactory: Symbol.for('FileFactory'),
 
   // AuthorRepository: Symbol.for('AuthorRepository'),
+  UserRepoImpl: Symbol.for('UserRepoImpl'),
+  TokenRepoImpl: Symbol.for('TokenRepoImpl'),
+  SectionRepoImpl: Symbol.for('SectionRepoImpl'),
+  BillBoardRepoImpl: Symbol.for('BillBoardRepoImpl'),
 
   // 2. app
   // AppConfigService: Symbol.for('AppConfigService'),

@@ -16,9 +16,9 @@ export class HomeServiceImpl extends AbstractBaseService<any> implements HomeSer
         super();
     }
       
-    async find() : Promise<any> {
-        const billBoard = this.billBoardService.find();
-        const sections = this.sectionService.find1();
+    async search() : Promise<any> {
+        const billBoard = this.billBoardService.search();
+        const sections = this.sectionService.search();
 
         const result = { billboard: billBoard, sections: sections }
         return result;

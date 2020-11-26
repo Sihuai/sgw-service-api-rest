@@ -60,7 +60,8 @@ export class Repository<T extends object> {
   }
 
   async findBy(doc: ArrayOr<EntityDocument<T>>) {
-    const result = await this.collection.byExample(doc);
+    // const result = await this.collection.byExample(doc);
+    const result = await this.collection.firstExample(doc);
     return normalizeDataForRead(this.entity, result);
   }
 }

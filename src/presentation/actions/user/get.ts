@@ -24,6 +24,6 @@ export class GetUserAction implements IAction {
   ) { }
   async execute(request: IRequest) {
     const filters = {email:request.email, isActive:request.isActive};
-    return this.userService.find(filters);
+    return this.userService.search(filters);
   }
 }

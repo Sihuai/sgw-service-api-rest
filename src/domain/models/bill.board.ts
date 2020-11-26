@@ -1,4 +1,4 @@
-import { Entity, Attribute } from "../../infra/utils/oct-orm";
+import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Category } from './category';
 
@@ -10,7 +10,7 @@ export class BillBoard extends BaseModel {
         this.contents = [];
     }
 
-    // @Index()
+    @HashIndex({ unique: true, name: "ix_billboard_sequence" })
     @Attribute()
     type: number;
     @Attribute()
@@ -28,14 +28,4 @@ export interface IBillBoardDTO extends IBillBoardMainFields {
     attachmentIds: number[];
     references: number[];
     threadId: number;
-}
-
-
-@Collection(of => BillBoard)
-export class BillBoards extends Entities {
-    static select(filters) {
-        const result = BillBoards.findOne({filter:filters});
-        if(!result) return null;
-		return result;
-    }
 }

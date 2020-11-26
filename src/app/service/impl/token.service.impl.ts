@@ -1,70 +1,78 @@
-import { Token, Tokens } from '../../../domain/models/token';
+import { Token } from '../../../domain/models/token';
 import { User } from '../../../domain/models/user';
 import { AppErrorUnexpected } from '../../errors/unexpected';
-import { AppErrorUserAlreadyExist } from '../../errors/user';
 import { TokenService } from '../token.service';
 import { AbstractBaseService } from './base.service.impl';
 import { jwt }  from 'jsonwebtoken';
 import { generateToken } from '../../../infra/utils/security';
 import { IOC_TYPE } from '../../../config/type';
 import { provide } from 'inversify-binding-decorators';
+import { inject } from 'inversify';
+import { TokenRepo } from '../../../infra/repository/token.repo';
 
 @provide(IOC_TYPE.TokenServiceImpl)
 export class TokenServiceImpl extends AbstractBaseService<Token> implements TokenService {
-    async search(model: User) : Promise<Token> {
-      const token = Tokens.select({email:model.email});
+  constructor(
+    @inject(IOC_TYPE.TokenRepoImpl) private tokenRepo: TokenRepo,
+  ) {
+    super();
+  }
+  
+  async search(model: User) : Promise<Token> {
+    const token = this.tokenRepo.select({email:model.email});
 
-      const newToken = jwt.verify(token.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-          if(err == true) return null;
+    const newToken = jwt.verify(token.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if(err == true) return null;
 
-          const input = {
-              content : {username: user.username, email: user.email, isActive: user.isActive, role: user.role, nick: user.nick},
-              key: process.env.ACCESS_TOKEN_SECRET,
-              expiresIn: '60s'
-          }
-          return generateToken(input);
-      })
-
-      token.token = newToken;
-      return token;
-    }
-
-    async create(model: User): Promise<Token> {
-      try {
-        // 1. Clean all this email's token in Token table.
-        await this.remove({email:model.email});
-
-        // 2. Generate new token for this email and store.
         const input = {
-            content : {username: model.username, email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
+            content : {username: user.username, email: user.email, isActive: user.isActive, role: user.role, nick: user.nick},
             key: process.env.ACCESS_TOKEN_SECRET,
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
+            expiresIn: '60s'
         }
-        const token = generateToken(input);
+        return generateToken(input);
+    })
 
-        const newToken = new Token();
-        newToken.email = model.email;
-        newToken.token = token;
+    token.token = newToken;
+    return token;
+  }
 
-        return await this.save(newToken);
-      } catch (e) {
-        throw new AppErrorUnexpected(e);
+  async create(model: User): Promise<Token> {
+    try {
+      // 1. Clean all this email's token in Token table.
+      await this.remove({email:model.email});
+
+      // 2. Generate new token for this email and store.
+      const input = {
+          content : {username: model.userName, email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
+          key: process.env.ACCESS_TOKEN_SECRET,
+          expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
       }
-    }
+      const token = generateToken(input);
 
-    async save(model: Token): Promise<Token> {
-      try {
-        if (model._key != ''){
-          return await this.edit(model);
-        } else {
-          return await this.add(model);
-        }
-      } catch(e) {
-        throw new AppErrorUnexpected(e);
-      }
-    }
+      const newToken = new Token();
+      newToken.email = model.email;
+      newToken.token = token;
 
-    async remove(filters): Promise<void> {
-      Tokens.delete(filters);
+      return await this.save(newToken);
+    } catch (e) {
+      throw new AppErrorUnexpected(e);
     }
+  }
+
+  async save(model: Token): Promise<any> {
+    try {
+      // if (model._key != ''){
+      //   return await this.edit(model);
+      // } else {
+      //   return await this.add(model);
+      // }
+      return null;
+    } catch(e) {
+      throw new AppErrorUnexpected(e);
+    }
+  }
+
+  async remove(filters): Promise<void> {
+    this.tokenRepo.delete(filters);
+  }
 }

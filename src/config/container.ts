@@ -5,6 +5,13 @@ import { bindings } from './inversity.config';
 export const createContainer = async () => {
   const container = new Container();
 
+  // 1. Repository
+  await require('../infra/repository/impl/user.repo.impl');
+  await require('../infra/repository/impl/token.repo.impl');
+  await require('../infra/repository/impl/bill.board.repo.impl');
+  await require('../infra/repository/impl/section.repo.impl');
+
+  // 2. Service
   // User
   await require('../app/service/impl/token.service.impl');
   await require('../app/service/impl/user.service.impl');

@@ -7,6 +7,8 @@ export class BaseModel {
         this._id = '';
         this._key = '';
         this._rev = '';
+        this._from = '';
+        this._to = '';
         this.isActive = false;
         this.datetimeCreated = '1900-01-01';
         this.datetimeLastEdited = '1900-01-01';
@@ -19,7 +21,11 @@ export class BaseModel {
     @Attribute()
     public _key?: string;
     @Attribute()
-	public _rev?: string;
+    public _rev?: string;
+    @Attribute()
+    public _from?: string;
+    @Attribute()
+	public _to?: string;
     @Attribute()
     isActive: boolean;
     @Attribute()

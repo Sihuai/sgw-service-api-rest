@@ -1,9 +1,9 @@
 {
   "name": "sgw-service-api-rest",
   "version": "1.0.0",
-  "description": "",
-  "main": "build/index.js",
+  "private": true,
   "scripts": {
+    "clean": "rm -fr build",
     "build": "npm run clean && tsc",
     "start": "nodemon",
     "start:dev": "ts-node src/index.ts",
@@ -26,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
     "nodemon": "^2.0.6",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "^9.0.0"
   },
   "devDependencies": {

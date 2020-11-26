@@ -13,6 +13,6 @@ export class IndexHomeAction implements IAction {
     @inject(IOC_TYPE.HomeServiceImpl) public homeService: HomeServiceImpl,
   ) { }
   async execute() {
-    return this.homeService.find();
+    return this.homeService.search();
   }
 }

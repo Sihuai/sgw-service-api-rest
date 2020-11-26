@@ -1,7 +1,7 @@
-import { Document, Collection, Entities, Index, Attribute, RouteArg } from 'type-arango'
+import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 
-@Document()
+@Entity("Users")
 export class User extends BaseModel {
     constructor() {
         super();
@@ -14,8 +14,8 @@ export class User extends BaseModel {
         this.role = '';
     }
 
-    @Index()                            // creates a hash index on User.email
-    @Attribute(type => type.email())    // validates changes to user.email to be email addresses
+    @HashIndex({ unique: true, name: "ix_user_email" })  // creates a hash index on User.email
+    @Attribute()                                // validates changes to user.email to be email addresses type => type.email()
     email: string;
     @Attribute()
     firstName: string;
@@ -29,10 +29,6 @@ export class User extends BaseModel {
     pwhash: string;
     @Attribute()
     role: string;
-
-    // static create(email?: string, firstName?: string, lastName?: string, userName?: string, nick?: string, pwhash?: string, role?: string, isActive?: boolean) {
-    //     return new User({ email, firstName, lastName, userName, nick, pwhash, role, isActive });
-    // }
 }
 
 export interface IUserMainFields {
@@ -44,38 +40,4 @@ export interface IUserDTO extends IUserMainFields {
     attachmentIds: number[];
     references: number[];
     threadId: number;
-}
-
-
-// creates the collection Users
-@Collection(of => User)
-export class Users extends Entities {
-    // creates & documents a route on /users/custom/:user
-	// @Route.GET('custom/:user=number')
-	static GET_CUSTOM({param,error,db}: RouteArg){
-        // db._createDatabase = "";
-		const user = Users.findOne(param.user);
-		if(!user) return error('not found');
-		return user;
-    }
-
-    static select(filters) {
-        const user = Users.findOne({filter:filters});
-        if(!user) return null;
-		return user;
-    }
-
-    // static resetpwrequest(filters) {
-    //     const vcode = createVerificationCode();
-    //     const datetimeNow = moment();
-
-    //     return this.save(model);
-    // }
-
-    // static resetpwexecute(filters) {
-    //     const vcode = createVerificationCode();
-    //     const datetimeNow = moment();
-
-    //     return this.save(model);
-    // }
 }

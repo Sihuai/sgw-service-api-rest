@@ -33,11 +33,11 @@ export class Media extends BaseModel {
 // }
 
 
-@Collection(of => Media)
-export class Medias extends Entities {
-    static select(filters) {
-        const result = Medias.findOne({filter:filters});
-        if(!result) return null;
-		return result;
-    }
-}
+// @Collection(of => Media)
+// export class Medias extends Entities {
+//     static select(filters) {
+//         const result = Medias.findOne({filter:filters});
+//         if(!result) return null;
+// 		return result;
+//     }
+// }

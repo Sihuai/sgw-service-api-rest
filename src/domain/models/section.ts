@@ -1,4 +1,4 @@
-import { Entity, Attribute } from "../../infra/utils/oct-orm";
+import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Card } from './card';
 
@@ -13,7 +13,7 @@ export class Section extends BaseModel {
         this.cards = [];
     }
 
-    // @Index()
+    @HashIndex({ unique: true, name: "ix_section_sequence" })
     @Attribute()
     sequence: number;
     @Attribute()
@@ -39,14 +39,4 @@ export interface ISectionDTO extends ISectionMainFields {
     attachmentIds: number[];
     references: number[];
     threadId: number;
-}
-
-
-@Collection(of => Section)
-export class Sections extends Entities {
-    static select(filters) {
-        const result = Sections.findOne({filter:filters});
-        if(!result) return null;
-		return result;
-    }
 }

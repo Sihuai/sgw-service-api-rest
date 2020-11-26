@@ -25,11 +25,11 @@ export class SigninAuthAction implements IAction {
     @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenServiceImpl,
   ) { }
   async execute(request: IRequest) {
-    const filters = {email:request.email, pwhash:request.pwhash};
+    const filters = {"email":request.email, "pwhash":request.pwhash};
     
-    const user = await this.userService.find(filters);
+    const user = await this.userService.search(filters);
     if (user == null) return null;
 
-    return this.tokenService.create(user);
+    return await this.tokenService.create(user);
   }
 }

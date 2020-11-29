@@ -1,8 +1,7 @@
 import { injectable } from "inversify";
-import { ObjectLiteral } from "../../../common/ObjectLiteral";
 
 @injectable()
-export class AbstractBaseService<Model extends ObjectLiteral> {
+export class AbstractBaseService<Model extends object> {
   // async find(model: Model, key: string) : Promise<Model> {
   //   const result = await model.findOne(key);
   //   return result;

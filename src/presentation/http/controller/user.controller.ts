@@ -14,9 +14,9 @@ import {
   response,
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
-import { ERROR2STATUS_CODE } from '../constants/errors';
-import { APP_ERRORS } from '../../../app/errors/error.interface';
 import { GetUserAction } from '../../actions/user/get';
+import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
+import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 
 @controller('/user')
 export class UserController implements interfaces.Controller {
@@ -24,6 +24,21 @@ export class UserController implements interfaces.Controller {
     @inject(IOC_TYPE.GetUserAction) public getUserAction: GetUserAction,
   ) { }
 
+  @httpGet('/nick')
+  private async getNick(
+    @request() request: Request, @response() response: Response, @next() next: Function,
+  ) {
+    try {
+      const result = await this.getUserAction.execute(request.body);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
+
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result.nick));
+    } catch (e) {
+      const code = getResponseDataCode(e.name);
+      response.status(code).json(ResponseFailure(code, e.stack));
+      next(e);
+    }
+  }
 
   @httpGet('/profile')// :profile
   private async get(
@@ -31,13 +46,12 @@ export class UserController implements interfaces.Controller {
   ) {
     try {
       const result = await this.getUserAction.execute(request.body);
-      // const result = ctlr.getProfile(request, response);
-      response.json(result);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
+      
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
-      const code = ERROR2STATUS_CODE[e.name];
-      if (code) {
-        return response.status(code).json(e.json());
-      }
+      const code = getResponseDataCode(e.name);
+      response.status(code).json(ResponseFailure(code, e.stack));
       next(e);
     }
   }

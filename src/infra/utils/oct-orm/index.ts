@@ -1,7 +1,7 @@
 import { Config, LogLevel } from './types';
 
-export * from './Connection'
-export * from './Repository'
+export * from './connection'
+export * from './repository'
 export * from './decorators'
 export * from './types'
 

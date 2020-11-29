@@ -12,9 +12,11 @@ export const bindings = new AsyncContainerModule(
   async (bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
     await require('../presentation/http/controller/auth.controller');
+    await require('../presentation/http/controller/bill.board.controller');
     await require('../presentation/http/controller/home.controller');
+    await require('../presentation/http/controller/security.controller');
     await require('../presentation/http/controller/user.controller');
-
+    
     // bind<any>(IOC_TYPE.AppConfigService).toDynamicValue(() => {
     //   return new AppConfigService({
 
@@ -34,6 +36,4 @@ export const bindings = new AsyncContainerModule(
 
     // const sgwORMConnection = await createORMConnection(ENV, DS_SGW_CONFIG_NAME);
     // if (sgwORMConnection != null) bind<IORMConnection>(IOC_TYPE.SGWORMConnection).toConstantValue(sgwORMConnection);
-
-
   });

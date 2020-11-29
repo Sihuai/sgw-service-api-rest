@@ -1,5 +1,4 @@
 import { provide } from "inversify-binding-decorators";
-import { AppErrorUnexpected } from "../../../app/errors/unexpected";
 import { IOC_TYPE } from "../../../config/type";
 import { Token } from "../../../domain/models/token";
 import { createConnection } from "../../utils/oct-orm";
@@ -8,37 +7,95 @@ import { TokenRepo } from "../token.repo";
 
 @provide(IOC_TYPE.TokenRepoImpl)
 export class TokenRepoImpl implements TokenRepo {
-  select(filters) {
-    createConnection({...ormTGConnParam, entities: [Token]}).then(async con => {
-        try {
-          const repo = con.repositoryFor<Token>("test");
-        
-          const result = repo.findBy(filters);
-          if(!result) return null;
-          
-          return result;
-        } catch (e) {
-          throw new AppErrorUnexpected(e);
-        } finally {
-          con.db.close();
-        }
-    });
+  async selectAllBy(filters) : Promise<any> {
+    const con = await createConnection({...ormTGConnParam, entities: [Token]});
+
+    try {
+      const repo = con.repositoryFor<Token>("Tokens");
+      const result = await repo.findAllBy(filters);
+
+      if(!result) return null;
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
   }
 
-  delete(filters) {
-    createConnection({...ormTGConnParam, entities: [Token]}).then(async con => {
-        try {
-          const repo = con.repositoryFor<Token>("test");
-        
-          const result = repo.findBy(filters);
-          if(!result) return;
-          
-          // repo.deleteByKey(result.key);
-        } catch (e) {
-          throw new AppErrorUnexpected(e);
-        } finally {
-          con.db.close();
-        }
-    });
+  async selectOneBy(filters) : Promise<any> {
+    const con = await createConnection({...ormTGConnParam, entities: [Token]});
+
+    try {
+      const repo = con.repositoryFor<Token>("Tokens");
+      const result = await repo.findOneBy(filters);
+
+      if(!result) return null;
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
+  async existsBy(filters) : Promise<boolean> {
+    const con = await createConnection({...ormTGConnParam, entities: [Token]});
+
+    try {
+      const repo = con.repositoryFor<Token>("Tokens");
+      const result = await repo.findOneBy(filters);
+
+      return result != null ? true : false;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
+  async insert(model) : Promise<any> {
+    const con = await createConnection({...ormTGConnParam, entities: [Token]});
+
+    try {
+      const repo = con.repositoryFor<Token>("Tokens");
+      const result = await repo.create(model);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
+  async update(model) : Promise<any>  {
+    const con = await createConnection({...ormTGConnParam, entities: [Token]});
+
+    try {
+      const repo = con.repositoryFor<Token>("Tokens");
+      const result = await repo.update(model);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+	}
+
+  async deleteByKeys(keys: string[]) : Promise<any>  {
+    const con = await createConnection({...ormTGConnParam, entities: [Token]});
+
+    try {
+      const repo = con.repositoryFor<Token>("Tokens");
+      const result = await repo.deleteByKey(keys);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
   }
 }

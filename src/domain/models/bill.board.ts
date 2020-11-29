@@ -2,7 +2,7 @@ import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Category } from './category';
 
-@Entity()
+@Entity('BillBoard')
 export class BillBoard extends BaseModel {
     constructor() {
         super();
@@ -10,7 +10,7 @@ export class BillBoard extends BaseModel {
         this.contents = [];
     }
 
-    @HashIndex({ unique: true, name: "ix_billboard_sequence" })
+    @HashIndex({ unique: true, name: 'ix_billboard_sequence' })
     @Attribute()
     type: number;
     @Attribute()

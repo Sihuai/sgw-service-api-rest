@@ -4,9 +4,9 @@ import {
   ENTITY_INDEXES,
   ENTITY_NAME
 } from "./keys/entity.keys";
-import { ArangoIndex } from "./types/Indexes";
+import { ArangoIndex } from "./types/indexes";
 import { Metadata } from "./metadata/MetadataManager";
-import { Repository } from "./Repository";
+import { Repository } from "./repository";
 import { LoadBalancingStrategy } from "arangojs/connection";
 
 function arrayIsEqual(arrA: any[], arrB: any[]) {
@@ -138,8 +138,8 @@ export class Connection {
     return this;
   }
 
-  async connect() {
-    this.db.useBasicAuth(this.options.username, this.options.password);
+  async connect() : Promise<Connection> {
+    await this.db.useBasicAuth(this.options.username, this.options.password);
     if (this.options.database != undefined) this.db.useDatabase(this.options.database);
 
     if (this.options.syncronize) {
@@ -150,6 +150,6 @@ export class Connection {
   }
 }
 
-export function createConnection(options: Partial<ConnectionOptions>) {
-  return new Connection(options).connect();
+export async function createConnection(options: Partial<ConnectionOptions>) : Promise<Connection> {
+  return await new Connection(options).connect();
 }

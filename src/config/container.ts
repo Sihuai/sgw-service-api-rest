@@ -9,15 +9,19 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/user.repo.impl');
   await require('../infra/repository/impl/token.repo.impl');
   await require('../infra/repository/impl/bill.board.repo.impl');
+  await require('../infra/repository/impl/card.repo.impl');
+  await require('../infra/repository/impl/category.repo.impl');
+  await require('../infra/repository/impl/media.repo.impl');
   await require('../infra/repository/impl/section.repo.impl');
 
   // 2. Service
-  // User
   await require('../app/service/impl/token.service.impl');
   await require('../app/service/impl/user.service.impl');
-  // Home
   await require('../app/service/impl/bill.board.service.impl');
+  await require('../app/service/impl/card.service.impl');
+  await require('../app/service/impl/category.service.impl');
   await require('../app/service/impl/home.service.impl');
+  await require('../app/service/impl/media.service.impl');
   await require('../app/service/impl/section.service.impl');
 
   await container.loadAsync(bindings);

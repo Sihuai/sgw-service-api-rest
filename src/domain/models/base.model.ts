@@ -1,7 +1,6 @@
-import { Entity, Attribute } from "../../infra/utils/oct-orm";
+import { Attribute } from "../../infra/utils/oct-orm";
 import { Type } from "../../infra/utils/oct-orm/models/type.models";
 
-@Entity()
 export class BaseModel {
     constructor() {
         this._id = '';
@@ -16,16 +15,11 @@ export class BaseModel {
         this.userLastUpdated = '';
     }
 
-    @Attribute()
-    public _id?: string;
-    @Attribute()
-    public _key?: string;
-    @Attribute()
-    public _rev?: string;
-    @Attribute()
-    public _from?: string;
-    @Attribute()
-	public _to?: string;
+    _id: string;
+    _key: string;
+    _rev: string;
+    _from: string;
+	_to?: string;
     @Attribute()
     isActive: boolean;
     @Attribute()

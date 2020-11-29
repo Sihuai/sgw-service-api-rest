@@ -1,6 +1,6 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 
-@Entity()
+@Entity('Tokens')
 export class Token {
     constructor() {
         this._id = '';
@@ -16,7 +16,7 @@ export class Token {
     public _key?: string;
     @Attribute()
 	public _rev?: string;
-    @HashIndex({ unique: true, name: "ix_token_email" })
+    @HashIndex({ unique: true, name: 'ix_token_email' })
     @Attribute()
     email: string;
     @Attribute()

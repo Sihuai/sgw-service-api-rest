@@ -2,7 +2,7 @@ import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 import { Media } from './media';
 
-@Entity()
+@Entity('Card')
 export class Card extends BaseModel {
     constructor() {
         super();
@@ -11,7 +11,7 @@ export class Card extends BaseModel {
         this.media = new Media();
     }
 
-    @HashIndex({ unique: true, name: "ix_card_sequence" })
+    @HashIndex({ unique: true, name: 'ix_card_sequence' })
     @Attribute()
     sequence: number;
     @Attribute()
@@ -32,13 +32,3 @@ export interface ICardDTO extends ICardMainFields {
     references: number[];
     threadId: number;
 }
-
-
-// @Collection(of => Card)
-// export class Cards extends Entities {
-//     static select(filters) {
-//         const result = Cards.findOne({filter:filters});
-//         if(!result) return null;
-// 		return result;
-//     }
-// }

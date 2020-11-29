@@ -1,8 +1,9 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
+import { Pagination } from "../../infra/utils/oct-orm/models/pagination";
 import { BaseModel } from './base.model';
 import { Card } from './card';
 
-@Entity()
+@Entity('Section')
 export class Section extends BaseModel {
     constructor() {
         super();
@@ -11,9 +12,10 @@ export class Section extends BaseModel {
         this.uri = '';
         this.color = '';
         this.cards = [];
+        this.pagination = new Pagination();
     }
 
-    @HashIndex({ unique: true, name: "ix_section_sequence" })
+    @HashIndex({ unique: true, name: 'ix_section_sequence' })
     @Attribute()
     sequence: number;
     @Attribute()
@@ -26,8 +28,8 @@ export class Section extends BaseModel {
     // @OneToMany(type => Card, Card => Card.owner)
     // cards: Related<Card[]>;
     // // @OneToOne(type => Pagination, Pagination => Pagination.owner)
-    // // pagination?: Related<Pagination>;
     cards: Card[];
+    pagination: Pagination;
 }
 
 export interface ISectionMainFields {

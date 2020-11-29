@@ -1,9 +1,13 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
+import { ResetToken } from '../../../domain/models/reset.token';
 import { User } from '../../../domain/models/user';
 import { UserRepo } from '../../../infra/repository/user.repo';
-import { AppErrorUnexpected } from '../../errors/unexpected';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
+import { createVerificationCode } from '../../../infra/utils/security';
+import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { UserService } from '../user.service';
 import { AbstractBaseService } from './base.service.impl';
 
@@ -14,89 +18,99 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
   ) {
     super();
   }
-    // async find(model: User) : Promise<User> {
-    //     const user = Users.select(model);
-    //     return user;
-    // }
-    
-    async search(filters) : Promise<User> {
-      const user = await this.userRepo.select(filters);
-      return user;
+
+  async findAll(filters) : Promise<User[]> {
+    return await this.userRepo.selectAllBy(filters);
+  }
+
+  async findOne(filters) : Promise<User> {
+    return await this.userRepo.selectOneBy(filters);
+  }
+
+  async addOne(model: User): Promise<any> {
+    try {
+      const filters = {email: model.email, isActive: model.isActive};
+      const isExisted = await this.userRepo.existsBy(filters);
+      if (isExisted == true) return -4; // Email has been used by another User!
+
+      model.role = 'Guest';
+
+      return await this.userRepo.insert(model);
+    } catch (e) {
+      if (e.message.match('duplicate key value violates unique constraint')) throw new AppErrorAlreadyExist(e);
+      throw e;
     }
+  }
 
-    async add(model: User): Promise<User> {
-      try {
-        const filters = {email: model.email, isActive: model.isActive};
-        const existedUser : User = await this.search(filters);
-        if (existedUser != null && existedUser.isActive == true) throw new Error(model.email + ' has been used by another User!');
+  async editOne(model: User): Promise<User> {
+    try {
+      const filters = {email: model.email, isActive: model.isActive};
+      const isExisted = await this.userRepo.existsBy(filters);
+      if (isExisted == true) throw new Error(model.email + ' has been used by another User!');
 
-        model.role = 'Guest';
-        model.isActive = true;
+      model.role = 'Guest';
+      model.isActive = true;
 
-        return await this.save(model);
-      } catch (e) {
-        // if (e.message.match('duplicate key value violates unique constraint')) {
-        //   throw new AppErrorUserAlreadyExist(e);
-        // }
-        throw new AppErrorUnexpected(e);
-      }
+      return await this.userRepo.update(model);
+    } catch (e) {
+      throw e;
     }
+  }
 
-    // async resetpwrequest(filters): Promise<User> {
-    //   try {
-    //     if (filters.email == null || filters.email == '') {
-    //       throw new Error('email is empty!');
-    //     }
-
-    //     const user = Users.select(filters);
-    //     if (user == null) {
-    //       throw new Error(filters.email + ' is not exist!');
-    //     }
-    //     if (user.isActive == false) {
-    //       throw new Error(filters.email + ' is not active!');
-    //     }
-
-    //     return await Users.resetpwrequest(model);
-    //   } catch(e) {
-    //     throw new AppErrorUnexpected(e);
-    //   }
-    // }
-
-    // async resetpwexecute(filters): Promise<User> {
-    //   try {
-    //     if (filters.email == null || filters.email == '') {
-    //       throw new Error('email is empty!');
-    //     }
-
-    //     const user = Users.select(filters);
-    //     if (user == null) {
-    //       throw new Error(filters.email + ' is not exist!');
-    //     }
-    //     if (user.isActive == false) {
-    //       throw new Error(filters.email + ' is not active!');
-    //     }
-
-    //     return await Users.resetpwexecute(model);
-    //   } catch(e) {
-    //     throw new AppErrorUnexpected(e);
-    //   }
-    // }
-
-    async save(model: User): Promise<any> {
-      try {
-        // if (model._key != ''){
-        //   return await this.edit(model);
-        // } else {
-        //   return await this.userRepo.add(model);
-        // }
-
-        return null;
-      } catch(e) {
-        throw new AppErrorUnexpected(e);
-      }
+  async removeOne(model: User): Promise<any> {
+    try {
+      const filters = {email: model.email, isActive: model.isActive};
+      const result = await this.findOne(filters);
+      if (result == null) throw new Error(model.email + ' isnot existed!');
+  
+      return await this.userRepo.deleteByKey(result._key);
+    } catch (e) {
+      throw e;
     }
+  }
 
-    // del(model: Users) {
-    //     model.remove();
-    // }
+  async resetPWRequest(filters): Promise<any> {
+    try {
+      const result = await this.findOne(filters);
+      if (isEmptyObject(result) == true) return -10; // No user.
+
+      const vcode = await createVerificationCode();
+      const datetimeNow = moment();
+
+      const resetToken = new ResetToken();
+      resetToken.dateRequested = datetimeNow.clone().format('YYYY-MM-DD HH:mm:ss');
+      resetToken.dateExpires = datetimeNow.clone().add(15, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+      resetToken.code = vcode;
+      resetToken.resolved = false;
+
+      result.resetToken = resetToken;
+
+      return await this.userRepo.update(result);
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  async resetPWExecute(filters, pwhash: string): Promise<any> {
+    try {
+      const result = await this.findOne(filters);
+      if (isEmptyObject(result) == true) return -10; // No user.
+
+      const vcode = await createVerificationCode();
+      const datetimeNow = moment().format('YYYY-MM-DD HH:mm:ss');
+
+      if (result.resetToken != undefined && result.resetToken.resolved == true) return -11; // Had reset.
+      if (result.resetToken != undefined && result.resetToken.dateExpires <= datetimeNow) return -12; // expired.
+
+      const resetToken = new ResetToken();
+      resetToken.resolved = true;
+
+      result.resetToken = resetToken;
+      result.pwhash = pwhash;
+
+      return await this.userRepo.update(result);
+    } catch(e) {
+      throw e;
+    }
+  }
 }

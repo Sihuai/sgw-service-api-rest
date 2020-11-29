@@ -3,11 +3,10 @@
 import 'reflect-metadata';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { createContainer } from './config/container';
-// import { IOC_TYPE } from './config/type';
 import { ApplicationServer } from './presentation/http/server';
 import moment from 'moment';
-import { logError } from './lib/logger';
-import { getEnvConfig } from './lib/env.config';
+import { logError } from './infra/utils/logger';
+import { getEnvConfig } from './config/env.config';
 import path from 'path';
 import fs from 'fs';
 import dotEnv from 'dotenv';
@@ -65,6 +64,8 @@ export const createApplicationServer = async () => {
   process.env.HTTPS_CERTIFICATE = 'localdomain.crt';
   process.env.HTTPS_KEY = 'localdomain.secure.key';
   process.env.PASSPHRASE = 'Zulu.12345';
+  process.env.ACCESS_TOKEN_SECRET = 'Zulu.12345';
+  process.env.ACCESS_TOKEN_EXPIRE_INTERVAL = '60s';
 
   if( !process.env.HTTPS_CERTIFICATE ){
       // HTTPS_CERTIFICATE environment parameter defined.
@@ -97,8 +98,6 @@ export const createApplicationServer = async () => {
     isHttps: false,
     httpsOptions: httpsOptions,
     createHttpServer: () => new InversifyExpressServer(container),
-    // tiangongORMConn: container.get(IOC_TYPE.TGORMConnection),
-    // sgwORMConn: container.get(IOC_TYPE.SGWORMConnection),
     // tslint:disable-next-line: object-shorthand-properties-first
     container,
   });

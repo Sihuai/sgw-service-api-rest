@@ -3,22 +3,17 @@ const debug = require('debug')('express:server');
 import https from 'https';
 import { Application } from 'express';
 import { Container } from 'inversify';
-import { logError } from '../../lib/logger';
+import { logError } from '../../infra/utils/logger';
 import { configAppFactory, errorConfigAppFactory } from './express';
 import moment from 'moment';
-// import { IORMConnection } from '../../infra/utils/orm.connection';
 
 export class ApplicationServer {
   private port: any;
   private isHttps: boolean;
   private httpsOptions: any;
-  // tiangongORMConn: IORMConnection;
-  // sgwORMConn: IORMConnection;
   app: Application;
   container: Container;
 
-  // tiangongORMConn,
-  // sgwORMConn,
   constructor({
     createHttpServer,
     port,
@@ -30,8 +25,6 @@ export class ApplicationServer {
     this.port = port;
     this.isHttps = isHttps;
     this.httpsOptions = httpsOptions;
-    // this.tiangongORMConn = tiangongORMConn;
-    // this.sgwORMConn = sgwORMConn;
     const config = configAppFactory({ port: this.port });
     const errorConfig = errorConfigAppFactory();
 

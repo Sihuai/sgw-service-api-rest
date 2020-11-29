@@ -1,5 +1,3 @@
-import { jwt }  from 'jsonwebtoken';
-
 // function to generate a random verification code
 export const createVerificationCode = async () => {
     const codeCharacters = Array.from('ABCD012389abzEFGH4567vwxyJKLMcdefNPQRrstuWXYZmnpqSTUVghjk');
@@ -15,6 +13,7 @@ export const createVerificationCode = async () => {
 
 export const generateToken = (params) => {
     try{
+        var jwt = require('jsonwebtoken');
         // exceptions handling.
         if(params.expiresIn == false) return jwt.sign(params.content, params.key);
         // expiresIn is not empty.
@@ -23,3 +22,8 @@ export const generateToken = (params) => {
         throw err;
     }
 }
+
+export const getTokenFromAuthHeaders = (header: string): string | undefined => {
+    if (!header) return undefined;
+    return header.split(' ')[1];
+  };

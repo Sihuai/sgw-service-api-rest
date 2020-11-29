@@ -3,7 +3,7 @@ import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
 import { Section } from '../../../domain/models/section';
 import { SectionRepo } from '../../../infra/repository/section.repo';
-import { AppErrorUnexpected } from '../../errors/unexpected';
+import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { SectionService } from '../section.service';
 import { AbstractBaseService } from './base.service.impl';
 
@@ -15,32 +15,50 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
     super();
   }
 
-  search() : any[] {
-    const result = this.sectionRepo.getAll();
-    return result;
+  async findAll() : Promise<Section[]> {
+    return await this.sectionRepo.selectAll();
   }
 
-  async add(model: Section): Promise<Section> {
+  async findAllBy(filters) : Promise<Section> {
+    return await this.sectionRepo.selectAllBy(filters);
+  }
+
+  async findOne(filters) : Promise<Section> {
+    return await this.sectionRepo.selectOneBy(filters);
+  }
+
+  async addOne(model: Section): Promise<any> {
     try {
-      return await this.save(model);
+      return await this.sectionRepo.insert(model);
     } catch (e) {
-      // if (e.message.match('duplicate key value violates unique constraint')) {
-      //   throw new AppErrorUserAlreadyExist(e);
-      // }
-      throw new AppErrorUnexpected(e);
+      if (e.message.match('duplicate key value violates unique constraint')) throw new AppErrorAlreadyExist(e);
+      throw e;
     }
   }
 
-  async save(model: Section): Promise<any> {
+  async editOne(model: Section): Promise<any> {
     try {
-      if (model._key != ''){
-        // return await this.edit(model);
-        return null;
-      } else {
-        return await this.add(model);
-      }
-    } catch(e) {
-      throw new AppErrorUnexpected(e);
+      const filters = {_key: model._key};
+      const isExisted = await this.sectionRepo.existsBy(filters);
+      if (isExisted == false) return -3; // Bill board information is not exist!
+
+      const result = this.removeOne(model);
+
+      return await this.addOne(model);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async removeOne(model: Section): Promise<any> {
+    try {
+      const filters = {_key: model._key};
+      const result = await this.findOne(filters);
+      if (result == null) return -3; // Bill board information is not exist!
+  
+      return await this.sectionRepo.deleteByKey(result._key);
+    } catch (e) {
+      throw e;
     }
   }
 }

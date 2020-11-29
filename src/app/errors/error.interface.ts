@@ -1,13 +1,15 @@
 
 export const APP_ERRORS = {
-  AttachmentCacheRecordNotFound: 'AttachmentCacheRecordNotFound',
-  UserAlreadyExists: 'UserAlreadyExists',
+  AlreadyExists: 'AlreadyExists',
   InvalidToken: 'InvalidToken',
   Unexpected: 'Unexpected',
   ValidationError: 'ValidationError',
   NotAuthorized: 'NotAuthorized',
   EntityNotFound: 'EntityNotFound',
-  UploadError: 'UploadError',
+  Forbidden: 'Forbidden',
+  NotFound: 'NotFound',
+  InternalServerError: 'InternalServerError',
+  TokenTimeOut: 'TokenTimeOut',
 } as const;
 
 export type AppErrorName = keyof typeof APP_ERRORS;

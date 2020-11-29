@@ -1,7 +1,7 @@
 import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 
-@Entity()
+@Entity('Media')
 export class Media extends BaseModel {
     constructor() {
         super();
@@ -30,14 +30,4 @@ export class Media extends BaseModel {
 //     attachmentIds: number[];
 //     references: number[];
 //     threadId: number;
-// }
-
-
-// @Collection(of => Media)
-// export class Medias extends Entities {
-//     static select(filters) {
-//         const result = Medias.findOne({filter:filters});
-//         if(!result) return null;
-// 		return result;
-//     }
 // }

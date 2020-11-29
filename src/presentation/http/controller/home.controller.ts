@@ -14,8 +14,9 @@ import {
   response,
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
-import { ERROR2STATUS_CODE } from '../constants/errors';
 import { IndexHomeAction } from '../../actions/home/index';
+import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
+import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 
 @controller('/home')
 export class HomeController implements interfaces.Controller {
@@ -23,19 +24,32 @@ export class HomeController implements interfaces.Controller {
     @inject(IOC_TYPE.IndexHomeAction) public indexHomeAction: IndexHomeAction,
   ) { }
 
-  @httpGet('/:index')
-  private async get(
+  @httpGet('/index')
+  private async index(
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
       const result = await this.indexHomeAction.execute();
 
-      response.sendStatus(200).json(result);
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
-      const code = ERROR2STATUS_CODE[e.name];
-      if (code) {
-        return response.status(code).json(e.json());
-      }
+      const code = getResponseDataCode(e.name);
+      response.status(code).json(ResponseFailure(code, e.stack));
+      next(e);
+    }
+  }
+
+  @httpGet('/card')
+  private async card(
+    @request() request: Request, @response() response: Response, @next() next: Function,
+  ) {
+    try {
+      const result = await this.indexHomeAction.execute();
+
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
+    } catch (e) {
+      const code = getResponseDataCode(e.name);
+      response.status(code).json(ResponseFailure(code, e.stack));
       next(e);
     }
   }

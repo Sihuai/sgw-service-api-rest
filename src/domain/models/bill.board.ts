@@ -6,13 +6,13 @@ import { Category } from './category';
 export class BillBoard extends BaseModel {
     constructor() {
         super();
-        this.type = -1;
+        this.type = '';
         this.contents = [];
     }
 
     @HashIndex({ unique: true, name: 'ix_billboard_sequence' })
     @Attribute()
-    type: number;
+    type: string;
     @Attribute()
     // @OneToMany(type => Category, Category => Category.owner)
     // contents: Related<Category[]>;

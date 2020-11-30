@@ -1,7 +1,7 @@
 import { getDataStoreConfiguration } from "../../config/db.config";
 import { ConnectionOptions } from "./oct-orm";
 
-const DS_SGW_CONFIG_NAME = 'api-pms'; // process.env.DS_APP_CONFIG_NAME|| '';
+const DS_SGW_CONFIG_NAME = process.env.DS_APP_CONFIG_NAME|| '';
 const ENV = process.env.NODE_ENV || 'development';
 
 const dsConfig = getDataStoreConfiguration(ENV, DS_SGW_CONFIG_NAME);

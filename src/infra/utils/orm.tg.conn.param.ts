@@ -1,7 +1,7 @@
 import { getDataStoreConfiguration } from "../../config/db.config";
 import { ConnectionOptions } from "./oct-orm";
 
-const DS_TG_CONFIG_NAME = 'api-security';// process.env.DS_SECURITY_CONFIG_NAME|| '';
+const DS_TG_CONFIG_NAME = process.env.DS_SECURITY_CONFIG_NAME|| '';
 const ENV = process.env.NODE_ENV || 'development';
 
 const dsConfig = getDataStoreConfiguration(ENV, DS_TG_CONFIG_NAME);

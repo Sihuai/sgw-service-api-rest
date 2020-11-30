@@ -1,5 +1,6 @@
 import {config} from '..'
 import * as Joi from 'joi'
+import moment from 'moment';
 
 export namespace Type {
 	export class I18n<T = string> {
@@ -38,7 +39,7 @@ export namespace Type {
 		static _typeArango: string = '0.7';
 		static schema: Joi.DateSchema = Joi.date();
 
-		static beforeInsert(){ return new Date() }
+		static beforeInsert(){ return moment().clone().format('YYYY-MM-DD HH:mm:ss') }
 	}
 
 	/**
@@ -48,6 +49,6 @@ export namespace Type {
 		static _typeArango: string = '0.7';
 		static schema: Joi.DateSchema = Joi.date();
 
-		static beforeUpdate(){ return new Date() }
+		static beforeUpdate(){ return moment().clone().format('YYYY-MM-DD HH:mm:ss') }
 	}
 }

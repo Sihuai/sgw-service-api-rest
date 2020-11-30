@@ -4,5 +4,6 @@ export interface TokenRepo {
   existsBy(filters) : Promise<boolean>;
   insert(model) : Promise<any>;
   update(model) : Promise<any>;
+  deleteByKey(key: string) : Promise<any>;
   deleteByKeys(keys: string[]) : Promise<any>;
 }

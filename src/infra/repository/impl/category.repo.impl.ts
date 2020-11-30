@@ -2,6 +2,7 @@ import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
 import { Category } from "../../../domain/models/category";
 import { createConnection } from "../../utils/oct-orm";
+import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
 import { CategoryRepo } from "../category.repo";
 
@@ -27,8 +28,14 @@ export class CategoryRepoImpl implements CategoryRepo {
     const con = await createConnection({...ormSGWConnParam, entities: [Category]});
 
     try {
+      const aql = {
+        for: 'doc',
+        filter: parseFilter(filters),
+        return: 'doc'
+      };
+
       const repo = con.repositoryFor<Category>("Category");
-      const result = await repo.findAllBy(filters);
+      const result = await repo.findAllBy(aql);
 
       if(!result) return null;
       return result;

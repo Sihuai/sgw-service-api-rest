@@ -3,6 +3,7 @@ import { IOC_TYPE } from "../../../config/type";
 import { BaseModel } from "../../../domain/models/base.model";
 import { User } from "../../../domain/models/user";
 import { createConnection } from "../../utils/oct-orm";
+import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormTGConnParam } from "../../utils/orm.tg.conn.param";
 import { UserRepo } from "../user.repo";
 
@@ -12,8 +13,14 @@ export class UserRepoImpl implements UserRepo {
     const con = await createConnection({...ormTGConnParam, entities: [User]});
 
     try {
+      const aql = {
+        for: 'doc',
+        filter: parseFilter(filters),
+        return: 'doc'
+      };
+
       const repo = con.repositoryFor<User>("Users");
-      const result = await repo.findAllBy(filters);
+      const result = await repo.findAllBy(aql);
 
       if(!result) return null;
       return result;

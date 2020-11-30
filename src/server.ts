@@ -61,12 +61,6 @@ export const createApplicationServer = async () => {
       return null;
   }
 
-  process.env.HTTPS_CERTIFICATE = 'localdomain.crt';
-  process.env.HTTPS_KEY = 'localdomain.secure.key';
-  process.env.PASSPHRASE = 'Zulu.12345';
-  process.env.ACCESS_TOKEN_SECRET = 'Zulu.12345';
-  process.env.ACCESS_TOKEN_EXPIRE_INTERVAL = '60s';
-
   if( !process.env.HTTPS_CERTIFICATE ){
       // HTTPS_CERTIFICATE environment parameter defined.
       const messages: string[] = [];

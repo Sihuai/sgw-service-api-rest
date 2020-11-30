@@ -36,7 +36,7 @@ export class BillBoardController implements interfaces.Controller {
     try {
       const result = await this.getBillBoardAction.execute();
       
-      response.status(ResponseDataCode.OK).json(ResponseSuccess(result.token));
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
       const code = getResponseDataCode(e.name);
       response.status(code).json(ResponseFailure(code, e.stack));

@@ -4,11 +4,12 @@ import { BillBoardService } from '../../../app/service/bill.board.service';
 import { IOC_TYPE } from '../../../config/type';
 import { BillBoard, IBillBoardDTO } from '../../../domain/models/bill.board';
 import { Category } from '../../../domain/models/category';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
 
 interface IRequest extends INullable<IBillBoardDTO> {
-  type: number;
+  type: string;
   contents: Category[];
 }
 
@@ -25,7 +26,7 @@ export class EditBillBoardAction implements IAction {
   ) {}
   async execute(request: IRequest) : Promise<any> {
 
-    if (request.type <= 0) return -1; // Type is empty!
+    if (isEmptyObject(request.type) == true) return -1; // Type is empty!
     if (request.contents.length == 0) return -2; // Contents is empty!
 
     const model = new BillBoard();

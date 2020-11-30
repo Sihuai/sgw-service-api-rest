@@ -16,6 +16,7 @@ export const bindings = new AsyncContainerModule(
     await require('../presentation/http/controller/home.controller');
     await require('../presentation/http/controller/security.controller');
     await require('../presentation/http/controller/user.controller');
+    await require('../presentation/http/controller/section.controller');
     
     // bind<any>(IOC_TYPE.AppConfigService).toDynamicValue(() => {
     //   return new AppConfigService({

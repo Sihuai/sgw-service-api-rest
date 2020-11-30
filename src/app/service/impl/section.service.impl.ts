@@ -40,7 +40,7 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
     try {
       const filters = {_key: model._key};
       const isExisted = await this.sectionRepo.existsBy(filters);
-      if (isExisted == false) return -3; // Bill board information is not exist!
+      if (isExisted == false) return -11;
 
       const result = this.removeOne(model);
 
@@ -54,7 +54,7 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
     try {
       const filters = {_key: model._key};
       const result = await this.findOne(filters);
-      if (result == null) return -3; // Bill board information is not exist!
+      if (result == null) return -10;
   
       return await this.sectionRepo.deleteByKey(result._key);
     } catch (e) {

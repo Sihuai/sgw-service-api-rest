@@ -50,8 +50,14 @@ export class CardRepoImpl implements CardRepo {
     const con = await createConnection({...ormSGWConnParam, entities: [Card]});
 
     try {
+      const aql = {
+        for: 'doc',
+        filter: parseFilter(filters),
+        return: 'doc'
+      };
+
       const repo = con.repositoryFor<Card>("Card");
-      const result = await repo.findAllBy(filters);
+      const result = await repo.findAllBy(aql);
 
       if(!result) return null;
       return result;

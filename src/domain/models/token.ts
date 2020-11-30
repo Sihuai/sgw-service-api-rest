@@ -10,12 +10,9 @@ export class Token {
         this.token = '';
     }
 
-    @Attribute()
-    public _id?: string;
-    @Attribute()
-    public _key?: string;
-    @Attribute()
-	public _rev?: string;
+    public _id: string;
+    public _key: string;
+	public _rev: string;
     @HashIndex({ unique: true, name: 'ix_token_email' })
     @Attribute()
     email: string;

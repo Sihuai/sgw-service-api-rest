@@ -41,7 +41,7 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
         const input = {
             content : {username: decoded.username, email: decoded.email, isActive: decoded.isActive, role: decoded.role, nick: decoded.nick},
             key: process.env.ACCESS_TOKEN_SECRET,
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRE_INTERVAL
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
         }
         return generateToken(input);
       })
@@ -58,12 +58,12 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
       // 1. Clean all this email's token in Token table.
       const tokenModel = new Token();
       tokenModel.email = model.email;
-      await this.removeOne(tokenModel);
+      await this.removeAll(tokenModel);
       // 2. Generate new token for this email and store.
       const input = {
           content : {username: model.userName, email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
           key: process.env.ACCESS_TOKEN_SECRET,
-          expiresIn: process.env.ACCESS_TOKEN_EXPIRE_INTERVAL
+          expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
       }
       const tokenAccess = generateToken(input);
 
@@ -77,8 +77,8 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
       newToken.email = model.email;
       newToken.token = tokenRefresh;
 
-      const result = await this.tokenRepo.insert(model);
-      if (!result) return -4; // Fail to distribute token.
+      const result = await this.tokenRepo.insert(newToken);
+      if (!result) return -11; // Fail to distribute token.
 
       return {access: tokenAccess, refresh: tokenRefresh};
     } catch (e) {
@@ -92,13 +92,26 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
   async removeOne(model: Token): Promise<any> {
     try {
       const filters = {email: model.email, token: model.token};
+      const results = await this.findOne(filters);
+      if (isEmptyObject(results) == true) return -10; // No this data in Token.
+  
+      return await this.tokenRepo.deleteByKey(results._key);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async removeAll(model: Token): Promise<any> {
+    try {
+      const filters = [`email == '${model.email}'`];
       const results = await this.findAll(filters);
       if (isEmptyObject(results) == true) return -10; // No this data in Token.
   
-      const keys = [];
-      results.forEach(function(item, index){
-        keys.join(item._key);
-      });
+      const keys = new Array(results.length);
+      for (var i = 0; i < results.length; i++)
+      {
+        keys[i] = results[i]._key;
+      }
 
       return await this.tokenRepo.deleteByKeys(keys);
     } catch (e) {

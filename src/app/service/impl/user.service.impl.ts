@@ -31,7 +31,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
     try {
       const filters = {email: model.email, isActive: model.isActive};
       const isExisted = await this.userRepo.existsBy(filters);
-      if (isExisted == true) return -4; // Email has been used by another User!
+      if (isExisted == true) return -10; // Email has been used by another User!
 
       model.role = 'Guest';
 

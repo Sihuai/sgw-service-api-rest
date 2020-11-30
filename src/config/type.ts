@@ -19,12 +19,18 @@ export const IOC_TYPE = {
   GetTokenAction: Symbol.for('GetTokenAction'),
   ResetPWRequestUserAction : Symbol.for('ResetPWRequestUserAction'),
   ResetPWExecuteUserAction : Symbol.for('ResetPWExecuteUserAction'),
+  
   IndexHomeAction: Symbol.for('IndexHomeAction'),
+
   CreateBillBoardAction: Symbol.for('CreateBillBoardAction'),
   EditBillBoardAction: Symbol.for('EditBillBoardAction'),
   GetBillBoardAction: Symbol.for('GetBillBoardAction'),
   DeleteBillBoardAction : Symbol.for('DeleteBillBoardAction'),
 
+  CreateSectionAction : Symbol.for('CreateSectionAction'),
+  EditSectionAction : Symbol.for('EditSectionAction'),
+  GetSectionAction : Symbol.for('GetSectionAction'),
+  DeleteSectionAction : Symbol.for('DeleteSectionAction'),
 
 
   // 3. Service

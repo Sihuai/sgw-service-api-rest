@@ -2,6 +2,7 @@ import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
 import { BillBoard } from "../../../domain/models/bill.board";
 import { createConnection } from "../../utils/oct-orm";
+import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
 import { BillBoardRepo } from "../bill.board.repo";
 
@@ -27,8 +28,14 @@ export class BillBoardRepoImpl implements BillBoardRepo {
     const con = await createConnection({...ormSGWConnParam, entities: [BillBoard]});
 
     try {
+      const aql = {
+        for: 'doc',
+        filter: parseFilter(filters),
+        return: 'doc'
+      };
+
       const repo = con.repositoryFor<BillBoard>("BillBoard");
-      const result = await repo.findAllBy(filters);
+      const result = await repo.findAllBy(aql);
 
       if(!result) return null;
       return result;

@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Attribute } from "../../infra/utils/oct-orm";
 import { Type } from "../../infra/utils/oct-orm/models/type.models";
 
@@ -9,8 +10,8 @@ export class BaseModel {
         this._from = '';
         this._to = '';
         this.isActive = false;
-        this.datetimeCreated = '1900-01-01';
-        this.datetimeLastEdited = '1900-01-01';
+        this.datetimeCreated = moment().clone().format('YYYY-MM-DD HH:mm:ss');
+        this.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
         this.userCreated = '';
         this.userLastUpdated = '';
     }

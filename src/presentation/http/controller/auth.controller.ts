@@ -11,6 +11,7 @@ import {
   response,
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { RegisterUserAction } from '../../actions/auth/register';
 import { SigninAuthAction } from '../../actions/auth/signin';
 import { SignoutAuthAction } from '../../actions/auth/signout';
@@ -34,7 +35,7 @@ export class AuthController implements interfaces.Controller {
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Password is empty!'));
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Nike is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email has been used by another User!'));
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email has been used by another User!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
     } catch (e) {
@@ -53,7 +54,7 @@ export class AuthController implements interfaces.Controller {
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email or Password is incorrect!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email or Password is incorrect!'));
       if (result == -3) return response.status(ResponseDataCode.NotFound).json(ResponseFailure(ResponseDataCode.NotFound, 'Fail to authenticate user credential passed in.'));
-      if (result == -4) return response.status(ResponseDataCode.Unexpected).json(ResponseFailure(ResponseDataCode.Unexpected, 'Fail to distribute token.'));
+      if (result == -11) return response.status(ResponseDataCode.Unexpected).json(ResponseFailure(ResponseDataCode.Unexpected, 'Fail to distribute token.'));
 
       // Add token to cookie.
       const {refresh, ...rest } = result;
@@ -74,7 +75,7 @@ export class AuthController implements interfaces.Controller {
   ) {
     try {
       const token = request.cookies['r-token'];
-      if (token == null) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
+      if (isEmptyObject(token) == true) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
 
       const result = await this.signoutAuthAction.execute(token, request.body);
       

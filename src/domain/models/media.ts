@@ -5,18 +5,18 @@ import { BaseModel } from './base.model';
 export class Media extends BaseModel {
     constructor() {
         super();
-        this.type = -1;
-        this.orientation = -1;
-        this.format = -1;
-        this.uri = "";
+        this.type = '';
+        this.orientation = '';
+        this.format = '';
+        this.uri = '';
     }
 
     @Attribute()
-    type: number;
+    type: string;
     @Attribute()
-    orientation: number;
+    orientation: string;
     @Attribute()
-    format: number;
+    format: string;
     @Attribute()
     uri: string;
 }

@@ -9,7 +9,6 @@ import { DocumentCollection } from "arangojs/collection";
 import { isValidJSON } from "../data.validator";
 import { Pagination, Records } from "./models/pagination";
 import { AQLClauses } from "./types/aqlClauses";
-import e from "express";
 
 export type EntityDocument<T extends object> = DeepPartial<DocumentData<T>>;
 
@@ -53,12 +52,40 @@ export class Repository<T extends object> {
   }
 
   async findAll() {
-    const result = await this.collection.list();
+    // const result = await this.collection.all();
+    // return normalizeDataForRead(this.entity, result);
+    const aqlCode = `FOR doc IN ${this.collection.name} RETURN doc`;
+
+    const cursor = await this.connection.db.query(aqlCode);
+    const result = await cursor.all();
+
     return normalizeDataForRead(this.entity, result);
   }
 
-  async findAllBy(doc: ArrayOr<EntityDocument<T>>) {
-    const result = await this.collection.byExample(doc);
+  async findAllBy(aql: AQLClauses) {
+    // const result = await this.collection.byExample(doc);
+    // return normalizeDataForRead(this.entity, result);
+    const aqlClauses: Array<string> = [];
+    // checks
+    aqlClauses.push(`FOR ${aql.for} IN ${this.collection.name}`);
+
+    if(aql.filter) aqlClauses.push(`FILTER (${aql.filter})`);
+    if(aql.sort) aqlClauses.push(`SORT ${aql.sort}`);
+    if(aql.limit) aqlClauses.push(`LIMIT ${aql.limit.offset}, ${aql.limit.count}`);
+    if(aql.return.trim().startsWith('{') && aql.return.trim().endsWith('}') ){
+        if(isValidJSON(aql.return.trim())) aqlClauses.push(`RETURN aql.return`);
+    }
+
+    // not a JSON string
+    if( aql.return.trim().length === 0) aqlClauses.push(`RETURN ${aql.for.trim()}`);
+    // return clause (non-JSON) is set
+    aqlClauses.push(`RETURN ${aql.return.trim()}`);
+    
+    const aqlCode = aqlClauses.join("\n");
+
+    const cursor = await this.connection.db.query(aqlCode);
+    const result = await cursor.all();
+
     return normalizeDataForRead(this.entity, result);
   }
 
@@ -74,7 +101,6 @@ export class Repository<T extends object> {
   }
 
   async findOneBy(doc: ArrayOr<EntityDocument<T>>) {
-    // const result = await this.collection.byExample(doc);
     try {
       const result = await this.collection.firstExample(doc);
       return normalizeDataForRead(this.entity, result);
@@ -87,7 +113,7 @@ export class Repository<T extends object> {
   async countBy(aql: AQLClauses, ignoreFilterClause: boolean) {
     const aqlClauses: Array<string> = [];
 
-    aqlClauses.push(`FOR ${aql.for} IN ${this.entity.name}`);
+    aqlClauses.push(`FOR ${aql.for} IN ${this.collection.name}`);
 
     if( aql.filter && !ignoreFilterClause ) aqlClauses.push(`FILTER ${aql.filter}`);
     
@@ -105,7 +131,7 @@ export class Repository<T extends object> {
   async pagination(aql: AQLClauses) {
     const aqlClauses: Array<string> = [];
     // checks
-    aqlClauses.push(`FOR ${aql.for} IN ${this.entity.name}`);
+    aqlClauses.push(`FOR ${aql.for} IN ${this.collection.name}`);
 
     if(aql.filter) aqlClauses.push(`FILTER (${aql.filter})`);
     if(aql.sort) aqlClauses.push(`SORT ${aql.sort}`);

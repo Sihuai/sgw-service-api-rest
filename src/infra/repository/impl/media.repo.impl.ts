@@ -2,6 +2,7 @@ import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
 import { Media } from "../../../domain/models/media";
 import { createConnection } from "../../utils/oct-orm";
+import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
 import { MediaRepo } from "../media.repo";
 
@@ -27,8 +28,14 @@ export class MediaRepoImpl implements MediaRepo {
     const con = await createConnection({...ormSGWConnParam, entities: [Media]});
 
     try {
+      const aql = {
+        for: 'doc',
+        filter: parseFilter(filters),
+        return: 'doc'
+      };
+      
       const repo = con.repositoryFor<Media>("Media");
-      const result = await repo.findAllBy(filters);
+      const result = await repo.findAllBy(aql);
 
       if(!result) return null;
       return result;

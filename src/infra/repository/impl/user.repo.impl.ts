@@ -1,6 +1,5 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { BaseModel } from "../../../domain/models/base.model";
 import { User } from "../../../domain/models/user";
 import { createConnection } from "../../utils/oct-orm";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
@@ -63,7 +62,7 @@ export class UserRepoImpl implements UserRepo {
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormTGConnParam, entities: [User, BaseModel]});
+    const con = await createConnection({...ormTGConnParam, entities: [User]});
 
     try {
       const repo = con.repositoryFor("Users");

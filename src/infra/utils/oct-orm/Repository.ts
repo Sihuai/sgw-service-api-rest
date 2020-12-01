@@ -105,7 +105,7 @@ export class Repository<T extends object> {
       const result = await this.collection.firstExample(doc);
       return normalizeDataForRead(this.entity, result);
     } catch (e) {
-      if (e.name == 'no match') return null;
+      if (e.message == 'no match') return null;
       throw e;
     }
   }

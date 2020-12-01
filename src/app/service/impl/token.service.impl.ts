@@ -55,11 +55,7 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
 
   async addOne(model: User): Promise<any> {
     try {
-      // 1. Clean all this email's token in Token table.
-      const tokenModel = new Token();
-      tokenModel.email = model.email;
-      await this.removeAll(tokenModel);
-      // 2. Generate new token for this email and store.
+      // Generate new token for this email and store.
       const input = {
           content : {username: model.userName, email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
           key: process.env.ACCESS_TOKEN_SECRET,

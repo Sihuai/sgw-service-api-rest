@@ -32,6 +32,11 @@ export const IOC_TYPE = {
   GetSectionAction : Symbol.for('GetSectionAction'),
   DeleteSectionAction : Symbol.for('DeleteSectionAction'),
 
+  CreateCardAction : Symbol.for('CreateCardAction'),
+  EditCardAction : Symbol.for('EditCardAction'),
+  GetCardAction : Symbol.for('GetCardAction'),
+  DeleteCardAction : Symbol.for('DeleteCardAction'),
+
 
   // 3. Service
   BillBoardServiceImpl: Symbol.for('BillBoardServiceImpl'),

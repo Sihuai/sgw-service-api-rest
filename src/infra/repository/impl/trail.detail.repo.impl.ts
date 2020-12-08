@@ -1,18 +1,19 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { Card } from "../../../domain/models/card";
+import { TrailDetail } from "../../../domain/models/trail.detail";
 import { createConnection } from "../../utils/oct-orm";
+import { ArrayOr } from "../../utils/oct-orm/types/arrayOrType";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { CardRepo } from "../card.repo";
+import { TrailDetailRepo } from "../trail.detail.repo";
 
-@provide(IOC_TYPE.CardRepoImpl)
-export class CardRepoImpl implements CardRepo {
+@provide(IOC_TYPE.TrailDetailRepoImpl)
+export class TrailDetailRepoImpl implements TrailDetailRepo {
   async selectAll() : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
-      const repo = con.repositoryFor<Card>("Card");
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.findAll();
 
       if(!result) return null;
@@ -24,30 +25,8 @@ export class CardRepoImpl implements CardRepo {
     }
   }
 
-  async page(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
-
-    try {
-      const aql = {
-        for: 'i',
-        filter: parseFilter(filters),
-        return: 'i'
-      };
-      
-      const repo = con.repositoryFor<Card>("Card");
-      const result = await repo.pagination(aql);
-
-      if(!result) return null;
-      return result;
-    } catch (e) {
-      throw e;
-    } finally {
-      con.db.close();
-    }
-  }
-
   async selectAllBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
       const aql = {
@@ -56,7 +35,7 @@ export class CardRepoImpl implements CardRepo {
         return: 'doc'
       };
 
-      const repo = con.repositoryFor<Card>("Card");
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.findAllBy(aql);
 
       if(!result) return null;
@@ -68,11 +47,32 @@ export class CardRepoImpl implements CardRepo {
     }
   }
 
-  async selectOneBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+  async selectAllByKey(key: string);
+  async selectAllByKey(keys: string[]);
+  async selectAllByKey(keys: ArrayOr<string>) : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
-      const repo = con.repositoryFor<Card>("Card");
+      const isMulti = Array.isArray(keys);
+      keys = (isMulti ? keys : [keys]) as string[];
+
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
+      const result = await repo.findByKey(keys);
+
+      if(!result) return null;
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
+  async selectOneBy(filters) : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
+
+    try {
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.findOneBy(filters);
 
       if(!result) return null;
@@ -85,10 +85,10 @@ export class CardRepoImpl implements CardRepo {
   }
 
   async existsBy(filters) : Promise<boolean> {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
-      const repo = con.repositoryFor<Card>("Card");
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.findOneBy(filters);
 
       return result != null ? true : false;
@@ -100,10 +100,10 @@ export class CardRepoImpl implements CardRepo {
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
-      const repo = con.repositoryFor<Card>("Card");
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.create(model);
 
       return result;
@@ -115,10 +115,10 @@ export class CardRepoImpl implements CardRepo {
   }
 
   async update(model) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
-      const repo = con.repositoryFor<Card>("Card");
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.update(model);
 
       return result;
@@ -130,10 +130,10 @@ export class CardRepoImpl implements CardRepo {
 	}
 
   async deleteByKey(key: string) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [Card]});
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailDetail]});
 
     try {
-      const repo = con.repositoryFor<Card>("Card");
+      const repo = con.repositoryFor<TrailDetail>("TrailDetail");
       const result = await repo.deleteByKey(key);
 
       return result;

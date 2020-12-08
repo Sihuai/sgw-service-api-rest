@@ -18,26 +18,29 @@ import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
-import { GetCardAction } from '../../actions/card/get';
-import { CreateCardAction } from '../../actions/card/create';
-import { EditCardAction } from '../../actions/card/edit';
-import { DeleteCardAction } from '../../actions/card/delete';
+import { GetTrailAction } from '../../actions/trail/get';
+import { CreateTrailAction } from '../../actions/trail/create';
+import { EditTrailAction } from '../../actions/trail/edit';
+import { DeleteTrailAction } from '../../actions/trail/delete';
 
-@controller('/card')
-export class CardController implements interfaces.Controller {
+@controller('/trail')
+export class TrailController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetCardAction) public getCardAction: GetCardAction,
-    @inject(IOC_TYPE.CreateCardAction) public createCardAction: CreateCardAction,
-    @inject(IOC_TYPE.EditCardAction) public editCardAction: EditCardAction,
-    @inject(IOC_TYPE.DeleteCardAction) public deleteCardAction: DeleteCardAction,
+    @inject(IOC_TYPE.GetTrailAction) public getTrailAction: GetTrailAction,
+    @inject(IOC_TYPE.CreateTrailAction) public createTrailAction: CreateTrailAction,
+    @inject(IOC_TYPE.EditTrailAction) public editTrailAction: EditTrailAction,
+    @inject(IOC_TYPE.DeleteTrailAction) public deleteTrailAction: DeleteTrailAction,
   ) { }
 
   @httpGet('/get')
   private async get(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const result = await this.getCardAction.execute();
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+
+      const result = await this.getTrailAction.execute();
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -53,14 +56,12 @@ export class CardController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
       
-      const result = await this.createCardAction.execute(request.body);
+      const result = await this.createTrailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Sequence is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Header is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Image uri is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Color is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Cards is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Title is empty!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Media is empty!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -76,15 +77,14 @@ export class CardController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
 
-      const result = await this.editCardAction.execute(request.body);
+      const result = await this.editTrailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Sequence is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Header is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Image uri is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Color is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Cards is empty!'));
-      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Card is not exist!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Title is empty!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Media is empty!'));
+      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Bill board is not exist!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -100,11 +100,11 @@ export class CardController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
 
-      const result = await this.editCardAction.execute(request.body);
+      const result = await this.deleteTrailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Card is not exist!'));
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Trail is not exist!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

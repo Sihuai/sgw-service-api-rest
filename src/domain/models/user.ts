@@ -37,11 +37,9 @@ export class User extends BaseModel {
 
 export interface IUserMainFields {
     body: string;
-    subject?: string;
 }
   
 export interface IUserDTO extends IUserMainFields {
-    attachmentIds: number[];
     references: number[];
     threadId: number;
 }

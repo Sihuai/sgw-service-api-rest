@@ -2,13 +2,14 @@ import { DeepPartial } from "./types/deepPartial";
 import { Metadata } from "./metadata/MetadataManager";
 import { ENTITY_NAME } from "./keys/entity.keys";
 import { Connection } from "./connection";
-import { normalizeDataForWrite, normalizeDataForRead } from "./lib/util";
+import { normalizeDataForCreate, normalizeDataForRead, normalizeDataForUpdate, normalizeEdgeForCreate } from "./lib/util";
 import { ArrayOr } from "./types/arrayOrType";
-import { DocumentData } from "arangojs/documents";
-import { DocumentCollection } from "arangojs/collection";
+import { DocumentData, DocumentMetadata, Edge, EdgeData } from "arangojs/documents";
+import { CollectionInsertOptions, DocumentCollection, EdgeCollection } from "arangojs/collection";
 import { isValidJSON } from "../data.validator";
 import { Pagination, Records } from "./models/pagination";
 import { AQLClauses } from "./types/aqlClauses";
+import { PageResult } from "./types/pageResult";
 
 export type EntityDocument<T extends object> = DeepPartial<DocumentData<T>>;
 
@@ -29,29 +30,27 @@ export class Repository<T extends object> {
 
   async create(data: EntityDocument<T>): Promise<EntityDocument<T>>;
   async create(data: EntityDocument<T>[]): Promise<EntityDocument<T>[]>;
-  async create(
-    data: ArrayOr<EntityDocument<T>>
-  ): Promise<ArrayOr<EntityDocument<T>>> {
-    const dataToWrite = normalizeDataForWrite(this.entity, data);
+  async create(data: ArrayOr<EntityDocument<T>>): Promise<ArrayOr<EntityDocument<T>>> {
+    const dataToWrite = normalizeDataForCreate(this.entity, data);
     const result = await this.collection.save(dataToWrite, { returnNew: true });
     return normalizeDataForRead<EntityDocument<T>>(this.entity, result.new);
   }
 
-  async update(data: EntityDocument<T>) {
-    const dataToWrite = normalizeDataForWrite(this.entity, data);
+  async update(data: EntityDocument<T>) : Promise<any> {
+    const dataToWrite = normalizeDataForUpdate(this.entity, data);
     return this.collection.update(dataToWrite, dataToWrite, {
       mergeObjects: true
     });
   }
 
-  async deleteByKey(key: string);
-  async deleteByKey(keys: string[]);
-  async deleteByKey(keys: ArrayOr<string>) {
+  async deleteByKey(key: string) : Promise<any>;
+  async deleteByKey(keys: string[]) : Promise<any>;
+  async deleteByKey(keys: ArrayOr<string>) : Promise<any> {
     keys = Array.isArray(keys) ? keys : [keys];
     return this.collection.removeByKeys(keys, { returnOld: true });
   }
 
-  async findAll() {
+  async findAll() : Promise<any> {
     // const result = await this.collection.all();
     // return normalizeDataForRead(this.entity, result);
     const aqlCode = `FOR doc IN ${this.collection.name} RETURN doc`;
@@ -62,7 +61,7 @@ export class Repository<T extends object> {
     return normalizeDataForRead(this.entity, result);
   }
 
-  async findAllBy(aql: AQLClauses) {
+  async findAllBy(aql: AQLClauses) : Promise<any> {
     // const result = await this.collection.byExample(doc);
     // return normalizeDataForRead(this.entity, result);
     const aqlClauses: Array<string> = [];
@@ -89,9 +88,9 @@ export class Repository<T extends object> {
     return normalizeDataForRead(this.entity, result);
   }
 
-  async findByKey(key: string);
-  async findByKey(keys: string[]);
-  async findByKey(keys: ArrayOr<string>) {
+  async findByKey(key: string) : Promise<any>;
+  async findByKey(keys: string[]) : Promise<any>;
+  async findByKey(keys: ArrayOr<string>) : Promise<any> {
     const isMulti = Array.isArray(keys);
     keys = (isMulti ? keys : [keys]) as string[];
     const result = await this.collection.lookupByKeys(keys)
@@ -100,7 +99,7 @@ export class Repository<T extends object> {
     return isMulti ? data : data[0]
   }
 
-  async findOneBy(doc: ArrayOr<EntityDocument<T>>) {
+  async findOneBy(doc: ArrayOr<EntityDocument<T>>) : Promise<any> {
     try {
       const result = await this.collection.firstExample(doc);
       return normalizeDataForRead(this.entity, result);
@@ -110,7 +109,7 @@ export class Repository<T extends object> {
     }
   }
 
-  async countBy(aql: AQLClauses, ignoreFilterClause: boolean) {
+  async countBy(aql: AQLClauses, ignoreFilterClause: boolean) : Promise<any> {
     const aqlClauses: Array<string> = [];
 
     aqlClauses.push(`FOR ${aql.for} IN ${this.collection.name}`);
@@ -128,7 +127,7 @@ export class Repository<T extends object> {
     return result[0];
   }
 
-  async pagination(aql: AQLClauses) {
+  async paginationBy(aql: AQLClauses): Promise<any> {
     const aqlClauses: Array<string> = [];
     // checks
     aqlClauses.push(`FOR ${aql.for} IN ${this.collection.name}`);
@@ -171,5 +170,121 @@ export class Repository<T extends object> {
         data: data,
         pagination : paging
     };
+  }
+
+  async paginationByKey(key: string, sort, limit): Promise<PageResult>;
+  async paginationByKey(keys: string[], sort, limit): Promise<PageResult>;
+  async paginationByKey(keys: ArrayOr<string>, sort, limit): Promise<PageResult> {
+    keys = Array.isArray(keys) ? keys : [keys];
+    
+    const aqlClauses: Array<string> = [];
+
+    aqlClauses.push(`FOR key IN ${keys}`);
+    aqlClauses.push(`LET doc = DOCUMENT(${this.collection.name}, key)`);
+    
+    if(sort) aqlClauses.push(`SORT ${sort}`);
+    if(limit) aqlClauses.push(`LIMIT ${limit.offset}, ${limit.count}`);
+
+    aqlClauses.push(`RETURN doc`);
+    const aqlCode = aqlClauses.join("\n");
+
+    const cursor = await this.connection.db.query(aqlCode);
+    const result = await cursor.all();
+
+    const data = normalizeDataForRead(this.entity, result);
+    
+    const perPage = limit?.count ? limit.count : -1;
+    const index = (limit != undefined && limit.offset >= 0 && perPage > 0) ? (limit.offset / perPage) + 1 : -1;
+
+    const aql = {
+      for: 'doc',
+      return: 'doc'
+    };
+    const totalRecord = await this.countBy(aql, false);
+    const totalPage = (perPage > 0 && index > 0) ? Math.ceil(totalRecord / perPage) : -1
+
+    const record = new Records();
+    record.offset = (limit != undefined && limit.offset >= 0) ? limit.offset : -1;
+    record.perPage = perPage;
+    record.total = totalRecord;
+    const paging = new Pagination();
+    paging.index = index;
+    paging.total = totalPage;
+    paging.records = record;
+    
+    return {
+        data: data,
+        pagination : paging
+    };
+  }
+
+  async edgeFindAllBy(aql: AQLClauses) : Promise<any> {
+    const aqlClauses: Array<string> = [];
+    // checks
+    aqlClauses.push(`FOR ${aql.for} IN ${this.collection.name}`);
+
+    if(aql.filter) aqlClauses.push(`FILTER (${aql.filter})`);
+    if(aql.sort) aqlClauses.push(`SORT ${aql.sort}`);
+    if(aql.limit) aqlClauses.push(`LIMIT ${aql.limit.offset}, ${aql.limit.count}`);
+    if(aql.return.trim().startsWith('{') && aql.return.trim().endsWith('}') ){
+        if(isValidJSON(aql.return.trim())) aqlClauses.push(`RETURN aql.return`);
+    }
+
+    // not a JSON string
+    if( aql.return.trim().length === 0) aqlClauses.push(`RETURN ${aql.for.trim()}`);
+    // return clause (non-JSON) is set
+    aqlClauses.push(`RETURN ${aql.return.trim()}`);
+    
+    const aqlCode = aqlClauses.join("\n");
+
+    const cursor = await this.connection.db.query(aqlCode);
+    const result = await cursor.all();
+
+    return normalizeDataForRead(this.entity, result);
+  }
+
+  async edgeFindOneBy(doc: Partial<DocumentData<T>>) : Promise<any> {
+    try {
+      const edges = this.collection as EdgeCollection<T>;
+
+      const result = await edges.firstExample(doc);
+      return normalizeDataForRead(this.entity, result);
+    } catch (e) {
+      if (e.message == 'no match') return null;
+      throw e;
+    }
+  }
+
+  async edgeCreate(data: EdgeData<T>, options?: CollectionInsertOptions): Promise<DocumentMetadata & { new?: Edge<T>; }>;
+  async edgeCreate(data: EdgeData<T>[], options?: CollectionInsertOptions): Promise<DocumentMetadata & { new?: Edge<T>; }>;
+  async edgeCreate(data: ArrayOr<EdgeData<T>>, options?: CollectionInsertOptions): Promise<DocumentMetadata & { new?: Edge<T>; }> {
+    try {
+      const edges = this.collection as EdgeCollection<T>;
+
+      const dataToWrite = normalizeEdgeForCreate(this.entity, data);
+      const result = edges.save(dataToWrite, options);
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // async edgeUpdate(data: Patch<DocumentData<T>>) {
+  //   try {
+  //     // const edges = this.collection as EdgeCollection<T>;
+  //     // const result = edges.update(data, data, { returnNew: true });
+  //     // return result;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+  async edgeDeleteByKey(key: string) : Promise<any>;
+  async edgeDeleteByKey(keys: string[]) : Promise<any>;
+  async edgeDeleteByKey(keys: ArrayOr<string>) : Promise<any> {
+    keys = Array.isArray(keys) ? keys : [keys];
+    const edges = this.collection as EdgeCollection<T>;
+    const result = await edges.removeByKeys(keys, { returnOld: true });
+    return result
   }
 }

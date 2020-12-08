@@ -13,6 +13,7 @@ export class GetBillBoardAction implements IAction {
     @inject(IOC_TYPE.BillBoardServiceImpl) public billBoardService: BillBoardService,
   ) { }
   async execute() : Promise<any>  {
-    return await this.billBoardService.findAll();
+    const filters = {isActive: true};
+    return await this.billBoardService.findOneBy(filters);
   }
 }

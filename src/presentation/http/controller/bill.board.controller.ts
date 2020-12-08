@@ -20,6 +20,7 @@ import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 import { CreateBillBoardAction } from '../../actions/billboard/create';
 import { EditBillBoardAction } from '../../actions/billboard/edit';
 import { GetBillBoardAction } from '../../actions/billboard/get';
+import { DeleteBillBoardAction } from '../../actions/billboard/delete';
 
 @controller('/billboard')
 export class BillBoardController implements interfaces.Controller {
@@ -27,13 +28,17 @@ export class BillBoardController implements interfaces.Controller {
     @inject(IOC_TYPE.GetBillBoardAction) public getBillBoardAction: GetBillBoardAction,
     @inject(IOC_TYPE.CreateBillBoardAction) public createBillBoardAction: CreateBillBoardAction,
     @inject(IOC_TYPE.EditBillBoardAction) public editBillBoardAction: EditBillBoardAction,
+    @inject(IOC_TYPE.DeleteBillBoardAction) public deleteBillBoardAction: DeleteBillBoardAction,
   ) { }
 
   @httpGet('/get')
   private async get(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+
       const result = await this.getBillBoardAction.execute();
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -46,9 +51,12 @@ export class BillBoardController implements interfaces.Controller {
 
   @httpPost('/create')
   private async create(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+
       const result = await this.createBillBoardAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Contents is empty!'));
@@ -63,12 +71,16 @@ export class BillBoardController implements interfaces.Controller {
 
   @httpPost('/edit')
   private async edit(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      
       const result = await this.editBillBoardAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Contents is empty!'));
+      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Bill board information is not exist!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -81,10 +93,13 @@ export class BillBoardController implements interfaces.Controller {
 
   @httpDelete('/delete')
   private async delete(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const result = await this.editBillBoardAction.execute(request.body);
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+
+      const result = await this.deleteBillBoardAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Bill board information is not exist!'));
       

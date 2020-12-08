@@ -31,13 +31,26 @@ export class AuthController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const result = await this.registerUserAction.execute(request.body);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Password is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Nike is empty!'));
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email has been used by another User!'));
+      // 1. Register.
+      const registerResult = await this.registerUserAction.execute(request.body);
+      if (registerResult == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
+      if (registerResult == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Password is empty!'));
+      if (registerResult == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Nike is empty!'));
+      if (registerResult == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email has been used by another User!'));
 
-      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
+      // 2. Signin.
+      const signinResult = await this.signinAuthAction.execute(request.body);
+      if (signinResult == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email or Password is incorrect!'));
+      if (signinResult == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email or Password is incorrect!'));
+      if (signinResult == -3) return response.status(ResponseDataCode.NotFound).json(ResponseFailure(ResponseDataCode.NotFound, 'Fail to authenticate user credential passed in.'));
+      if (signinResult == -11) return response.status(ResponseDataCode.Unexpected).json(ResponseFailure(ResponseDataCode.Unexpected, 'Fail to distribute token.'));
+
+      // 3. Add token to cookie.
+      const {refresh, ...rest } = signinResult;
+      const cookieOptions = {httpOnly: true, secure: process.env.NODE_ENV === 'production'? true: false}
+      response.cookie('r-token', refresh, cookieOptions)
+
+      response.status(ResponseDataCode.OK).json(ResponseSuccess({...rest}));
     } catch (e) {
       const code = getResponseDataCode(e.name);
       response.status(code).json(ResponseFailure(code, e.stack));

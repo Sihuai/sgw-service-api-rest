@@ -1,25 +1,30 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { CardService } from '../../../app/service/card.service';
+import moment from 'moment';
+import { TrailService } from '../../../app/service/trail.service';
 import { IOC_TYPE } from '../../../config/type';
-import { Card, ICardDTO } from '../../../domain/models/card';
 import { Media } from '../../../domain/models/media';
+import { ITrailDTO, Trail } from '../../../domain/models/trail';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
 
-interface IRequest extends INullable<ICardDTO> {
+interface IRequest extends INullable<ITrailDTO> {
+  _key: string;
+  isActive: boolean;
   sequence: number;
   title: string;
   media: Media;
 }
 
-@provide(IOC_TYPE.CreateCardAction, true)
+@provide(IOC_TYPE.EditTrailAction, true)
 @provide('action', true)
-export class CreateCardAction implements IAction {
+export class EditTrailAction implements IAction {
   payloadExample = `
+    "_key": "123456",
+    "isActive": True,
     "sequence": 1,
-    "title": 'Card',
+    "title": 'Trail',
     "media": {
 				"title": "BUGIS Trail",
 				"media": {
@@ -33,19 +38,23 @@ export class CreateCardAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.CardServiceImpl) public cardService: CardService,
+    @inject(IOC_TYPE.TrailServiceImpl) public trailService: TrailService,
   ) {}
   async execute(request: IRequest) : Promise<any> {
 
     if (request.sequence < 0) return -1; // Sequence is empty!
     if (isEmptyObject(request.title) == true) return -2; // Title is empty!
-    if (isEmptyObject(request.media) == true) return -3; // Media uri is empty!
+    if (isEmptyObject(request.media) == true) return -3; // Media is empty!
+    if (isEmptyObject(request._key) == true) return -4;      // Key is empty!
 
-    const model = new Card();
+    const model = new Trail();
+    model._key = request._key;
+    model.isActive = request.isActive;
     model.sequence = request.sequence;
     model.title = request.title;
     model.media = request.media;
+    model.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
     
-    return await this.cardService.addOne(model);
+    return await this.trailService.editOne(model);
   }
 }

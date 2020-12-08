@@ -14,37 +14,25 @@ import {
   response,
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
-import { IndexHomeAction } from '../../actions/home/index';
+import { GetHomeAction } from '../../actions/home/get';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 
 @controller('/home')
 export class HomeController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.IndexHomeAction) public indexHomeAction: IndexHomeAction,
+    @inject(IOC_TYPE.GetHomeAction) public getHomeAction: GetHomeAction,
   ) { }
 
-  @httpGet('/index')
-  private async index(
+  @httpGet('/get')
+  private async get(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const result = await this.indexHomeAction.execute();
-
-      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
-    } catch (e) {
-      const code = getResponseDataCode(e.name);
-      response.status(code).json(ResponseFailure(code, e.stack));
-      next(e);
-    }
-  }
-
-  @httpGet('/card')
-  private async card(
-    @request() request: Request, @response() response: Response, @next() next: Function,
-  ) {
-    try {
-      const result = await this.indexHomeAction.execute();
+      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      
+      const result = await this.getHomeAction.execute();
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

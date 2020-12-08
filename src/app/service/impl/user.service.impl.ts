@@ -61,7 +61,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
     try {
       const filters = {email: model.email, isActive: model.isActive};
       const result = await this.findOne(filters);
-      if (result == null) throw new Error(model.email + ' isnot existed!');
+      if (isEmptyObject(result) == true) throw new Error(model.email + ' isnot existed!');
   
       return await this.userRepo.deleteByKey(result._key);
     } catch (e) {

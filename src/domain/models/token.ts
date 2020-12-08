@@ -22,11 +22,9 @@ export class Token {
 
 export interface ITokenMainFields {
     body: string;
-    subject?: string;
 }
   
 export interface ITokenDTO extends ITokenMainFields {
-    attachmentIds: number[];
     references: number[];
     threadId: number;
 }

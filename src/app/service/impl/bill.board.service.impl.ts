@@ -3,6 +3,7 @@ import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
 import { BillBoard } from '../../../domain/models/bill.board';
 import { BillBoardRepo } from '../../../infra/repository/bill.board.repo';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { BillBoardService } from '../bill.board.service';
 import { AbstractBaseService } from './base.service.impl';
@@ -23,7 +24,7 @@ export class BillBoardServiceImpl extends AbstractBaseService<BillBoard> impleme
     return await this.billBoardRepo.selectAllBy(filters);
   }
 
-  async findOne(filters) : Promise<BillBoard> {
+  async findOneBy(filters) : Promise<BillBoard> {
     return await this.billBoardRepo.selectOneBy(filters);
   }
 
@@ -42,9 +43,7 @@ export class BillBoardServiceImpl extends AbstractBaseService<BillBoard> impleme
       const isExisted = await this.billBoardRepo.existsBy(filters);
       if (isExisted == false) return -10; // Bill board information is not exist!
 
-      const result = this.removeOne(model);
-
-      return await this.addOne(model);
+      return await this.billBoardRepo.update(model);
     } catch (e) {
       throw e;
     }
@@ -53,8 +52,8 @@ export class BillBoardServiceImpl extends AbstractBaseService<BillBoard> impleme
   async removeOne(model: BillBoard): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const result = await this.findOne(filters);
-      if (result == null) return -10; // Bill board information is not exist!
+      const result = await this.findOneBy(filters);
+      if (isEmptyObject(result) == true) return -10; // Bill board information is not exist!
   
       return await this.billBoardRepo.deleteByKey(result._key);
     } catch (e) {

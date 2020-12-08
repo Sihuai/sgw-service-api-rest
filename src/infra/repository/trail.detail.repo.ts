@@ -1,7 +1,11 @@
-export interface CardRepo {
+import { ArrayOr } from "../utils/oct-orm/types/arrayOrType";
+
+export interface TrailDetailRepo {
     selectAll() : Promise<any>;
-    page(filter) : Promise<any>;
     selectAllBy(filters) : Promise<any>;
+    selectAllByKey(key: string);
+    selectAllByKey(keys: string[]);
+    selectAllByKey(keys: ArrayOr<string>) : Promise<any>;
     selectOneBy(filters) : Promise<any>;
     existsBy(filters) : Promise<boolean>;
     insert(model) : Promise<any>;

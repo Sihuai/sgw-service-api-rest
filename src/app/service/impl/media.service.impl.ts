@@ -3,6 +3,7 @@ import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
 import { Media } from '../../../domain/models/media';
 import { MediaRepo } from '../../../infra/repository/media.repo';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { MediaService } from '../media.service';
 import { AbstractBaseService } from './base.service.impl';
@@ -36,7 +37,7 @@ export class MediaServiceImpl extends AbstractBaseService<Media> implements Medi
     try {
       const filters = {_key: model._key};
       const isExisted = await this.mediaRepo.existsBy(filters);
-      if (isExisted == false) return -3; // Bill board information is not exist!
+      if (isExisted == false) return -3;
 
       const result = this.removeOne(model);
 
@@ -50,7 +51,7 @@ export class MediaServiceImpl extends AbstractBaseService<Media> implements Medi
     try {
       const filters = {_key: model._key};
       const result = await this.findOne(filters);
-      if (result == null) return -3; // Bill board information is not exist!
+      if (isEmptyObject(result) == true) return -3;
   
       return await this.mediaRepo.deleteByKey(result._key);
     } catch (e) {

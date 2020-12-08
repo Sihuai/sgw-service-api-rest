@@ -23,11 +23,9 @@ export class Media extends BaseModel {
 
 // export interface IMediaMainFields {
 //     body: string;
-//     subject?: string;
 // }
   
 // export interface IMediaDTO extends IMediaMainFields {
-//     attachmentIds: number[];
 //     references: number[];
 //     threadId: number;
 // }

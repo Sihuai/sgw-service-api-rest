@@ -1,7 +1,7 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { Pagination } from "../../infra/utils/oct-orm/models/pagination";
 import { BaseModel } from './base.model';
-import { Card } from './card';
+import { Trail } from './trail';
 
 @Entity('Section')
 export class Section extends BaseModel {
@@ -11,7 +11,7 @@ export class Section extends BaseModel {
         this.header = '';
         this.uri = '';
         this.color = '';
-        this.cards = [];
+        this.trails = [];
         this.pagination = new Pagination();
     }
 
@@ -25,20 +25,18 @@ export class Section extends BaseModel {
     @Attribute()
     color: string;
     @Attribute()
-    // @OneToMany(type => Card, Card => Card.owner)
-    // cards: Related<Card[]>;
+    // @OneToMany(type => Trail, Trail => Trail.owner)
+    // trails: Related<Trail[]>;
     // // @OneToOne(type => Pagination, Pagination => Pagination.owner)
-    cards: Card[];
+    trails: Trail[];
     pagination: Pagination;
 }
 
 export interface ISectionMainFields {
     body: string;
-    subject?: string;
 }
   
 export interface ISectionDTO extends ISectionMainFields {
-    attachmentIds: number[];
     references: number[];
     threadId: number;
 }

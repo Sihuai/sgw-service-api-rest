@@ -9,7 +9,7 @@ export class BaseModel {
         this._rev = '';
         this._from = '';
         this._to = '';
-        this.isActive = false;
+        this.isActive = true;
         this.datetimeCreated = moment().clone().format('YYYY-MM-DD HH:mm:ss');
         this.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
         this.userCreated = '';
@@ -20,7 +20,7 @@ export class BaseModel {
     _key: string;
     _rev: string;
     _from: string;
-	_to?: string;
+	_to: string;
     @Attribute()
     isActive: boolean;
     @Attribute()

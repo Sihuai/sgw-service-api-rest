@@ -14,18 +14,14 @@ export class BillBoard extends BaseModel {
     @Attribute()
     type: string;
     @Attribute()
-    // @OneToMany(type => Category, Category => Category.owner)
-    // contents: Related<Category[]>;
     contents: Category[];
 }
 
 export interface IBillBoardMainFields {
     body: string;
-    subject?: string;
 }
   
 export interface IBillBoardDTO extends IBillBoardMainFields {
-    attachmentIds: number[];
     references: number[];
     threadId: number;
 }

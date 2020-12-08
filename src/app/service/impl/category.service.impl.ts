@@ -3,6 +3,7 @@ import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
 import { Category } from '../../../domain/models/category';
 import { CategoryRepo } from '../../../infra/repository/category.repo';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { CategoryService } from '../category.service';
 import { AbstractBaseService } from './base.service.impl';
@@ -36,7 +37,7 @@ export class CategoryServiceImpl extends AbstractBaseService<Category> implement
     try {
       const filters = {_key: model._key};
       const isExisted = await this.categoryRepo.existsBy(filters);
-      if (isExisted == false) return -3; // Bill board information is not exist!
+      if (isExisted == false) return -3;
 
       const result = this.removeOne(model);
 
@@ -50,7 +51,7 @@ export class CategoryServiceImpl extends AbstractBaseService<Category> implement
     try {
       const filters = {_key: model._key};
       const result = await this.findOne(filters);
-      if (result == null) return -3; // Bill board information is not exist!
+      if (isEmptyObject(result) == true) return -3;
   
       return await this.categoryRepo.deleteByKey(result._key);
     } catch (e) {

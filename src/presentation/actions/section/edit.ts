@@ -3,7 +3,8 @@ import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { SectionService } from '../../../app/service/section.service';
 import { IOC_TYPE } from '../../../config/type';
-import { ISectionDTO, Section } from '../../../domain/models/section';
+import { ISectionDTO } from '../../../domain/dtos/i.section.dto';
+import { Section } from '../../../domain/models/section';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
@@ -46,7 +47,7 @@ export class EditSectionAction implements IAction {
     model.header = request.header;
     model.uri = request.uri;
     model.color = request.color;
-    model.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
+    model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     
     return await this.sectionService.editOne(model);
   }

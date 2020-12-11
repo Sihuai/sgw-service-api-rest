@@ -25,18 +25,6 @@ export class Section extends BaseModel {
     @Attribute()
     color: string;
     @Attribute()
-    // @OneToMany(type => Trail, Trail => Trail.owner)
-    // trails: Related<Trail[]>;
-    // // @OneToOne(type => Pagination, Pagination => Pagination.owner)
     trails: Trail[];
     pagination: Pagination;
-}
-
-export interface ISectionMainFields {
-    body: string;
-}
-  
-export interface ISectionDTO extends ISectionMainFields {
-    references: number[];
-    threadId: number;
 }

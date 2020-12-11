@@ -11,6 +11,11 @@ export const isEmptyObject = (object: any) => {
         return true;
     }
 
+    if( object === null){
+        // object is not defined
+        return true;
+    }
+
     if( Object.keys(object).length === 0){
         // object is empty
         return true;

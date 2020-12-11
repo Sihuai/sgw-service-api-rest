@@ -16,12 +16,3 @@ export class BillBoard extends BaseModel {
     @Attribute()
     contents: Category[];
 }
-
-export interface IBillBoardMainFields {
-    body: string;
-}
-  
-export interface IBillBoardDTO extends IBillBoardMainFields {
-    references: number[];
-    threadId: number;
-}

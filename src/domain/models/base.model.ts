@@ -10,8 +10,8 @@ export class BaseModel {
         this._from = '';
         this._to = '';
         this.isActive = true;
-        this.datetimeCreated = moment().clone().format('YYYY-MM-DD HH:mm:ss');
-        this.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
+        this.datetimeCreated = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+        this.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
         this.userCreated = '';
         this.userLastUpdated = '';
     }

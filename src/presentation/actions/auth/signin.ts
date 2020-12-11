@@ -4,9 +4,9 @@ import { IAction } from '../base.action';
 import { TokenServiceImpl } from '../../../app/service/impl/token.service.impl';
 import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
-import { ITokenDTO } from '../../../domain/models/token';
 import { INullable } from '../../../infra/utils/types';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
+import { ITokenDTO } from '../../../domain/dtos/i.token.dto';
 
 interface IRequest extends INullable<ITokenDTO> {
   email: string;
@@ -31,7 +31,7 @@ export class SigninAuthAction implements IAction {
 
     const filters = {email:request.email, pwhash:request.pwhash};
     
-    const user = await this.userService.findOne(filters);
+    const user = await this.userService.findOneBy(filters);
     if (user == null) return -3; // Fail to authenticate user credential passed in.
     
     return await this.tokenService.addOne(user);

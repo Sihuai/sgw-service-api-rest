@@ -20,7 +20,7 @@ export class CategoryServiceImpl extends AbstractBaseService<Category> implement
     return await this.categoryRepo.selectAll();
   }
 
-  async findOne(filters) : Promise<Category> {
+  async findOneBy(filters) : Promise<Category> {
     return await this.categoryRepo.selectOneBy(filters);
   }
 
@@ -50,7 +50,7 @@ export class CategoryServiceImpl extends AbstractBaseService<Category> implement
   async removeOne(model: Category): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -3;
   
       return await this.categoryRepo.deleteByKey(result._key);

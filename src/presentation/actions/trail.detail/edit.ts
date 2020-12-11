@@ -13,8 +13,8 @@ import { IAction } from '../base.action';
 interface IRequest extends INullable<ITrailDetailDTO> {
   _key: string;
   title: string;
-  billboard: BillBoard;
-  sections: TrailDetailSection;
+  personas: BillBoard[];
+  sections: TrailDetailSection[];
 }
 
 @provide(IOC_TYPE.EditTrailDetailAction, true)
@@ -70,16 +70,16 @@ export class EditTrailDetailAction implements IAction {
   async execute(request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request.title) == true) return -1;      // Title is empty!
-    if (isEmptyObject(request.billboard) == true) return -2;  // Bill board is empty!
+    if (isEmptyObject(request.personas) == true) return -2;  // Bill board is empty!
     if (isEmptyObject(request.sections) == true) return -3;   // Sections is empty!
     if (isEmptyObject(request._key) == true) return -4;      // Key is empty!
 
     const model = new TrailDetail();
     model._key = request._key;
     model.title = request.title;
-    model.billboard = request.billboard;
+    model.personas = request.personas;
     model.sections = request.sections;
-    model.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
+    model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     
     return await this.trailDetailService.editOne(model);
   }

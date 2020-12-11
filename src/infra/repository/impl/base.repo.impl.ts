@@ -22,7 +22,7 @@
 //   }
 
 //   // async exists(model: Model, key: string) : Promise<boolean> {
-//   //   const result = await model.findOne(key);
+//   //   const result = await model.findOneBy(key);
 //   //   return result != null ? true : false;
 //   // }
 

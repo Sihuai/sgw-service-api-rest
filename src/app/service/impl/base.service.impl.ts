@@ -3,12 +3,12 @@ import { injectable } from "inversify";
 @injectable()
 export class AbstractBaseService<Model extends object> {
   // async find(model: Model, key: string) : Promise<Model> {
-  //   const result = await model.findOne(key);
+  //   const result = await model.findOneBy(key);
   //   return result;
   // }
 
   // async exists(model: Model, key: string) : Promise<boolean> {
-  //   const result = await model.findOne(key);
+  //   const result = await model.findOneBy(key);
   //   return result != null ? true : false;
   // }
 

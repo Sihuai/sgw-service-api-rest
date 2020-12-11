@@ -49,11 +49,31 @@ export function getEntityAttributesForRead(entity: Function) {
   ].concat(Metadata.get(entity, ENTITY_ATTRIBUTES));
 }
 
+export function getEntitySimpleAttributesForRead(entity: Function) {
+  return [
+    { key: "_key", as: "_key" },
+    { key: "_from", as: "_from" },
+    { key: "_to", as: "_to" },
+  ].concat(Metadata.get(entity, ENTITY_ATTRIBUTES));
+}
+
 export function normalizeDataForRead<T>(entity: Function, data: Object | Object[]): T[] | T {
   const attrs = getEntityAttributesForRead(entity);
 
   if (Array.isArray(data))
     return data.map(item => normalizeDataForRead(entity, item)) as T[];
+
+  return attrs.reduce((obj, attr) => {
+    if (attr.key in data) obj[attr.as] = data[attr.key];
+    return obj;
+  }, {}) as T;
+}
+
+export function normalizeSimpleDataForRead<T>(entity: Function, data: Object | Object[]): T[] | T {
+  const attrs = getEntitySimpleAttributesForRead(entity);
+
+  if (Array.isArray(data))
+    return data.map(item => normalizeSimpleDataForRead(entity, item)) as T[];
 
   return attrs.reduce((obj, attr) => {
     if (attr.key in data) obj[attr.as] = data[attr.key];

@@ -20,12 +20,3 @@ export class Media extends BaseModel {
     @Attribute()
     uri: string;
 }
-
-// export interface IMediaMainFields {
-//     body: string;
-// }
-  
-// export interface IMediaDTO extends IMediaMainFields {
-//     references: number[];
-//     threadId: number;
-// }

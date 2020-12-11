@@ -3,8 +3,9 @@ import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { TrailService } from '../../../app/service/trail.service';
 import { IOC_TYPE } from '../../../config/type';
+import { ITrailDTO } from '../../../domain/dtos/i.trail.dto';
 import { Media } from '../../../domain/models/media';
-import { ITrailDTO, Trail } from '../../../domain/models/trail';
+import { Trail } from '../../../domain/models/trail';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
@@ -53,7 +54,7 @@ export class EditTrailAction implements IAction {
     model.sequence = request.sequence;
     model.title = request.title;
     model.media = request.media;
-    model.datetimeLastEdited = moment().clone().format('YYYY-MM-DD HH:mm:ss');
+    model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     
     return await this.trailService.editOne(model);
   }

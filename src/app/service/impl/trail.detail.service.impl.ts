@@ -31,8 +31,9 @@ export class TrailDetailServiceImpl extends AbstractBaseService<TrailDetail> imp
     return await this.trailDetailRepo.selectAllByKey(filters);
   }
 
-  async findOneBy(filters) : Promise<TrailDetail> {
+  async findOneBy(filters) : Promise<any> {
     const result = await this.trailTrailDetailService.findOneBy(filters);
+    if (isEmptyObject(result) == true) return -11;
 
     return await this.trailDetailRepo.selectAllByKey(result._to);
   }

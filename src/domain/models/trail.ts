@@ -19,12 +19,3 @@ export class Trail extends BaseModel {
     @Attribute()
     media: Media;
 }
-
-export interface ITrailMainFields {
-    body: string;
-}
-  
-export interface ITrailDTO extends ITrailMainFields {
-    references: number[];
-    threadId: number;
-}

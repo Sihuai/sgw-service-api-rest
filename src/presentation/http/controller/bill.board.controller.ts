@@ -17,10 +17,10 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
-import { CreateBillBoardAction } from '../../actions/billboard/create';
-import { EditBillBoardAction } from '../../actions/billboard/edit';
-import { GetBillBoardAction } from '../../actions/billboard/get';
-import { DeleteBillBoardAction } from '../../actions/billboard/delete';
+import { CreateBillBoardAction } from '../../actions/bill.board/create';
+import { EditBillBoardAction } from '../../actions/bill.board/edit';
+import { GetBillBoardAction } from '../../actions/bill.board/get';
+import { DeleteBillBoardAction } from '../../actions/bill.board/delete';
 
 @controller('/billboard')
 export class BillBoardController implements interfaces.Controller {
@@ -94,6 +94,7 @@ export class BillBoardController implements interfaces.Controller {
   @httpDelete('/delete')
   private async delete(
     @requestHeaders('authorization') authHeader: string,
+    @queryParam('key') key: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {

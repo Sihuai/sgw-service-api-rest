@@ -43,6 +43,7 @@ export class TrailDetailController implements interfaces.Controller {
 
       const result = await this.getTrailDetailAction.execute(trailKey);
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
+      if (result == -11) return response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -103,6 +104,7 @@ export class TrailDetailController implements interfaces.Controller {
   @httpDelete('/delete')
   private async delete(
     @requestHeaders('authorization') authHeader: string,
+    @queryParam('key') key: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {

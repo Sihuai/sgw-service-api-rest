@@ -2,8 +2,7 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
-import { ResetToken } from '../../../domain/models/reset.token';
-import { User } from '../../../domain/models/user';
+import { ResetToken, User } from '../../../domain/models/user';
 import { UserRepo } from '../../../infra/repository/user.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { createVerificationCode } from '../../../infra/utils/security';
@@ -23,7 +22,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
     return await this.userRepo.selectAllBy(filters);
   }
 
-  async findOne(filters) : Promise<User> {
+  async findOneBy(filters) : Promise<User> {
     return await this.userRepo.selectOneBy(filters);
   }
 
@@ -44,13 +43,11 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
 
   async editOne(model: User): Promise<User> {
     try {
-      const filters = {email: model.email, isActive: model.isActive};
+      const filters = {_key: model._key, isActive: model.isActive};
       const isExisted = await this.userRepo.existsBy(filters);
-      if (isExisted == true) throw new Error(model.email + ' has been used by another User!');
+      if (isExisted == false) throw new Error(model.email + ' is not existed or not active!');
 
-      model.role = 'Guest';
-      model.isActive = true;
-
+      // model.role = 'Guest';
       return await this.userRepo.update(model);
     } catch (e) {
       throw e;
@@ -60,7 +57,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
   async removeOne(model: User): Promise<any> {
     try {
       const filters = {email: model.email, isActive: model.isActive};
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) throw new Error(model.email + ' isnot existed!');
   
       return await this.userRepo.deleteByKey(result._key);
@@ -71,15 +68,15 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
 
   async resetPWRequest(filters): Promise<any> {
     try {
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10; // No user.
 
       const vcode = await createVerificationCode();
       const datetimeNow = moment();
 
       const resetToken = new ResetToken();
-      resetToken.dateRequested = datetimeNow.clone().format('YYYY-MM-DD HH:mm:ss');
-      resetToken.dateExpires = datetimeNow.clone().add(15, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+      resetToken.dateRequested = datetimeNow.utc().format('YYYY-MM-DD HH:mm:ss');
+      resetToken.dateExpires = datetimeNow.utc().add(15, 'minutes').format('YYYY-MM-DD HH:mm:ss');
       resetToken.code = vcode;
       resetToken.resolved = false;
 
@@ -93,7 +90,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
 
   async resetPWExecute(filters, pwhash: string): Promise<any> {
     try {
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10; // No user.
 
       const vcode = await createVerificationCode();

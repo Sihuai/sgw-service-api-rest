@@ -24,7 +24,7 @@ export class SectionTrailServiceImpl extends AbstractBaseService<SectionTrail> i
     return await this.sectionTrailRepo.page(filters);
   }
 
-  async findOne(filters) : Promise<SectionTrail> {
+  async findOneBy(filters) : Promise<SectionTrail> {
     return await this.sectionTrailRepo.selectOneBy(filters);
   }
 
@@ -40,7 +40,7 @@ export class SectionTrailServiceImpl extends AbstractBaseService<SectionTrail> i
   async removeOne(model: SectionTrail): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10;
   
       return await this.sectionTrailRepo.deleteByKey(result._key);

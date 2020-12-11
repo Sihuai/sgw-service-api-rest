@@ -3,9 +3,9 @@ import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../base.action';
 import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
-import { IUserDTO } from '../../../domain/models/user';
 import { INullable } from '../../../infra/utils/types';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
+import { IUserDTO } from '../../../domain/dtos/i.user.dto';
 
 interface IRequest extends INullable<IUserDTO> {
   email: string;

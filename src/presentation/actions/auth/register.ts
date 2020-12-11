@@ -1,9 +1,9 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import moment from 'moment';
 import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
-import { IUserDTO, User } from '../../../domain/models/user';
+import { IUserDTO } from '../../../domain/dtos/i.user.dto';
+import { User } from '../../../domain/models/user';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
@@ -38,19 +38,16 @@ export class RegisterUserAction implements IAction {
     if (isEmptyObject(request.pwhash) == true) return -2; // Password is empty!
     if (isEmptyObject(request.nick) == true) return -3; // Nike is empty!
 
-    const datetimeNow = moment();
-    
-    const user = new User();
-    user.email = request.email;
-    user.firstName = request.firstName;
-    user.lastName = request.lastName;
-    user.userName = request.userName;
-    user.nick = request.nick;
-    user.pwhash = request.pwhash;
-    user.isActive = true;
-    user.datetimeCreated = datetimeNow.clone().format('YYYY-MM-DD HH:mm:ss');
-    user.userCreated = user.email;
+    const model = new User();
+    model.email = request.email;
+    model.firstName = request.firstName;
+    model.lastName = request.lastName;
+    model.userName = request.userName;
+    model.nick = request.nick;
+    model.pwhash = request.pwhash;
+    model.isActive = true;
+    model.userCreated = model.email;
 
-    return await this.userService.addOne(user);
+    return await this.userService.addOne(model);
   }
 }

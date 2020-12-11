@@ -1,17 +1,15 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { Media } from './media';
+import { Price } from "./price";
 
 export class Data {
     constructor() {
-        this.price = 0.0;
-        this.currency = '';
+        this.price = new Price();
         this.content = '';
     }
 
     @Attribute()
-    price: number;
-    @Attribute()
-    currency: string;
+    price: Price;
     @Attribute()
     content: string;
 }

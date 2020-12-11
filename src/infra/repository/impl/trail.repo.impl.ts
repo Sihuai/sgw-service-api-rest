@@ -15,7 +15,7 @@ export class TrailRepoImpl implements TrailRepo {
 
     try {
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.findAll();
+      const result = await repo.findAll(false);
 
       if(!result) return null;
       return result;
@@ -37,7 +37,7 @@ export class TrailRepoImpl implements TrailRepo {
       };
       
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.paginationBy(aql);
+      const result = await repo.paginationBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -63,7 +63,7 @@ export class TrailRepoImpl implements TrailRepo {
       };
 
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.paginationByKey(keys, "", limit);
+      const result = await repo.paginationByKey(keys, "", limit, false);
 
       // if(!result) return null;
       return result;
@@ -85,7 +85,7 @@ export class TrailRepoImpl implements TrailRepo {
       };
 
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.findAllBy(aql);
+      const result = await repo.findAllBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -106,7 +106,7 @@ export class TrailRepoImpl implements TrailRepo {
       keys = (isMulti ? keys : [keys]) as string[];
 
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.findByKey(keys);
+      const result = await repo.findByKey(keys, false);
 
       if(!result) return null;
       return result;
@@ -122,7 +122,7 @@ export class TrailRepoImpl implements TrailRepo {
 
     try {
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.findOneBy(filters);
+      const result = await repo.findOneBy(filters, false);
 
       if(!result) return null;
       return result;
@@ -138,7 +138,7 @@ export class TrailRepoImpl implements TrailRepo {
 
     try {
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.findOneBy(filters);
+      const result = await repo.findOneBy(filters, false);
 
       return result != null ? true : false;
     } catch (e) {
@@ -153,7 +153,7 @@ export class TrailRepoImpl implements TrailRepo {
 
     try {
       const repo = con.repositoryFor<Trail>("Trail");
-      const result = await repo.create(model);
+      const result = await repo.create(model, false);
 
       return result;
     } catch (e) {

@@ -39,7 +39,7 @@ export namespace Type {
 		static _typeArango: string = '0.7';
 		static schema: Joi.DateSchema = Joi.date();
 
-		static beforeInsert(){ return moment().clone().format('YYYY-MM-DD HH:mm:ss') }
+		static beforeInsert(){ return moment().utc().format('YYYY-MM-DD HH:mm:ss') }
 	}
 
 	/**
@@ -49,6 +49,6 @@ export namespace Type {
 		static _typeArango: string = '0.7';
 		static schema: Joi.DateSchema = Joi.date();
 
-		static beforeUpdate(){ return moment().clone().format('YYYY-MM-DD HH:mm:ss') }
+		static beforeUpdate(){ return moment().utc().format('YYYY-MM-DD HH:mm:ss') }
 	}
 }

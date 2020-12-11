@@ -19,7 +19,7 @@ export class TrailTrailDetailRepoImpl implements TrailTrailDetailRepo {
       };
       
       const repo = con.repositoryFor<TrailTrailDetail>("TrailTrailDetail");
-      const result = await repo.edgeFindAllBy(aql);
+      const result = await repo.edgeFindAllBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -35,7 +35,7 @@ export class TrailTrailDetailRepoImpl implements TrailTrailDetailRepo {
 
     try {
       const repo = con.repositoryFor<TrailTrailDetail>("TrailTrailDetail");
-      const result = await repo.edgeFindOneBy(filters);
+      const result = await repo.edgeFindOneBy(filters, false);
 
       if(!result) return null;
       return result;

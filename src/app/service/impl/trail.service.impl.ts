@@ -37,7 +37,7 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
     return await this.trailRepo.pageByKey(key);
   }
 
-  async findOne(filters) : Promise<Trail> {
+  async findOneBy(filters) : Promise<Trail> {
     return await this.trailRepo.selectOneBy(filters);
   }
 
@@ -53,8 +53,8 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
   async editOne(model: Trail): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const oldResult = await this.findOne(filters);
-      if (isEmptyObject(oldResult) == true) return -10; // Bill board is not exist!
+      const oldResult = await this.findOneBy(filters);
+      if (isEmptyObject(oldResult) == true) return -10;
 
       return await this.trailRepo.update(model);
     } catch (e) {
@@ -65,8 +65,8 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
   async removeOne(model: Trail): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const result = await this.findOne(filters);
-      if (isEmptyObject(result) == true) return -10; // Bill board is not exist!
+      const result = await this.findOneBy(filters);
+      if (isEmptyObject(result) == true) return -10;
   
       return await this.trailRepo.deleteByKey(result._key);
     } catch (e) {

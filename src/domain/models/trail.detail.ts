@@ -38,14 +38,14 @@ export class TrailDetailContent {
 export class TrailDetailSection {
     constructor() {
         this.type = '';
-        this.contents = new TrailDetailContent();
+        this.contents = [];
         this.sequence = -1;
     }
 
     @Attribute()
     type: string;
     @Attribute()
-    contents: TrailDetailContent;
+    contents: TrailDetailContent[];
     @Attribute()
     sequence: number;
 }
@@ -55,14 +55,14 @@ export class TrailDetail extends BaseModel {
     constructor() {
         super();
         this.title = '';
-        this.billboard = new BillBoard();
-        this.sections = new TrailDetailSection();
+        this.personas = [];
+        this.sections = [];
     }
 
     @Attribute()
     title: string;
     @Attribute()
-    billboard: BillBoard;
+    personas: BillBoard[];
     @Attribute()
-    sections: TrailDetailSection;
+    sections: TrailDetailSection[];
 }

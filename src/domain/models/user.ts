@@ -1,6 +1,24 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
+import { Address } from "./address";
 import { BaseModel } from './base.model';
-import { ResetToken } from "./reset.token";
+
+export class ResetToken {
+    constructor() {
+        this.dateRequested = '';
+        this.dateExpires = '';
+        this.code = '';
+        this.resolved = false;
+    }
+  
+    @Attribute()
+    dateRequested: string;
+    @Attribute()
+    dateExpires: string;
+    @Attribute()
+    code: string;
+    @Attribute()
+    resolved: boolean;
+  }
 
 @Entity('Users')
 export class User extends BaseModel {
@@ -13,7 +31,7 @@ export class User extends BaseModel {
         this.nick = '';
         this.pwhash = '';
         this.role = '';
-        this.resetToken = undefined;
+        // this.resetToken = undefined;
     }
 
     @HashIndex({ unique: true, name: 'ix_user_email' })     // creates a hash index on User.email
@@ -32,14 +50,7 @@ export class User extends BaseModel {
     @Attribute()
     role: string;
     @Attribute()
+    address?: Address;
+    @Attribute()
     resetToken?: ResetToken;
-}
-
-export interface IUserMainFields {
-    body: string;
-}
-  
-export interface IUserDTO extends IUserMainFields {
-    references: number[];
-    threadId: number;
 }

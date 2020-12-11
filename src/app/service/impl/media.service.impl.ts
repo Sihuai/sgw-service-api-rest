@@ -20,7 +20,7 @@ export class MediaServiceImpl extends AbstractBaseService<Media> implements Medi
     return await this.mediaRepo.selectAll();
   }
 
-  async findOne(filters) : Promise<Media> {
+  async findOneBy(filters) : Promise<Media> {
     return await this.mediaRepo.selectOneBy(filters);
   }
 
@@ -50,7 +50,7 @@ export class MediaServiceImpl extends AbstractBaseService<Media> implements Medi
   async removeOne(model: Media): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -3;
   
       return await this.mediaRepo.deleteByKey(result._key);

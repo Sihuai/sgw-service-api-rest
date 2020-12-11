@@ -47,7 +47,7 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
     return sections;
   }
 
-  async findOne(filters) : Promise<Section> {
+  async findOneBy(filters) : Promise<Section> {
     const section = await this.sectionRepo.selectOneBy(filters);
 
     return section;
@@ -77,7 +77,7 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
   async removeOne(model: Section): Promise<any> {
     try {
       const sectionFilters = {_key: model._key};
-      const result = await this.findOne(sectionFilters);
+      const result = await this.findOneBy(sectionFilters);
       if (isEmptyObject(result) == true) return -10;
   
       // 1. Remove section trail relation collection

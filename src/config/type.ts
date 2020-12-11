@@ -2,7 +2,10 @@ export const IOC_TYPE = {
   // 1. Repository
   BillBoardRepoImpl: Symbol.for('BillBoardRepoImpl'),
   CategoryRepoImpl: Symbol.for('CategoryRepoImpl'),
+  CartRepoImpl: Symbol.for('CartRepoImpl'),
+  CartProductRepoImpl: Symbol.for('CartProductRepoImpl'),
   MediaRepoImpl: Symbol.for('MediaRepoImpl'),
+  OptionTypeRepoImpl: Symbol.for('OptionTypeRepoImpl'),
   SectionRepoImpl: Symbol.for('SectionRepoImpl'),
   SectionTrailRepoImpl: Symbol.for('SectionTrailRepoImpl'),
   TrailRepoImpl: Symbol.for('TrailRepoImpl'),
@@ -14,6 +17,8 @@ export const IOC_TYPE = {
   // 2. Action
   // - User
   GetUserAction: Symbol.for('GetUserAction'),
+  EditUserAction: Symbol.for('EditUserAction'),
+  // - Auth
   RegisterUserAction: Symbol.for('RegisterUserAction'),
   SigninAuthAction: Symbol.for('SigninAuthAction'),
   SignoutAuthAction: Symbol.for('SignoutAuthAction'),
@@ -47,12 +52,26 @@ export const IOC_TYPE = {
   EditTrailDetailAction : Symbol.for('EditTrailDetailAction'),
   GetTrailDetailAction : Symbol.for('GetTrailDetailAction'),
   DeleteTrailDetailAction : Symbol.for('DeleteTrailDetailAction'),
+  // - Cart
+  CreateCartAction : Symbol.for('CreateCartAction'),
+  EditCartAction : Symbol.for('EditCartAction'),
+  GetCartAction : Symbol.for('GetCartAction'),
+  DeleteCartAction : Symbol.for('DeleteCartAction'),
+  CountCartAction : Symbol.for('CountCartAction'),
+  // - Option Type
+  CreateOptionTypeAction : Symbol.for('CreateOptionTypeAction'),
+  EditOptionTypeAction : Symbol.for('EditOptionTypeAction'),
+  GetOptionTypeAction : Symbol.for('GetOptionTypeAction'),
+  DeleteOptionTypeAction : Symbol.for('DeleteOptionTypeAction'),
 
   // 3. Service
   BillBoardServiceImpl: Symbol.for('BillBoardServiceImpl'),
   CategoryServiceImpl: Symbol.for('CategoryServiceImpl'),
+  CartServiceImpl: Symbol.for('CartServiceImpl'),
+  CartProductServiceImpl: Symbol.for('CartProductServiceImpl'),
   HomeServiceImpl: Symbol.for('HomeServiceImpl'),
   MediaServiceImpl: Symbol.for('MediaServiceImpl'),
+  OptionTypeServiceImpl: Symbol.for('OptionTypeServiceImpl'),
   SectionServiceImpl: Symbol.for('SectionServiceImpl'),
   SectionTrailServiceImpl: Symbol.for('SectionTrailServiceImpl'),
   TrailServiceImpl: Symbol.for('TrailServiceImpl'),

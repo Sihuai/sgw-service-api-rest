@@ -41,7 +41,7 @@ export class TrailController implements interfaces.Controller {
       // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
 
       const result = await this.getTrailAction.execute();
-      
+
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
       const code = getResponseDataCode(e.name);
@@ -84,7 +84,7 @@ export class TrailController implements interfaces.Controller {
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Title is empty!'));
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Media is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Bill board is not exist!'));
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Trail is not exist!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -97,6 +97,7 @@ export class TrailController implements interfaces.Controller {
   @httpDelete('/delete')
   private async delete(
     @requestHeaders('authorization') authHeader: string,
+    @queryParam('key') key: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {

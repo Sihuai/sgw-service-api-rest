@@ -19,7 +19,7 @@ export class SectionTrailRepoImpl implements SectionTrailRepo {
       };
       
       const repo = con.repositoryFor<SectionTrail>("SectionTrail");
-      const result = await repo.edgeFindAllBy(aql);
+      const result = await repo.edgeFindAllBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -45,7 +45,7 @@ export class SectionTrailRepoImpl implements SectionTrailRepo {
       };
       
       const repo = con.repositoryFor<SectionTrail>("SectionTrail");
-      const result = await repo.paginationBy(aql);
+      const result = await repo.paginationBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -61,7 +61,7 @@ export class SectionTrailRepoImpl implements SectionTrailRepo {
 
     try {
       const repo = con.repositoryFor<SectionTrail>("SectionTrail");
-      const result = await repo.edgeFindOneBy(filters);
+      const result = await repo.edgeFindOneBy(filters, false);
 
       if(!result) return null;
       return result;

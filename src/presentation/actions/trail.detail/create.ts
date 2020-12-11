@@ -11,8 +11,8 @@ import { IAction } from '../base.action';
 
 interface IRequest extends INullable<ITrailDetailDTO> {
   title: string;
-  billboard: BillBoard;
-  sections: TrailDetailSection;
+  personas: BillBoard[];
+  sections: TrailDetailSection[];
 }
 
 @provide(IOC_TYPE.CreateTrailDetailAction, true)
@@ -67,13 +67,13 @@ export class CreateTrailDetailAction implements IAction {
   async execute(trailKey: string, request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request.title) == true) return -1; // Sequence is empty!
-    if (isEmptyObject(request.billboard) == true) return -2; // Bill board is empty!
+    if (isEmptyObject(request.personas) == true) return -2; // Bill board is empty!
     if (isEmptyObject(request.sections) == true) return -3; // Sections is empty!
     if (isEmptyObject(trailKey) == true) return -4; // Trail Key is empty!
 
     const model = new TrailDetail();
     model.title = request.title;
-    model.billboard = request.billboard;
+    model.personas = request.personas;
     model.sections = request.sections;
     
     return await this.trailDetailService.addOne(trailKey, model);

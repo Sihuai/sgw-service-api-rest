@@ -3,7 +3,7 @@ import { BaseService } from './base.service';
 
 export interface UserService extends BaseService<User> {
     findAll(filters) : Promise<User[]>;
-    findOne(filters) : Promise<User>;
+    findOneBy(filters) : Promise<User>;
     addOne(model: User): Promise<User>;
     editOne(model: User): Promise<User>;
     removeOne(model: User): Promise<any>;

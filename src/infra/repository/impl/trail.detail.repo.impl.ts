@@ -14,7 +14,7 @@ export class TrailDetailRepoImpl implements TrailDetailRepo {
 
     try {
       const repo = con.repositoryFor<TrailDetail>("TrailDetail");
-      const result = await repo.findAll();
+      const result = await repo.findAll(false);
 
       if(!result) return null;
       return result;
@@ -36,7 +36,7 @@ export class TrailDetailRepoImpl implements TrailDetailRepo {
       };
 
       const repo = con.repositoryFor<TrailDetail>("TrailDetail");
-      const result = await repo.findAllBy(aql);
+      const result = await repo.findAllBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -57,7 +57,7 @@ export class TrailDetailRepoImpl implements TrailDetailRepo {
       keys = (isMulti ? keys : [keys]) as string[];
 
       const repo = con.repositoryFor<TrailDetail>("TrailDetail");
-      const result = await repo.findByKey(keys);
+      const result = await repo.findByKey(keys, false);
 
       if(!result) return null;
       return result;
@@ -73,7 +73,7 @@ export class TrailDetailRepoImpl implements TrailDetailRepo {
 
     try {
       const repo = con.repositoryFor<TrailDetail>("TrailDetail");
-      const result = await repo.findOneBy(filters);
+      const result = await repo.findOneBy(filters, false);
 
       if(!result) return null;
       return result;
@@ -89,7 +89,7 @@ export class TrailDetailRepoImpl implements TrailDetailRepo {
 
     try {
       const repo = con.repositoryFor<TrailDetail>("TrailDetail");
-      const result = await repo.findOneBy(filters);
+      const result = await repo.findOneBy(filters, false);
 
       return result != null ? true : false;
     } catch (e) {
@@ -104,7 +104,7 @@ export class TrailDetailRepoImpl implements TrailDetailRepo {
 
     try {
       const repo = con.repositoryFor<TrailDetail>("TrailDetail");
-      const result = await repo.create(model);
+      const result = await repo.create(model, false);
 
       return result;
     } catch (e) {

@@ -3,8 +3,9 @@ import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../base.action';
 import { TokenServiceImpl } from '../../../app/service/impl/token.service.impl';
 import { IOC_TYPE } from '../../../config/type';
-import { ITokenDTO, Token } from '../../../domain/models/token';
 import { INullable } from '../../../infra/utils/types';
+import { ITokenDTO } from '../../../domain/dtos/i.token.dto';
+import { Token } from '../../../domain/models/token';
 
 interface IRequest extends INullable<ITokenDTO> {
   email: string;

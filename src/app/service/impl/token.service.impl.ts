@@ -22,13 +22,13 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
     return await this.tokenRepo.selectAllBy(filters);
   }
 
-  async findOne(filters) : Promise<Token> {
+  async findOneBy(filters) : Promise<Token> {
     return await this.tokenRepo.selectOneBy(filters);
   }
 
   async refresh(filters) : Promise<any> {
     try {
-      const result = await this.findOne(filters);
+      const result = await this.findOneBy(filters);
       if (result == null) return -1; // Token is not existed!
 
       var jwt = require('jsonwebtoken');
@@ -88,7 +88,7 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
   async removeOne(model: Token): Promise<any> {
     try {
       const filters = {email: model.email, token: model.token};
-      const results = await this.findOne(filters);
+      const results = await this.findOneBy(filters);
       if (isEmptyObject(results) == true) return -10; // No this data in Token.
   
       return await this.tokenRepo.deleteByKey(results._key);

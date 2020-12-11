@@ -19,7 +19,7 @@ export class TokenRepoImpl implements TokenRepo {
       };
 
       const repo = con.repositoryFor<Token>("Tokens");
-      const result = await repo.findAllBy(aql);
+      const result = await repo.findAllBy(aql, false);
 
       if(!result) return null;
       return result;
@@ -35,7 +35,7 @@ export class TokenRepoImpl implements TokenRepo {
 
     try {
       const repo = con.repositoryFor<Token>("Tokens");
-      const result = await repo.findOneBy(filters);
+      const result = await repo.findOneBy(filters, false);
 
       if(!result) return null;
       return result;
@@ -51,7 +51,7 @@ export class TokenRepoImpl implements TokenRepo {
 
     try {
       const repo = con.repositoryFor<Token>("Tokens");
-      const result = await repo.findOneBy(filters);
+      const result = await repo.findOneBy(filters, false);
 
       return result != null ? true : false;
     } catch (e) {
@@ -66,7 +66,7 @@ export class TokenRepoImpl implements TokenRepo {
 
     try {
       const repo = con.repositoryFor<Token>("Tokens");
-      const result = await repo.create(model);
+      const result = await repo.create(model, false);
 
       return result;
     } catch (e) {

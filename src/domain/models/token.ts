@@ -19,12 +19,3 @@ export class Token {
     @Attribute()
     token: string;
 }
-
-export interface ITokenMainFields {
-    body: string;
-}
-  
-export interface ITokenDTO extends ITokenMainFields {
-    references: number[];
-    threadId: number;
-}

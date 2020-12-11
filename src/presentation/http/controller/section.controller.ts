@@ -103,6 +103,7 @@ export class SectionController implements interfaces.Controller {
   @httpDelete('/delete')
   private async delete(
     @requestHeaders('authorization') authHeader: string,
+    @queryParam('key') key: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
@@ -143,12 +144,13 @@ export class SectionController implements interfaces.Controller {
   @httpDelete('/removetrail')
   private async removeTrail(
     @requestHeaders('authorization') authHeader: string,
+    @queryParam('key') key: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
       // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
       
-      const result = await this.deleteSectionTrailAction.execute(request.body);
+      const result = await this.deleteSectionTrailAction.execute(key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This section is not exist!'));
 

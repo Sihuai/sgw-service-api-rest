@@ -1,2 +1,2 @@
-export * from './indexesx'
+export * from './indexes'
 export * from './newable'

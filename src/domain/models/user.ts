@@ -25,32 +25,32 @@ export class User extends BaseModel {
     constructor() {
         super();
         this.email = '';
-        this.firstName = '';
-        this.lastName = '';
-        this.userName = '';
         this.nick = '';
         this.pwhash = '';
         this.role = '';
-        // this.resetToken = undefined;
     }
 
     @HashIndex({ unique: true, name: 'ix_user_email' })     // creates a hash index on User.email
     @Attribute()                                            // validates changes to user.email to be email addresses type => type.email()
     email: string;
     @Attribute()
-    firstName: string;
+    nameFirst?: string;
     @Attribute()
-    lastName: string;
-    @Attribute()
-    userName: string;
+    nameLast?: string;
     @Attribute()
     nick: string;
+    @Attribute()
+    gender?: string;
+    @Attribute()
+    dob?: string;
+    @Attribute()
+    headerUri?: string;
     @Attribute()
     pwhash: string;
     @Attribute()
     role: string;
     @Attribute()
-    address?: Address;
+    address?: Address[];
     @Attribute()
     resetToken?: ResetToken;
 }

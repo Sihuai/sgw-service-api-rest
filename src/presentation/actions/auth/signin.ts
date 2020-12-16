@@ -1,12 +1,12 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../base.action';
-import { TokenServiceImpl } from '../../../app/service/impl/token.service.impl';
-import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
 import { IOC_TYPE } from '../../../config/type';
 import { INullable } from '../../../infra/utils/types';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { ITokenDTO } from '../../../domain/dtos/i.token.dto';
+import { UserService } from '../../../app/service/user.service';
+import { TokenService } from '../../../app/service/token.service';
 
 interface IRequest extends INullable<ITokenDTO> {
   email: string;
@@ -22,8 +22,8 @@ export class SigninAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserServiceImpl,
-    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenServiceImpl,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
   ) { }
   async execute(request: IRequest) : Promise<any> {
     if (isEmptyObject(request.email) == true) return -1; // Email is empty!

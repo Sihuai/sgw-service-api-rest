@@ -1,6 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { UserServiceImpl } from '../../../app/service/impl/user.service.impl';
+import { UserService } from '../../../app/service/user.service';
 import { IOC_TYPE } from '../../../config/type';
 import { IUserDTO } from '../../../domain/dtos/i.user.dto';
 import { User } from '../../../domain/models/user';
@@ -10,10 +10,8 @@ import { IAction } from '../base.action';
 
 interface IRequest extends INullable<IUserDTO> {
   email: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
-  nick: string;
+  nameFirst: string;
+  nameLast: string;
   pwhash: string;
 }
 
@@ -24,28 +22,26 @@ export class RegisterUserAction implements IAction {
   "email": "email@sgw.com",
   "firstName": "firstName",
   "lastName": "lastName",
-  "userName": "username",
-  "nick": "nick",
   "pwhash": "48ab1d7a4f1d0f231ca46d9cc865c66f"
   `;
   description = '';
 
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserServiceImpl,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
   ) { }
   async execute(request: IRequest) : Promise<any> {
     if (isEmptyObject(request.email) == true) return -1; // Email is empty!
     if (isEmptyObject(request.pwhash) == true) return -2; // Password is empty!
-    if (isEmptyObject(request.nick) == true) return -3; // Nike is empty!
+    if (isEmptyObject(request.nameFirst) == true) return -3; // First name is empty!
+    if (isEmptyObject(request.nameLast) == true) return -4; // Last name is empty!
 
     const model = new User();
     model.email = request.email;
-    model.firstName = request.firstName;
-    model.lastName = request.lastName;
-    model.userName = request.userName;
-    model.nick = request.nick;
+    model.nameFirst = request.nameFirst;
+    model.nameLast = request.nameLast;
     model.pwhash = request.pwhash;
     model.isActive = true;
+    model.role = 'Guest';
     model.userCreated = model.email;
 
     return await this.userService.addOne(model);

@@ -57,14 +57,14 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
     try {
       // Generate new token for this email and store.
       const input = {
-          content : {username: model.userName, email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
+          content : {email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
           key: process.env.ACCESS_TOKEN_SECRET,
           expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
       }
       const tokenAccess = generateToken(input);
 
       const inputRefresh = {
-        content: {username: model.userName, email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
+        content: {email: model.email, isActive: model.isActive, role: model.role, nick: model.nick},
         key: process.env.REFRESH_TOKEN_SECRET
       }
       const tokenRefresh = generateToken(inputRefresh);

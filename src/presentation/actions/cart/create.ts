@@ -3,7 +3,9 @@ import { provide } from 'inversify-binding-decorators';
 import { CartService } from '../../../app/service/cart.service';
 import { IOC_TYPE } from '../../../config/type';
 import { ICartDTO } from '../../../domain/dtos/i.cart.dto';
-import { Cart, Delivery, Option, Price } from '../../../domain/models/cart';
+import { Cart, Option } from '../../../domain/models/cart';
+import { CartDetail } from '../../../domain/models/cart.detail';
+import { Price } from '../../../domain/models/price';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
@@ -11,13 +13,13 @@ import { IAction } from '../base.action';
 interface IRequest extends INullable<ICartDTO> {
   type: string;
   name: string;
+  description: string;
   uri: string;
   qty: number;
   uom: string;
   tag: string;
   price: Price;
   options?: Option;
-  delivery: Delivery;
 }
 
 @provide(IOC_TYPE.CreateCartAction, true)
@@ -63,7 +65,7 @@ export class CreateCartAction implements IAction {
   ) {}
   async execute(typekey: string, request: IRequest) : Promise<any> {
 
-    if (isEmptyObject(typekey) == true) return -1;       // Product key is empty!
+    if (isEmptyObject(typekey) == true) return -1;       // Product/Trail key is empty!
     if (isEmptyObject(request.type) == true) return -2;     // Type is empty!
     if (isEmptyObject(request.name) == true) return -3;     // Name is empty!
     if (isEmptyObject(request.uri) == true) return -4;      // URI is empty!
@@ -71,19 +73,28 @@ export class CreateCartAction implements IAction {
     if (isEmptyObject(request.uom) == true) return -6;      // UOM is empty!
     if (isEmptyObject(request.tag) == true) return -7;      // Tag is empty!
     if (isEmptyObject(request.price) == true) return -8;    // Price is empty!
-    if (isEmptyObject(request.delivery) == true) return -9; // Delivery is empty!
 
-    const model = new Cart();
-    model.type = request.type;
-    model.name = request.name;
-    model.uri = request.uri;
-    model.qty = request.qty;
-    model.uom = request.uom;
-    model.tag = request.tag;
-    model.price = request.price;
-    model.options = request.options;
-    model.delivery = request.delivery;
-    
-    return await this.cartService.addOne(typekey, model);
+    const cartDetail = new CartDetail();
+    cartDetail.type = request.type;
+    cartDetail.name = request.name;
+    cartDetail.description = request.description;
+    cartDetail.uri = request.uri;
+    cartDetail.qty = request.qty;
+    cartDetail.uom = request.uom;
+    cartDetail.tag = request.tag;
+    cartDetail.price = request.price;
+    cartDetail.options = request.options;
+
+    const cart = new Cart();
+    cart.type = request.type;
+    cart.name = request.name;
+    cart.uri = request.uri;
+    cart.qty = request.qty;
+    cart.uom = request.uom;
+    cart.tag = request.tag;
+    cart.price = request.price;
+    cart.options = request.options;
+
+    return await this.cartService.addOne(typekey, cart, cartDetail);
   }
 }

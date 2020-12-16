@@ -1,15 +1,9 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IAction } from '../base.action';
-import { TokenServiceImpl } from '../../../app/service/impl/token.service.impl';
 import { IOC_TYPE } from '../../../config/type';
-import { INullable } from '../../../infra/utils/types';
-import { ITokenDTO } from '../../../domain/dtos/i.token.dto';
 import { Token } from '../../../domain/models/token';
-
-interface IRequest extends INullable<ITokenDTO> {
-  email: string;
-}
+import { TokenService } from '../../../app/service/token.service';
 
 @provide(IOC_TYPE.SignoutAuthAction, true)
 @provide('action', true)
@@ -20,12 +14,12 @@ export class SignoutAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenServiceImpl,
+    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
   ) { }
-  async execute(token: string, request: IRequest) : Promise<any> {
+  async execute(token: string, email: string) : Promise<any> {
     const model = new Token();
     model.token = token;
-    model.email = request.email;
+    model.email = email;
 
     return await this.tokenService.removeOne(model);
   }

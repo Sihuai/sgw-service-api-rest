@@ -38,14 +38,13 @@ export class CreateOptionTypeAction implements IAction {
     if (isEmptyObject(request.code) == true) return -2; // Code is empty!
     if (isEmptyObject(request.name) == true) return -3; // Name is empty!
     if (request.sequence < 0) return -4; // Sequence is empty!
-    if (isEmptyObject(request.selected) == true) return -5; // Selected is empty!
 
     const model = new OptionType();
     model.type = request.type;
     model.code = request.code;
     model.name = request.name;
     model.sequence = request.sequence;
-    model.selected = request.selected;
+    model.selected = request.selected === undefined ? false : request.selected;
     
     return await this.optionTypeService.addOne(model);
   }

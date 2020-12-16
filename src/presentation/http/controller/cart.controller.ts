@@ -52,24 +52,6 @@ export class CartController implements interfaces.Controller {
     }
   }
 
-  @httpGet('/detail')
-  private async detail(
-    @requestHeaders('authorization') authHeader: string,
-    @request() request: Request, @response() response: Response, @next() next: Function,
-  ) {
-    try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
-
-      const result = await this.getCartAction.execute('');
-
-      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
-    } catch (e) {
-      const code = getResponseDataCode(e.name);
-      response.status(code).json(ResponseFailure(code, e.stack));
-      next(e);
-    }
-  }
-
   @httpGet('/count')
   private async count(
     @requestHeaders('authorization') authHeader: string,
@@ -98,7 +80,7 @@ export class CartController implements interfaces.Controller {
       // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
       
       const result = await this.createCartAction.execute(typekey, request.body);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product key is empty!'));
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product/Trail key is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Name is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'URI is empty!'));
@@ -106,7 +88,6 @@ export class CartController implements interfaces.Controller {
       if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'UOM is empty!'));
       if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Tag is empty!'));
       if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Price is empty!'));
-      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Delivery is empty!'));
       if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Can not save Cart information!'));
       if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Can not save Cart information!'));
 
@@ -135,7 +116,6 @@ export class CartController implements interfaces.Controller {
       if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'UOM is empty!'));
       if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Tag is empty!'));
       if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Price is empty!'));
-      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Delivery is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Cart is not exist!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));

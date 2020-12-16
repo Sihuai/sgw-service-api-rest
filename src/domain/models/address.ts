@@ -1,12 +1,16 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
+import { BaseModel } from "./base.model";
 
-export class Address {
+@Entity('Address')
+export class Address extends BaseModel {
     constructor() {
+        super();
         this.country = '';
         this.block = '';
         this.propertyName = '';
         this.street = '';
         this.unit = '';
+        this.isDefault = false;
     }
 
     @Attribute()
@@ -25,4 +29,6 @@ export class Address {
     city?: string;
     @Attribute()
     postal?: string;
+    @Attribute()
+    isDefault: boolean;
 }

@@ -37,11 +37,9 @@ export class CategoryServiceImpl extends AbstractBaseService<Category> implement
     try {
       const filters = {_key: model._key};
       const isExisted = await this.categoryRepo.existsBy(filters);
-      if (isExisted == false) return -3;
+      if (isExisted == false) return -10;
 
-      const result = this.removeOne(model);
-
-      return await this.addOne(model);
+      return await this.categoryRepo.update(model);
     } catch (e) {
       throw e;
     }
@@ -51,7 +49,7 @@ export class CategoryServiceImpl extends AbstractBaseService<Category> implement
     try {
       const filters = {_key: model._key};
       const result = await this.findOneBy(filters);
-      if (isEmptyObject(result) == true) return -3;
+      if (isEmptyObject(result) == true) return -10;
   
       return await this.categoryRepo.deleteByKey(result._key);
     } catch (e) {

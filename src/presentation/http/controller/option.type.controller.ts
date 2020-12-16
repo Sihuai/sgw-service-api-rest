@@ -35,12 +35,14 @@ export class OptionTypeController implements interfaces.Controller {
   @httpGet('/get')
   private async get(
     @requestHeaders('authorization') authHeader: string,
+    @queryParam('type') type: number,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
       // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
 
-      const result = await this.getOptionTypeAction.execute();
+      const result = await this.getOptionTypeAction.execute(type);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -63,7 +65,6 @@ export class OptionTypeController implements interfaces.Controller {
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Code is empty!'));
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Name is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Sequence is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Selected is empty!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -85,9 +86,8 @@ export class OptionTypeController implements interfaces.Controller {
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Code is empty!'));
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Name is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Sequence is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Selected is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
-      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Is Active is empty!'));
+      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is less than zero!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Option Type is not exist!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -107,7 +107,7 @@ export class OptionTypeController implements interfaces.Controller {
     try {
       // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
 
-      const result = await this.deleteOptionTypeAction.execute(request.body);
+      const result = await this.deleteOptionTypeAction.execute(key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Option Type is not exist!'));
       

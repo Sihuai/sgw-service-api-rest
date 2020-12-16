@@ -12,6 +12,7 @@ import {
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
+import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
 import { RegisterUserAction } from '../../actions/auth/register';
 import { SigninAuthAction } from '../../actions/auth/signin';
 import { SignoutAuthAction } from '../../actions/auth/signout';
@@ -35,7 +36,8 @@ export class AuthController implements interfaces.Controller {
       const registerResult = await this.registerUserAction.execute(request.body);
       if (registerResult == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
       if (registerResult == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Password is empty!'));
-      if (registerResult == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Nike is empty!'));
+      if (registerResult == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'First name is empty!'));
+      if (registerResult == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Last name is empty!'));
       if (registerResult == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email has been used by another User!'));
 
       // 2. Signin.
@@ -84,13 +86,17 @@ export class AuthController implements interfaces.Controller {
 
   @httpPost('/signout')
   private async signout(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
+      const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      if (isEmptyObject(tokenUser) == true) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
+
       const token = request.cookies['r-token'];
       if (isEmptyObject(token) == true) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
-
-      const result = await this.signoutAuthAction.execute(token, request.body);
+      
+      const result = await this.signoutAuthAction.execute(token, tokenUser.email);
       
       // token handling. clear the cookie.
       response.clearCookie('r-token', {path: '/'});

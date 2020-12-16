@@ -4,7 +4,8 @@ import moment from 'moment';
 import { CartService } from '../../../app/service/cart.service';
 import { IOC_TYPE } from '../../../config/type';
 import { ICartDTO } from '../../../domain/dtos/i.cart.dto';
-import { Cart, Delivery, Option, Price } from '../../../domain/models/cart';
+import { Cart, Option } from '../../../domain/models/cart';
+import { Price } from '../../../domain/models/price';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
@@ -19,7 +20,6 @@ interface IRequest extends INullable<ICartDTO> {
   tag: string;
   price: Price;
   options?: Option;
-  delivery: Delivery;
 }
 
 @provide(IOC_TYPE.EditCartAction, true)
@@ -73,7 +73,6 @@ export class EditCartAction implements IAction {
     if (isEmptyObject(request.uom) == true) return -6;      // UOM is empty!
     if (isEmptyObject(request.tag) == true) return -7;      // Tag is empty!
     if (isEmptyObject(request.price) == true) return -8;    // Price is empty!
-    if (isEmptyObject(request.delivery) == true) return -9; // Delivery is empty!
 
     const model = new Cart();
     model._key = request._key;
@@ -85,7 +84,6 @@ export class EditCartAction implements IAction {
     model.tag = request.tag;
     model.price = request.price;
     model.options = request.options;
-    model.delivery = request.delivery;
     model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     
     return await this.cartService.editOne(model);

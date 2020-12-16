@@ -11,6 +11,14 @@
 export const parseFilter = (filters) => {
 
   for (var key in filters) {
+    const val = filters[key];
+    if (typeof val === 'number') {
+      return `doc.${key} == ${filters[key]}`;
+    }
+    if (typeof val === 'boolean') {
+      return `doc.${key} == ${filters[key]}`;
+    }
+
     return `doc.${key} == "${filters[key]}"`;
   }
 }

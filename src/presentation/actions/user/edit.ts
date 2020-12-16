@@ -4,7 +4,6 @@ import moment from 'moment';
 import { UserService } from '../../../app/service/user.service';
 import { IOC_TYPE } from '../../../config/type';
 import { IUserDTO } from '../../../domain/dtos/i.user.dto';
-import { Address } from '../../../domain/models/address';
 import { User } from '../../../domain/models/user';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
@@ -12,11 +11,12 @@ import { IAction } from '../base.action';
 
 interface IRequest extends INullable<IUserDTO> {
   _key: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
+  nameFirst: string;
+  nameLast: string;
   nick: string;
-  address: Address;
+  gender: string;
+  dob: string;
+  headerUri: string;
 }
 
 @provide(IOC_TYPE.EditUserAction, true)
@@ -30,18 +30,24 @@ export class EditUserAction implements IAction {
   async execute(request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request._key) == true) return -1; // Key is empty!
-    if (isEmptyObject(request.nick) == true) return -2; // Nike is empty!
 
     const model = new User();
     model._key = request._key;
-    model.firstName = request.firstName;
-    model.lastName = request.lastName;
-    model.userName = request.userName;
-    model.nick = request.nick;
-    model.address = request.address;
-    model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-    model.userLastUpdated = model.email;
+    model.isActive = true;
+
+    const filters = {_key: model._key, isActive: model.isActive};
+    const user = await this.userService.findOneBy(filters);
+    if (isEmptyObject(user) == true) return -2; // User isnot existed!;
     
-    return await this.userService.editOne(model);
+    user.nameFirst = request.nameFirst;
+    user.nameLast = request.nameLast;
+    user.nick = request.nick;
+    user.dob = request.dob;
+    user.gender = request.gender;
+    user.headerUri = request.headerUri;
+    user.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    user.userLastUpdated = model.email;
+    
+    return await this.userService.editOne(user);
   }
 }

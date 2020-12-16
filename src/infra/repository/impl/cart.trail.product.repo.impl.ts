@@ -1,15 +1,15 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { CartProduct } from "../../../domain/models/cart.product";
+import { CartTrailProduct } from "../../../domain/models/cart.trail.product";
 import { createConnection } from "../../utils/oct-orm";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { CartProductRepo } from "../cart.product.repo";
+import { CartTrailProductRepo } from "../cart.trail.product.repo";
 
-@provide(IOC_TYPE.CartProductRepoImpl)
-export class CartProductRepoImpl implements CartProductRepo {
+@provide(IOC_TYPE.CartTrailProductRepoImpl)
+export class CartTrailProductRepoImpl implements CartTrailProductRepo {
   async selectAllBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartProduct]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartTrailProduct]});
 
     try {
       const aql = {
@@ -18,7 +18,7 @@ export class CartProductRepoImpl implements CartProductRepo {
         return: 'doc'
       };
       
-      const repo = con.repositoryFor<CartProduct>("CartProduct");
+      const repo = con.repositoryFor<CartTrailProduct>("CartTrailProduct");
       const result = await repo.edgeFindAllBy(aql, false);
 
       if(!result) return null;
@@ -31,10 +31,10 @@ export class CartProductRepoImpl implements CartProductRepo {
   }
 
   async selectOneBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartProduct]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartTrailProduct]});
 
     try {
-      const repo = con.repositoryFor<CartProduct>("CartProduct");
+      const repo = con.repositoryFor<CartTrailProduct>("CartTrailProduct");
       const result = await repo.edgeFindOneBy(filters, false);
 
       if(!result) return null;
@@ -47,10 +47,10 @@ export class CartProductRepoImpl implements CartProductRepo {
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartProduct]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartTrailProduct]});
 
     try {
-      const repo = con.repositoryFor<CartProduct>("CartProduct");
+      const repo = con.repositoryFor<CartTrailProduct>("CartTrailProduct");
       const result = await repo.edgeCreate(model);
 
       return result;
@@ -62,10 +62,10 @@ export class CartProductRepoImpl implements CartProductRepo {
   }
 
   async deleteByKey(key: any) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartProduct]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartTrailProduct]});
 
     try {
-      const repo = con.repositoryFor<CartProduct>("CartProduct");
+      const repo = con.repositoryFor<CartTrailProduct>("CartTrailProduct");
       const result = await repo.edgeDeleteByKey(key);
 
       return result;

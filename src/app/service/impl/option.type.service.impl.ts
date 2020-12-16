@@ -20,8 +20,8 @@ export class OptionTypeServiceImpl extends AbstractBaseService<OptionType> imple
     return await this.optionTypeRepo.selectAll();
   }
 
-  async findOneBy(filters) : Promise<OptionType> {
-    return await this.optionTypeRepo.selectOneBy(filters);
+  async findAllBy(filters) : Promise<any> {
+    return await this.optionTypeRepo.selectAllBy(filters);
   }
 
   async addOne(model: OptionType): Promise<any> {
@@ -37,11 +37,9 @@ export class OptionTypeServiceImpl extends AbstractBaseService<OptionType> imple
     try {
       const filters = {_key: model._key};
       const isExisted = await this.optionTypeRepo.existsBy(filters);
-      if (isExisted == false) return -3;
+      if (isExisted == false) return -10;
 
-      const result = this.removeOne(model);
-
-      return await this.addOne(model);
+      return await this.optionTypeRepo.update(model);
     } catch (e) {
       throw e;
     }
@@ -50,8 +48,8 @@ export class OptionTypeServiceImpl extends AbstractBaseService<OptionType> imple
   async removeOne(model: OptionType): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const result = await this.findOneBy(filters);
-      if (isEmptyObject(result) == true) return -3;
+      const result = await this.optionTypeRepo.selectOneBy(filters);
+      if (isEmptyObject(result) == true) return -10;
   
       return await this.optionTypeRepo.deleteByKey(result._key);
     } catch (e) {

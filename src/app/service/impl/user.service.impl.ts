@@ -32,8 +32,6 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
       const isExisted = await this.userRepo.existsBy(filters);
       if (isExisted == true) return -10; // Email has been used by another User!
 
-      model.role = 'Guest';
-
       return await this.userRepo.insert(model);
     } catch (e) {
       if (e.message.match('duplicate key value violates unique constraint')) throw new AppErrorAlreadyExist(e);
@@ -43,11 +41,6 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
 
   async editOne(model: User): Promise<User> {
     try {
-      const filters = {_key: model._key, isActive: model.isActive};
-      const isExisted = await this.userRepo.existsBy(filters);
-      if (isExisted == false) throw new Error(model.email + ' is not existed or not active!');
-
-      // model.role = 'Guest';
       return await this.userRepo.update(model);
     } catch (e) {
       throw e;
@@ -58,7 +51,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
     try {
       const filters = {email: model.email, isActive: model.isActive};
       const result = await this.findOneBy(filters);
-      if (isEmptyObject(result) == true) throw new Error(model.email + ' isnot existed!');
+      if (isEmptyObject(result) == true) return -13; // User isnot existed!
   
       return await this.userRepo.deleteByKey(result._key);
     } catch (e) {

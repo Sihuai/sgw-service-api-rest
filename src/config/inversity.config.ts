@@ -14,6 +14,7 @@ export const bindings = new AsyncContainerModule(
     await require('../presentation/http/controller/auth.controller');
     await require('../presentation/http/controller/bill.board.controller');
     await require('../presentation/http/controller/cart.controller');
+    await require('../presentation/http/controller/cart.detail.controller');
     await require('../presentation/http/controller/home.controller');
     await require('../presentation/http/controller/option.type.controller');
     await require('../presentation/http/controller/security.controller');

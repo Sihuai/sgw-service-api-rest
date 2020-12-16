@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -fr build",
-    "build": "npm run clean && tsc",
+    "build": "tsc",
     "start": "nodemon",
     "start:dev": "ts-node src/index.ts",
     "start:test": "ts-node src/index.ts",
@@ -22,7 +22,7 @@
     "inversify": "^5.0.1",
     "inversify-binding-decorators": "^4.0.0",
     "inversify-express-utils": "^6.3.2",
-    "joi": "^17.3.0",
+    "joi": "^17.1.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
     "nodemon": "^2.0.6",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.7",
+    "@types/joi": "^14.3.4",
     "@types/node": "^14.0.27",
     "typescript": "^3.9.7"
   }

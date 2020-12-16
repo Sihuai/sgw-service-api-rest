@@ -1,7 +1,7 @@
 import { DeepPartial } from "./types/deep.partial";
 import { Metadata } from "./metadata/MetadataManager";
 import { ENTITY_NAME } from "./keys/entity.keys";
-import { Connection } from "./connectionx";
+import { Connection } from "./connection";
 import { normalizeDataForCreate, normalizeDataForRead, normalizeDataForUpdate, normalizeEdgeForCreate, normalizeSimpleDataForRead } from "./lib/util";
 import { ArrayOr } from "./types/array.or.type";
 import { DocumentData, DocumentMetadata, Edge, EdgeData } from "arangojs/documents";

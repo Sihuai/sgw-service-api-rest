@@ -1,4 +1,4 @@
-import {Joi} from '../joix'
+import {Joi} from '../joi'
 import {Schema} from 'joi'
 import { isObject } from './object';
 

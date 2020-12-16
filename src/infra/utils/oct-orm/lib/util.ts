@@ -1,6 +1,6 @@
 import { Metadata } from "../metadata/MetadataManager";
 import { ENTITY_ATTRIBUTES } from "../keys/entity.keys";
-import { ArrayOr } from "../types/arrayOrType";
+import { ArrayOr } from "../types/array.or.type";
 import { DocumentMetadata, EdgeData } from "arangojs/documents";
 
 export function getEntityAttributesForCreate(entity: Function) {

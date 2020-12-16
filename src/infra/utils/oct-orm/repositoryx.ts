@@ -1,9 +1,9 @@
-import { DeepPartial } from "./types/deepPartial";
+import { DeepPartial } from "./types/deep.partial";
 import { Metadata } from "./metadata/MetadataManager";
 import { ENTITY_NAME } from "./keys/entity.keys";
-import { Connection } from "./connection";
+import { Connection } from "./connectionx";
 import { normalizeDataForCreate, normalizeDataForRead, normalizeDataForUpdate, normalizeEdgeForCreate, normalizeSimpleDataForRead } from "./lib/util";
-import { ArrayOr } from "./types/arrayOrType";
+import { ArrayOr } from "./types/array.or.type";
 import { DocumentData, DocumentMetadata, Edge, EdgeData } from "arangojs/documents";
 import { CollectionInsertOptions, DocumentCollection, EdgeCollection } from "arangojs/collection";
 import { isValidJSON } from "../data.validator";

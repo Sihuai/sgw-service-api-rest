@@ -6,6 +6,7 @@ export const createContainer = async () => {
   const container = new Container();
 
   // 1. Repository
+  await require('../infra/repository/impl/address.repo.impl');
   await require('../infra/repository/impl/bill.board.repo.impl');
   await require('../infra/repository/impl/category.repo.impl');
   await require('../infra/repository/impl/cart.repo.impl');
@@ -21,8 +22,10 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/trail.detail.repo.impl');
   await require('../infra/repository/impl/trail.trail.detail.repo.impl');
   await require('../infra/repository/impl/user.repo.impl');
+  await require('../infra/repository/impl/user.address.repo.impl');
   
   // 2. Service
+  await require('../app/service/impl/address.service.impl');
   await require('../app/service/impl/bill.board.service.impl');
   await require('../app/service/impl/category.service.impl');
   await require('../app/service/impl/cart.service.impl');
@@ -39,6 +42,7 @@ export const createContainer = async () => {
   await require('../app/service/impl/trail.detail.service.impl');
   await require('../app/service/impl/trail.trail.detail.service.impl');
   await require('../app/service/impl/user.service.impl');
+  await require('../app/service/impl/user.address.service.impl');
   
   await container.loadAsync(bindings);
 

@@ -6,7 +6,7 @@ import {
 } from "./keys/entity.keys";
 import { ArangoIndex } from "./types/indexes";
 import { Metadata } from "./metadata/MetadataManager";
-import { Repository } from "./repository";
+import { Repository } from "./repositoryx";
 import { LoadBalancingStrategy } from "arangojs/connection";
 
 function arrayIsEqual(arrA: any[], arrB: any[]) {

@@ -2,7 +2,7 @@ import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
 import { TrailDetail } from "../../../domain/models/trail.detail";
 import { createConnection } from "../../utils/oct-orm";
-import { ArrayOr } from "../../utils/oct-orm/types/arrayOrType";
+import { ArrayOr } from "../../utils/oct-orm/types/array.or.type";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
 import { TrailDetailRepo } from "../trail.detail.repo";

@@ -1,4 +1,4 @@
-import { ArrayOr } from "../utils/oct-orm/types/arrayOrType";
+import { ArrayOr } from "../utils/oct-orm/types/array.or.type";
 
 export interface CartDetailRepo {
     selectAll() : Promise<any>;

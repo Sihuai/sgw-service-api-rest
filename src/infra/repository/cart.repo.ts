@@ -1,4 +1,4 @@
-import { ArrayOr } from "../utils/oct-orm/types/arrayOrType";
+import { ArrayOr } from "../utils/oct-orm/types/array.or.type";
 import { PageResult } from "../utils/oct-orm/types/pageResult";
 
 export interface CartRepo {

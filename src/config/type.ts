@@ -1,5 +1,6 @@
 export const IOC_TYPE = {
   // 1. Repository
+  AddressRepoImpl: Symbol.for('AddressRepoImpl'),
   BillBoardRepoImpl: Symbol.for('BillBoardRepoImpl'),
   CategoryRepoImpl: Symbol.for('CategoryRepoImpl'),
   CartRepoImpl: Symbol.for('CartRepoImpl'),
@@ -15,6 +16,7 @@ export const IOC_TYPE = {
   TrailTrailDetailRepoImpl: Symbol.for('TrailTrailDetailRepoImpl'),
   TokenRepoImpl: Symbol.for('TokenRepoImpl'),
   UserRepoImpl: Symbol.for('UserRepoImpl'),
+  UserAddressRepoImpl: Symbol.for('UserAddressRepoImpl'),
 
   // 2. Action
   // - User
@@ -71,8 +73,14 @@ export const IOC_TYPE = {
   EditOptionTypeAction : Symbol.for('EditOptionTypeAction'),
   GetOptionTypeAction : Symbol.for('GetOptionTypeAction'),
   DeleteOptionTypeAction : Symbol.for('DeleteOptionTypeAction'),
+  // - Address
+  CreateAddressAction : Symbol.for('CreateAddressAction'),
+  EditAddressAction : Symbol.for('EditAddressAction'),
+  GetAddressAction : Symbol.for('GetAddressAction'),
+  DeleteAddressAction : Symbol.for('DeleteAddressAction'),
 
   // 3. Service
+  AddressServiceImpl: Symbol.for('AddressServiceImpl'),
   BillBoardServiceImpl: Symbol.for('BillBoardServiceImpl'),
   CategoryServiceImpl: Symbol.for('CategoryServiceImpl'),
   CartServiceImpl: Symbol.for('CartServiceImpl'),
@@ -89,4 +97,5 @@ export const IOC_TYPE = {
   TrailTrailDetailServiceImpl: Symbol.for('TrailTrailDetailServiceImpl'),
   TokenServiceImpl: Symbol.for('TokenServiceImpl'),
   UserServiceImpl: Symbol.for('UserServiceImpl'),
+  UserAddressServiceImpl: Symbol.for('UserAddressServiceImpl'),
 };

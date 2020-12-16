@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import { ENTITY_INDEXES, ENTITY_ATTRIBUTES } from "../keys/entity.keys";
-import { ArangoIndex } from "../types/indexes";
+import { ArangoIndex } from "../types/indexesx";
 import { Metadata } from "../metadata/MetadataManager";
 
 const createIndexName = (index: Partial<ArangoIndex>) => {

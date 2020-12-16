@@ -4,7 +4,7 @@ import {
   ENTITY_INDEXES,
   ENTITY_NAME
 } from "./keys/entity.keys";
-import { ArangoIndex } from "./types/indexes";
+import { ArangoIndex } from "./types/indexesx";
 import { Metadata } from "./metadata/MetadataManager";
 import { Repository } from "./repository";
 import { LoadBalancingStrategy } from "arangojs/connection";

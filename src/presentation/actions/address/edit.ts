@@ -3,6 +3,8 @@ import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { AddressService } from '../../../app/service/address.service';
 import { IOC_TYPE } from '../../../config/type';
+import { IAddressDTO } from '../../../domain/dtos/i.address.dto';
+import { Address } from '../../../domain/models/address';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
@@ -43,13 +45,13 @@ export class EditAddressAction implements IAction {
 
     const model = new Address();
     model._key = request._key;
-    model.isActive = request.isActive === undefined ? true : request.isActive;
-    model.type = request.type;
-    model.code = request.code;
-    model.name = request.name;
-    model.sequence = request.sequence;
-    model.selected = request.selected === undefined ? false : request.selected;
-    model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    // model.isActive = request.isActive === undefined ? true : request.isActive;
+    // model.type = request.type;
+    // model.code = request.code;
+    // model.name = request.name;
+    // model.sequence = request.sequence;
+    // model.selected = request.selected === undefined ? false : request.selected;
+    // model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     
     return await this.addressService.editOne(model);
   }

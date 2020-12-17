@@ -19,6 +19,7 @@ import { getResponseDataCode, ResponseDataCode } from '../constants/response.dat
 import { GetTokenAction } from '../../actions/security/token';
 import { ResetPWExecuteUserAction } from '../../actions/security/reset.pw.execute';
 import { ResetPWRequestUserAction } from '../../actions/security/reset.pw.request';
+import { getUserFromToken } from '../../../infra/utils/security';
 
 @controller('/security')
 export class SecurityController implements interfaces.Controller {
@@ -31,18 +32,85 @@ export class SecurityController implements interfaces.Controller {
     @inject(IOC_TYPE.ResetPWExecuteUserAction) public resetPWExecuteUserAction: ResetPWExecuteUserAction,
   ) { }
 
-  @httpGet('/getToken')
+  /**
+* @swagger
+  * /security/refreshtoken:
+  *   get:
+  *     summary: Refresh token before expiry.
+  *     description: Refresh token before expiry.
+  *     security:
+  *       - apikey: []
+  *     responses:
+  *       200:
+  *         description: Access token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: string
+  *                   description: Access token.
+  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  *       403:
+  *         description: Forbidden.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 403
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Forbidden!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
+  @httpGet('/refreshtoken')
   private async getToken(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const token = request.cookies['r-token'];
-      if (token == null) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
 
-      const result = await this.getTokenAction.execute(token);
-      if (result == -1) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is not existed!'));
-      if (result == -2) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Invalid Token.  Access Forbidden by API service.'));
-      if (result == -3) return response.status(ResponseDataCode.Forbidden).json(ResponseFailure(ResponseDataCode.Forbidden, 'Access Forbidden by API servcie.'));
+      const result = await this.getTokenAction.execute(request.cookies['r-token']);
+      if (result == -10) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is not existed!'));
+      if (result == -12) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Invalid Token.  Access Forbidden by API service.'));
+      if (result == -13) return response.status(ResponseDataCode.Forbidden).json(ResponseFailure(ResponseDataCode.Forbidden, 'Access Forbidden by API servcie.'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result.token));
     } catch (e) {
@@ -52,11 +120,14 @@ export class SecurityController implements interfaces.Controller {
     }
   }
 
-  @httpPost('/resetPassword/request')
+  @httpPost('/resetpwrequest')
   private async request(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
+
       const result = await this.resetPWRequestUserAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Password is empty!'));
@@ -70,11 +141,14 @@ export class SecurityController implements interfaces.Controller {
     }
   }
 
-  @httpPost('/resetPassword/execute')
+  @httpPost('/resetpwexecute')
   private async execute(
+    @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
+      
       const result = await this.resetPWExecuteUserAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Email is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Password is empty!'));

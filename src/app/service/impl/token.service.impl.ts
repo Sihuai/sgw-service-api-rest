@@ -29,13 +29,13 @@ export class TokenServiceImpl extends AbstractBaseService<Token> implements Toke
   async refresh(filters) : Promise<any> {
     try {
       const result = await this.findOneBy(filters);
-      if (result == null) return -1; // Token is not existed!
+      if (result == null) return -10; // Token is not existed!
 
       var jwt = require('jsonwebtoken');
       const newToken = jwt.verify(result.token, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
         if(error) { // exceptions handling
-          if(error.name === 'JsonWebTokenError' && error.message === 'invalid token') return -2; // Invalid Token.  Access Forbidden by API service.
-          return -3; // Access Forbidden by API servcie.
+          if(error.name === 'JsonWebTokenError' && error.message === 'invalid token') return -11; // Invalid Token.  Access Forbidden by API service.
+          return -12; // Access Forbidden by API servcie.
         }
   
         const input = {

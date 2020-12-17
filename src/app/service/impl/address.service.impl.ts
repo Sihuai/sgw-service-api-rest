@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { Address } from '../../../domain/models/address';
 import { UserAddress } from '../../../domain/models/user.address';
@@ -35,6 +36,10 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
     return await this.addressRepo.selectAllByKey(keys);
   }
 
+  async findOneBy(filters) : Promise<Address> {
+    return await this.addressRepo.selectOneBy(filters);
+  }
+
   async addOne(userkey: string, model: Address): Promise<any> {
     try {
       if (model.isDefault == true) {
@@ -52,10 +57,9 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       // 2. Insert into UserAddress
       const userAddress = new UserAddress();
       userAddress._from = 'Users/' + userkey;
-      userAddress._to = result._key;
+      userAddress._to = 'Address/' + result._key;
       const uaResult = await this.userAddressService.addOne(userAddress);
       if (isEmptyObject(uaResult) == true) result -12;
-      if (uaResult.code != 200) return -12;
 
       return result;
     } catch (e) {
@@ -66,10 +70,6 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
 
   async editOne(model: Address): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const isExisted = await this.addressRepo.existsBy(filters);
-      if (isExisted == false) return -10;
-
       return await this.addressRepo.update(model);
     } catch (e) {
       throw e;
@@ -83,13 +83,17 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       if (isEmptyObject(result) == true) return -10;
   
       // 1. Remove user address relation collection
-      const uaFilters = {_from: 'Address/' + result._key};
+      const uaFilters = {_to: 'Address/' + result._key};
       const uaResult = await this.userAddressService.removeBy(uaFilters);
       if (isEmptyObject(uaResult) == true) return -10;
       if (uaResult.code != 200) return -10;
 
+      result.isActive = false;
+      result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      result.userLastUpdated = model.userLastUpdated;
+
       // 2. Remove address collection
-      return await this.addressRepo.deleteByKey(result._key);
+      return await this.editOne(result);
     } catch (e) {
       throw e;
     }

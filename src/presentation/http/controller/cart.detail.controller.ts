@@ -17,7 +17,7 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
-import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
+import { getUserFromToken } from '../../../infra/utils/security';
 import { GetCartDetailAction } from '../../actions/cart.detail/get';
 
 @controller('/cartdetail')
@@ -33,7 +33,7 @@ export class CartDetailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.getCartDetailAction.execute(key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));

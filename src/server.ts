@@ -10,6 +10,7 @@ import { getEnvConfig } from './config/env.config';
 import path from 'path';
 import fs from 'fs';
 import dotEnv from 'dotenv';
+import { isEmptyObject } from './infra/utils/data.validator';
 
 export const createApplicationServer = async () => {
   // load the environment variables.
@@ -81,15 +82,24 @@ export const createApplicationServer = async () => {
       return null;
   }
 
-  const httpsOptions = {
+  var httpsOptions;
+  if (isEmptyObject(process.env.HTTPS_CA) === true) {
+    httpsOptions = {
       key: process.env.HTTPS_KEY ? fs.readFileSync(path.join(folderHTTPS, process.env.HTTPS_KEY)): '',
       cert: process.env.HTTPS_CERTIFICATE ? fs.readFileSync(path.join(folderHTTPS, process.env.HTTPS_CERTIFICATE)) : '',
       passphrase : process.env.PASSPHRASE
-  };
+    };
+  } else {
+    httpsOptions = {
+      key: process.env.HTTPS_KEY ? fs.readFileSync(path.join(folderHTTPS, process.env.HTTPS_KEY)): '',
+      cert: process.env.HTTPS_CERTIFICATE ? fs.readFileSync(path.join(folderHTTPS, process.env.HTTPS_CERTIFICATE)) : '',
+      ca : fs.readFileSync(path.join(folderHTTPS, (process.env.HTTPS_CA as string)))
+    };
+  }
 
   return new ApplicationServer({
     port: config.default.https.port,
-    isHttps: false,
+    isHttps: true,
     httpsOptions: httpsOptions,
     createHttpServer: () => new InversifyExpressServer(container),
     // tslint:disable-next-line: object-shorthand-properties-first

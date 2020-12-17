@@ -17,7 +17,7 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
-import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
+import { getUserFromToken } from '../../../infra/utils/security';
 import { GetOptionTypeAction } from '../../actions/option.type/get';
 import { EditOptionTypeAction } from '../../actions/option.type/edit';
 import { CreateOptionTypeAction } from '../../actions/option.type/create';
@@ -39,7 +39,7 @@ export class OptionTypeController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.getOptionTypeAction.execute(type);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
@@ -58,7 +58,7 @@ export class OptionTypeController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
       
       const result = await this.createOptionTypeAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
@@ -80,7 +80,7 @@ export class OptionTypeController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.editOptionTypeAction.execute(request.body);
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Code is empty!'));
@@ -105,7 +105,7 @@ export class OptionTypeController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.deleteOptionTypeAction.execute(key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));

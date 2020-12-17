@@ -26,33 +26,46 @@ export const generateToken = (params) => {
   }
 }
 
-export const getTokenFromAuthHeaders = (header: string): string | undefined => {
-  if (!header) return undefined;
-  return header.split(' ')[1];
-};
+// export const getTokenFromAuthHeaders = (header: string): string | undefined => {
+//   if (header === undefined || !header) return undefined;
+//   return header.split(' ')[1];
+// };
 
-export const getUserFromToken = (token): any => {
+export const getUserFromToken = (headerToken, cookieToken): any => {
   const newError = new Error();
-  if( token === null) {
+  if(headerToken === undefined || headerToken === null) {
     newError.name = APP_ERRORS.NotAuthorized;
     newError.message = 'Not Authorized to Access.';
+    newError.stack = 'Not Authorized to Access.';
+    throw newError;
+  }
+
+  if (isEmptyObject(cookieToken) === true)
+  {
+    newError.name = APP_ERRORS.InvalidToken;
+    newError.message = 'Invalid Token. Access Forbidden by API service.';
+    newError.stack = 'Invalid Token. Access Forbidden by API service.';
     throw newError;
   }
 
   var jwt = require('jsonwebtoken');
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) =>{
+  const result = jwt.verify(headerToken, process.env.ACCESS_TOKEN_SECRET, (error, decoded) =>{
       if(error) { // exceptions handling
         if(error.name === 'JsonWebTokenError' && error.message === 'invalid token') {
           newError.name = APP_ERRORS.InvalidToken;
           newError.message = 'Invalid Token.  Access Forbidden by API service.';
+          newError.stack = 'Invalid Token.  Access Forbidden by API service.';
           throw newError;
         }
         newError.name = APP_ERRORS.InvalidToken;
-        newError.message = 'Access Forbidden by API servcie.';
+        newError.message = error.message + '.  Access Forbidden by API servcie.';
+        newError.stack = error.message + '.  Access Forbidden by API servcie.';
         throw newError;
       }
 
       const { iat, exp, ...user } = decoded; 
       return user;
   })
+
+  return result;
 };

@@ -11,12 +11,15 @@ import { IAction } from '../base.action';
 
 interface IRequest extends INullable<IAddressDTO> {
   _key: string;
-  isActive: boolean;
-  type: number;
-  code: string;
-  name: string;
-  sequence: number;
-  selected: boolean;
+  country: string;
+  block: string;
+  propertyName: string;
+  street: string;
+  unit: string;
+  province?: string;
+  city?: string;
+  postal?: string;
+  isDefault: boolean;
 }
 
 @provide(IOC_TYPE.EditAddressAction, true)
@@ -24,35 +27,49 @@ interface IRequest extends INullable<IAddressDTO> {
 export class EditAddressAction implements IAction {
   payloadExample = `
     "_key": "123456",
-    "isActive": True,
-    "type": 1,
-    "code": "BUGIS",
-    "name": "BUGIS Address",
-    "sequence": 0,
-    "selected": false
+    "country": "BUGIS",
+    "block": "BUGIS Address",
+    "propertyName": "",
+    "street": "",
+    "unit": "",
+    "province": "",
+    "city": "",
+    "postal": "",
+    "isDefault": "",
   `;
   description = '';
   constructor(
     @inject(IOC_TYPE.AddressServiceImpl) public addressService: AddressService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
-    if (isEmptyObject(request.code) == true) return -2; // Code is empty!
-    if (isEmptyObject(request.name) == true) return -3; // Name is empty!
-    if (request.sequence < 0) return -4; // Sequence is empty!
-    if (isEmptyObject(request._key) == true) return -5;      // Key is empty!
-    if (request.type <= 0) return -6; // Type is less than zero!
+    if (isEmptyObject(request._key) == true) return -1; // Address key is empty!
+    if (isEmptyObject(request.country) == true) return -2; // Country is empty!
+    if (isEmptyObject(request.propertyName) == true) return -3; // Property name is empty!
+    if (isEmptyObject(request.street) == true) return -4; // Street is empty!
+    if (isEmptyObject(request.unit) == true) return -5; // Unit is empty!
+    if (isEmptyObject(request.postal) == true) return -6; // Postal is empty!
 
     const model = new Address();
     model._key = request._key;
-    // model.isActive = request.isActive === undefined ? true : request.isActive;
-    // model.type = request.type;
-    // model.code = request.code;
-    // model.name = request.name;
-    // model.sequence = request.sequence;
-    // model.selected = request.selected === undefined ? false : request.selected;
-    // model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    model.isActive = true;
+
+    const filters = {_key: model._key, isActive: model.isActive};
+    const address = await this.addressService.findOneBy(filters);
+    if (isEmptyObject(address) == true) return -7; // Address isnot exist!;
     
-    return await this.addressService.editOne(model);
+    address.country = request.country;
+    if (isEmptyObject(request.block) == false) address.block = request.block;
+    address.propertyName = request.propertyName;
+    address.street = request.street;
+    address.unit = request.unit;
+    if (isEmptyObject(request.province) == false) address.province = request.province;
+    if (isEmptyObject(request.city) == false) address.city = request.city;
+    address.postal = request.postal;
+    if (isEmptyObject(request.isDefault) == false) address.isDefault = request.isDefault;
+    address.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    address.userLastUpdated = token.email;
+    
+    return await this.addressService.editOne(address);
   }
 }

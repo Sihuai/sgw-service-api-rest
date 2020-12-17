@@ -17,7 +17,7 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
-import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
+import { getUserFromToken } from '../../../infra/utils/security';
 import { GetCartAction } from '../../actions/cart/get';
 import { CreateCartAction } from '../../actions/cart/create';
 import { EditCartAction } from '../../actions/cart/edit';
@@ -40,7 +40,7 @@ export class CartController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.getCartAction.execute('');
 
@@ -58,7 +58,7 @@ export class CartController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.countCartAction.execute('');
 
@@ -77,7 +77,7 @@ export class CartController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
       
       const result = await this.createCartAction.execute(typekey, request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product/Trail key is empty!'));
@@ -105,7 +105,7 @@ export class CartController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.editCartAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Cart key is empty!'));
@@ -133,7 +133,7 @@ export class CartController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.deleteCartAction.execute(key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));

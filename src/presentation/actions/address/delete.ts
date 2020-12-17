@@ -14,11 +14,12 @@ export class DeleteAddressAction implements IAction {
   constructor(
     @inject(IOC_TYPE.AddressServiceImpl) public addressService: AddressService,
   ) {}
-  execute(key: string) {
+  execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
     
     const model = new Address();
     model._key = key;
+    model.userLastUpdated = token.email;
 
     return this.addressService.removeOne(model);
   }

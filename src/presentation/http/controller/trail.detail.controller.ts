@@ -17,7 +17,7 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
-import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
+import { getUserFromToken } from '../../../infra/utils/security';
 import { GetTrailDetailAction } from '../../actions/trail.detail/get';
 import { CreateTrailDetailAction } from '../../actions/trail.detail/create';
 import { EditTrailDetailAction } from '../../actions/trail.detail/edit';
@@ -39,7 +39,7 @@ export class TrailDetailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.getTrailDetailAction.execute(trailKey);
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
@@ -60,7 +60,7 @@ export class TrailDetailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
       
       const result = await this.createTrailDetailAction.execute(trailKey, request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Title is empty!'));
@@ -84,7 +84,7 @@ export class TrailDetailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.editTrailDetailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Title is empty!'));
@@ -108,7 +108,7 @@ export class TrailDetailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.deleteTrailDetailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));

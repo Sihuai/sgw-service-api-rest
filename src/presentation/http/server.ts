@@ -5,7 +5,6 @@ import { Application } from 'express';
 import { Container } from 'inversify';
 import { logError } from '../../infra/utils/logger';
 import { configAppFactory, errorConfigAppFactory } from './express';
-import moment from 'moment';
 
 export class ApplicationServer {
   private port: any;
@@ -42,6 +41,8 @@ export class ApplicationServer {
       this.app.listen(this.port);
     }
     
+    console.log((this.isHttps == true ? `HTTPS` : `HTTP`) + ` Service listening on port ${this.port} ...`);
+
     this.app.on('error', this.onError);
     this.app.on('listening', this.onListening);
   }
@@ -75,7 +76,6 @@ export class ApplicationServer {
   }
 
   private onListening = () => {
-    debug(`[OK] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
     debug((this.isHttps == true ? `HTTPS` : `HTTP`) + ` Service listening on port ${this.port} ...`);
   }
 }

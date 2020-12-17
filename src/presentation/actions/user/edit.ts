@@ -14,7 +14,7 @@ interface IRequest extends INullable<IUserDTO> {
   nameFirst: string;
   nameLast: string;
   nick: string;
-  gender: string;
+  gender: number;
   dob: string;
   headerUri: string;
 }
@@ -39,14 +39,14 @@ export class EditUserAction implements IAction {
     const user = await this.userService.findOneBy(filters);
     if (isEmptyObject(user) == true) return -2; // User isnot existed!;
     
-    user.nameFirst = request.nameFirst;
-    user.nameLast = request.nameLast;
-    user.nick = request.nick;
-    user.dob = request.dob;
-    user.gender = request.gender;
-    user.headerUri = request.headerUri;
+    if (isEmptyObject(request.nameFirst) == false) user.nameFirst = request.nameFirst;
+    if (isEmptyObject(request.nameLast) == false) user.nameLast = request.nameLast;
+    if (isEmptyObject(request.nick) == false) user.nick = request.nick;
+    if (isEmptyObject(request.dob) == false) user.dob = request.dob;
+    if (request.gender > 0) user.gender = request.gender;
+    if (isEmptyObject(request.headerUri) == false) user.headerUri = request.headerUri;
     user.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-    user.userLastUpdated = model.email;
+    user.userLastUpdated = user.email;
     
     return await this.userService.editOne(user);
   }

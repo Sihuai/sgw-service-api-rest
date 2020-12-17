@@ -17,7 +17,7 @@ import {
 import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
-import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
+import { getUserFromToken } from '../../../infra/utils/security';
 import { GetTrailAction } from '../../actions/trail/get';
 import { CreateTrailAction } from '../../actions/trail/create';
 import { EditTrailAction } from '../../actions/trail/edit';
@@ -38,7 +38,7 @@ export class TrailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.getTrailAction.execute();
 
@@ -56,7 +56,7 @@ export class TrailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
       
       const result = await this.createTrailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Sequence is empty!'));
@@ -77,7 +77,7 @@ export class TrailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.editTrailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Sequence is empty!'));
@@ -101,7 +101,7 @@ export class TrailController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      // const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
+      // const tokenUser = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.deleteTrailAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));

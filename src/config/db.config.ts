@@ -26,7 +26,7 @@ const configDataStores = {
             url: 'http://api.zulundatumsolutions.net:8529',
             userid: 'zulu',
             password: 'Zu1u.12345',
-            dbName : 'SGW'
+            dbName : 'SGWMock'
         }
     ],
     stage : [

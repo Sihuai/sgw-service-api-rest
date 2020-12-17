@@ -2,7 +2,6 @@ import { Request, Response } from 'express-serve-static-core';
 import { inject } from 'inversify';
 import {
   controller,
-  httpGet,
   httpPost,
   interfaces,
   next,
@@ -11,8 +10,7 @@ import {
   response,
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
-import { isEmptyObject } from '../../../infra/utils/data.validator';
-import { getTokenFromAuthHeaders, getUserFromToken } from '../../../infra/utils/security';
+import { getUserFromToken } from '../../../infra/utils/security';
 import { RegisterUserAction } from '../../actions/auth/register';
 import { SigninAuthAction } from '../../actions/auth/signin';
 import { SignoutAuthAction } from '../../actions/auth/signout';
@@ -27,6 +25,120 @@ export class AuthController implements interfaces.Controller {
     @inject(IOC_TYPE.SignoutAuthAction) public signoutAuthAction: SignoutAuthAction,
   ) { }
 
+  /**
+* @swagger
+  * /auth/register:
+  *   post:
+  *     summary: User register
+  *     description: User register for SGW.
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               email:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The user's email.
+  *                 example: mark.louise@sgw.com
+  *               nameFirst:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The user's first name.
+  *                 example: Mark
+  *               nameLast:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The user's last name.
+  *                 example: Louise
+  *               pwhash:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The user's password.
+  *                 example: 48ab1d7a4f1d0f231ca46d9cc865c66f
+  *     responses:
+  *       200:
+  *         description: Register Success.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: object
+  *                   properties:
+  *                     access:
+  *                       type: string
+  *                       description: Access token.
+  *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  *       404:
+  *         description: Not Found.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 404
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Found"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
   @httpPost('/register')
   private async register(
     @request() request: Request, @response() response: Response, @next() next: Function,
@@ -60,6 +172,114 @@ export class AuthController implements interfaces.Controller {
     }
   }
 
+  /**
+* @swagger
+  * /auth/signin:
+  *   post:
+  *     summary: User login
+  *     description: User login to SGW.
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               email:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The user's email.
+  *                 example: mark.louise@sgw.com
+  *               pwhash:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The user's password.
+  *                 example: 48ab1d7a4f1d0f231ca46d9cc865c66f
+  *     responses:
+  *       200:
+  *         description: User login Success.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: object
+  *                   properties:
+  *                     access:
+  *                       type: string
+  *                       description: Access token.
+  *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  *                     refresh:
+  *                       type: string
+  *                       description: Refresh token.
+  *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  *       404:
+  *         description: Not Found.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 404
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Found"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
   @httpPost('/signin')
   private async signin(
     @request() request: Request, @response() response: Response, @next() next: Function,
@@ -84,19 +304,82 @@ export class AuthController implements interfaces.Controller {
     }
   }
 
+  /**
+* @swagger
+  * /auth/signout:
+  *   post:
+  *     summary: User logout
+  *     description: User logout SGW.
+  *     security:
+  *       - apikey: []
+  *     responses:
+  *       200:
+  *         description: User login Success.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
   @httpPost('/signout')
   private async signout(
     @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const tokenUser = getUserFromToken(getTokenFromAuthHeaders(authHeader) || request.query.token);
-      if (isEmptyObject(tokenUser) == true) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
-
-      const token = request.cookies['r-token'];
-      if (isEmptyObject(token) == true) return response.status(ResponseDataCode.InvalidToken).json(ResponseFailure(ResponseDataCode.InvalidToken, 'Token is empty.'));
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
       
-      const result = await this.signoutAuthAction.execute(token, tokenUser.email);
+      const result = await this.signoutAuthAction.execute(authHeader, token.email);
       
       // token handling. clear the cookie.
       response.clearCookie('r-token', {path: '/'});

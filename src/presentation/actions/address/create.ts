@@ -42,7 +42,7 @@ export class CreateAddressAction implements IAction {
   constructor(
     @inject(IOC_TYPE.AddressServiceImpl) public addressService: AddressService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request.userkey) == true) return -1; // User key is empty!
     if (isEmptyObject(request.country) == true) return -2; // Country is empty!
@@ -61,6 +61,8 @@ export class CreateAddressAction implements IAction {
     model.city = request.city;
     model.postal = request.postal;
     model.isDefault = request.isDefault;
+    model.userCreated = token.email;
+    model.userLastUpdated = token.email;
     
     return await this.addressService.addOne(request.userkey, model);
   }

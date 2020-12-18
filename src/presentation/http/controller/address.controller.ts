@@ -109,6 +109,25 @@ export class AddressController implements interfaces.Controller {
   *                         type: string
   *                         description: The address's key.
   *                         example: "123456"
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
   *       602:
   *         description: Unexpected.
   *         content:
@@ -143,6 +162,44 @@ export class AddressController implements interfaces.Controller {
   *                   type: string
   *                   description: Response message.
   *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
   *                 data:
   *                   type: string
   *                   description: Response data.
@@ -302,6 +359,25 @@ export class AddressController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The user's default address.
   *                       example: false
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
   *       602:
   *         description: Unexpected.
   *         content:
@@ -336,6 +412,44 @@ export class AddressController implements interfaces.Controller {
   *                   type: string
   *                   description: Response message.
   *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
   *                 data:
   *                   type: string
   *                   description: Response data.
@@ -467,6 +581,25 @@ export class AddressController implements interfaces.Controller {
   *                       type: string
   *                       description: user's old revision.
   *                       example: _blBFzW----
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
   *       602:
   *         description: Unexpected.
   *         content:
@@ -501,6 +634,44 @@ export class AddressController implements interfaces.Controller {
   *                   type: string
   *                   description: Response message.
   *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
   *                 data:
   *                   type: string
   *                   description: Response data.
@@ -569,6 +740,25 @@ export class AddressController implements interfaces.Controller {
   *                   type: string
   *                   description: Response code.
   *                   example: ""
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
   *       602:
   *         description: Unexpected.
   *         content:
@@ -603,6 +793,44 @@ export class AddressController implements interfaces.Controller {
   *                   type: string
   *                   description: Response message.
   *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
   *                 data:
   *                   type: string
   *                   description: Response data.

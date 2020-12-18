@@ -81,6 +81,10 @@ export class AuthController implements interfaces.Controller {
   *                       type: string
   *                       description: Access token.
   *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  *                     refresh:
+  *                       type: string
+  *                       description: Refresh token.
+  *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   *       404:
   *         description: Not Found.
   *         content:
@@ -164,7 +168,7 @@ export class AuthController implements interfaces.Controller {
       const cookieOptions = {httpOnly: true, secure: process.env.NODE_ENV === 'production'? true: false}
       response.cookie('r-token', refresh, cookieOptions)
 
-      response.status(ResponseDataCode.OK).json(ResponseSuccess({...rest}));
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(signinResult));
     } catch (e) {
       const code = getResponseDataCode(e.name);
       response.status(code).json(ResponseFailure(code, e.stack));
@@ -296,7 +300,7 @@ export class AuthController implements interfaces.Controller {
       const cookieOptions = {httpOnly: true, secure: process.env.NODE_ENV === 'production'? true: false}
       response.cookie('r-token', refresh, cookieOptions)
 
-      response.status(ResponseDataCode.OK).json(ResponseSuccess({...rest}));
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
       const code = getResponseDataCode(e.name);
       response.status(code).json(ResponseFailure(code, e.stack));
@@ -366,6 +370,44 @@ export class AuthController implements interfaces.Controller {
   *                   type: string
   *                   description: Response message.
   *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
   *                 data:
   *                   type: string
   *                   description: Response data.

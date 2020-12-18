@@ -57,7 +57,7 @@ export const getUserFromToken = (headerToken, cookieToken): any => {
           newError.stack = 'Invalid Token.  Access Forbidden by API service.';
           throw newError;
         }
-        newError.name = APP_ERRORS.InvalidToken;
+        newError.name = APP_ERRORS.TokenTimeOut;
         newError.message = error.message + '.  Access Forbidden by API servcie.';
         newError.stack = error.message + '.  Access Forbidden by API servcie.';
         throw newError;

@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { SectionTrail } from '../../../domain/models/section.trail';
 import { SectionTrailRepo } from '../../../infra/repository/section.trail.repo';
@@ -20,8 +21,8 @@ export class SectionTrailServiceImpl extends AbstractBaseService<SectionTrail> i
     return await this.sectionTrailRepo.selectAllBy(filters);
   }
 
-  async page(filters) : Promise<any> {
-    return await this.sectionTrailRepo.page(filters);
+  async page(filters, pageIndex: number, pageSize: number) : Promise<any> {
+    return await this.sectionTrailRepo.page(filters, pageIndex, pageSize);
   }
 
   async findOneBy(filters) : Promise<SectionTrail> {
@@ -42,24 +43,32 @@ export class SectionTrailServiceImpl extends AbstractBaseService<SectionTrail> i
       const filters = {_key: model._key};
       const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10;
+
+      result.isActive = false;
+      result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      result.userLastUpdated = model.userLastUpdated;
   
-      return await this.sectionTrailRepo.deleteByKey(result._key);
+      return await this.sectionTrailRepo.update(result);
     } catch (e) {
       throw e;
     }
   }
 
-  async removeBy(filters): Promise<any> {
+  async removeBy(user: string, filters): Promise<any> {
     try {
       const result = await this.findAllBy(filters);
       if (isEmptyObject(result) == true) return -10;
-  
-      const keys: Array<string> = [];
-      for (let data of result) {
-        keys.push(data._key);
-      }
 
-      return await this.sectionTrailRepo.deleteByKey(keys);
+      for (let data of result) {
+        data.isActive = false;
+        data.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+        data.userLastUpdated = user;
+
+        const updateResult = await this.sectionTrailRepo.update(data);
+        if (isEmptyObject(updateResult) == true) return false;
+      }
+  
+      return true;
     } catch (e) {
       throw e;
     }

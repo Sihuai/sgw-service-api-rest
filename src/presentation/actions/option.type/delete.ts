@@ -14,12 +14,13 @@ export class DeleteOptionTypeAction implements IAction {
   constructor(
     @inject(IOC_TYPE.OptionTypeServiceImpl) public optionTypeService: OptionTypeService,
   ) {}
-  execute(key: string) {
+  execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
     
     const model = new OptionType();
     model._key = key;
-
+    model.userLastUpdated = token.email;
+    
     return this.optionTypeService.removeOne(model);
   }
 }

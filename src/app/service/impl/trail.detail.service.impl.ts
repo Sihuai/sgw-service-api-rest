@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { TrailDetail } from '../../../domain/models/trail.detail';
 import { TrailTrailDetail } from '../../../domain/models/trail.trail.detail';
@@ -47,7 +48,7 @@ export class TrailDetailServiceImpl extends AbstractBaseService<TrailDetail> imp
       // 2. insert into trail trail detail edge.
       const ttd = new TrailTrailDetail();
       ttd._from = 'Trail/' + trailKey;
-      ttd._to = tdResult._id;
+      ttd._to = 'TrailDetail/' + tdResult._key;
       
       const ttdResult = await this.trailTrailDetailService.addOne(ttd);
       if (isEmptyObject(ttdResult) == true) return -12;
@@ -61,8 +62,7 @@ export class TrailDetailServiceImpl extends AbstractBaseService<TrailDetail> imp
 
   async editOne(model: TrailDetail): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const oldResult = await this.findOneBy(filters);
+      const oldResult = await this.trailDetailRepo.selectAllByKey(model._key);
       if (isEmptyObject(oldResult) == true) return -10;
 
       return await this.trailDetailRepo.update(model);
@@ -73,17 +73,21 @@ export class TrailDetailServiceImpl extends AbstractBaseService<TrailDetail> imp
 
   async removeOne(model: TrailDetail): Promise<any> {
     try {
-      const tdFilters = {_key: model._key};
-      const tdResult = await this.trailDetailRepo.selectOneBy(tdFilters);
+      const tdResult = await this.trailDetailRepo.selectAllByKey(model._key);
       if (isEmptyObject(tdResult) == true) return -10;
 
-      const ttdFilters = {_to: tdResult._id};
-      const ttdResult = await this.trailTrailDetailService.removeBy(ttdFilters);
-      if (isEmptyObject(ttdResult) == true) return -10;
-      if (ttdResult.code != 200) return -10;
+      // 1. Remove trail trail-detail relation edge
+      const ttdFilters = {_to: 'TrailDetail/' + tdResult[0]._key};
+      const ttdResult = await this.trailTrailDetailService.removeBy(model.userLastUpdated, ttdFilters);
       if (ttdResult == -10) return -10;
+      if (ttdResult == false) return -13;
 
-      return await this.trailDetailRepo.deleteByKey(tdFilters._key);
+      // 2. Remove trail detail collection
+      tdResult[0].isActive = false;
+      tdResult[0].datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      tdResult[0].userLastUpdated = model.userLastUpdated;
+
+      return await this.trailDetailRepo.update(tdResult[0]);
     } catch (e) {
       throw e;
     }

@@ -61,6 +61,21 @@ export class TrailTrailDetailRepoImpl implements TrailTrailDetailRepo {
     }
   }
 
+  async update(model) : Promise<any>  {
+    const con = await createConnection({...ormSGWConnParam, entities: [TrailTrailDetail]});
+
+    try {
+      const repo = con.repositoryFor<TrailTrailDetail>("TrailTrailDetail");
+      const result = await repo.edgeUpdate(model);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+	}
+
   async deleteByKey(key: any) : Promise<any>  {
     const con = await createConnection({...ormSGWConnParam, entities: [TrailTrailDetail]});
 

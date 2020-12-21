@@ -17,7 +17,7 @@ export class GetAddressAction implements IAction {
 
     if (isEmptyObject(userkey) == true) return -1; // User key is empty!
 
-    const filters = {_from: 'Users/' + userkey};
+    const filters = {_from: 'Users/' + userkey, isActive: true};
     return await this.addressService.findAllBy(filters);
   }
 }

@@ -7,5 +7,5 @@ export interface UserAddressService extends BaseService<UserAddress> {
     findOneBy(filters) : Promise<any>;
     addOne(model: UserAddress): Promise<any>;
     removeOne(model: UserAddress): Promise<any>;
-    removeBy(filters): Promise<any>;
+    removeBy(user: string, filters): Promise<any>;
 }

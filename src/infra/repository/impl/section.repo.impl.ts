@@ -2,6 +2,7 @@ import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
 import { Section } from "../../../domain/models/section";
 import { createConnection } from "../../utils/oct-orm";
+import { ArrayOr } from "../../utils/oct-orm/types/array.or.type";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
 import { SectionRepo } from "../section.repo";
@@ -36,6 +37,27 @@ export class SectionRepoImpl implements SectionRepo {
       
       const repo = con.repositoryFor<Section>("Section");
       const result = await repo.findAllBy(aql, false);
+
+      if(!result) return null;
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
+  async selectAllByKey(key: string);
+  async selectAllByKey(keys: string[]);
+  async selectAllByKey(keys: ArrayOr<string>) : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [Section]});
+
+    try {
+      const isMulti = Array.isArray(keys);
+      keys = (isMulti ? keys : [keys]) as string[];
+
+      const repo = con.repositoryFor<Section>("Section");
+      const result = await repo.findByKey(keys, false);
 
       if(!result) return null;
       return result;

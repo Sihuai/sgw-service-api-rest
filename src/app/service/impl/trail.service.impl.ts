@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { Trail } from '../../../domain/models/trail';
 import { TrailRepo } from '../../../infra/repository/trail.repo';
@@ -7,12 +8,14 @@ import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { PageResult } from '../../../infra/utils/oct-orm/types/pageResult';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { TrailService } from '../trail.service';
+import { TrailTrailDetailService } from '../trail.trail.detail.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.TrailServiceImpl)
 export class TrailServiceImpl extends AbstractBaseService<Trail> implements TrailService {
   constructor(
     @inject(IOC_TYPE.TrailRepoImpl) private trailRepo: TrailRepo,
+    @inject(IOC_TYPE.TrailTrailDetailServiceImpl) private trailTrailDetailService: TrailTrailDetailService,
   ) {
     super();
   }
@@ -52,8 +55,7 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
 
   async editOne(model: Trail): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const oldResult = await this.findOneBy(filters);
+      const oldResult = await this.trailRepo.selectAllByKey(model._key);
       if (isEmptyObject(oldResult) == true) return -10;
 
       return await this.trailRepo.update(model);
@@ -64,11 +66,20 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
 
   async removeOne(model: Trail): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const result = await this.findOneBy(filters);
-      if (isEmptyObject(result) == true) return -10;
-  
-      return await this.trailRepo.deleteByKey(result._key);
+      const result = await this.trailRepo.selectAllByKey(model._key);
+      if (isEmptyObject(result[0]) == true) return -10;
+
+      // 1. Check Trail Trail-Detail relation edge have record or not
+      const filters = {_from: 'Trail/' + result[0]._key, isActive: true};
+      const ttdResult = await this.trailTrailDetailService.findAllBy(filters);
+      if (isEmptyObject(ttdResult) == false) return -11;
+      
+      // 2. Remove trail collection
+      result[0].isActive = false;
+      result[0].datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      result[0].userLastUpdated = model.userLastUpdated;
+
+      return await this.trailRepo.update(result[0]);
     } catch (e) {
       throw e;
     }

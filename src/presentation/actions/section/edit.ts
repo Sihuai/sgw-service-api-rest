@@ -33,7 +33,7 @@ export class EditSectionAction implements IAction {
   constructor(
     @inject(IOC_TYPE.SectionServiceImpl) public sectionService: SectionService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
     if (request.sequence < 0) return -1; // Sequence is empty!
     if (isEmptyObject(request.header) == true) return -2; // Header is empty!
@@ -48,7 +48,8 @@ export class EditSectionAction implements IAction {
     model.uri = request.uri;
     model.color = request.color;
     model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-    
+    model.userLastUpdated = token.email;
+
     return await this.sectionService.editOne(model);
   }
 }

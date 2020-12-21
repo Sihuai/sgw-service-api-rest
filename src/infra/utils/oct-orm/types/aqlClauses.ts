@@ -3,8 +3,8 @@ export type AQLClauses = {
   filter? : string;
   sort? : string;
   limit ?: {
-      offset : number;
-      count : number;
+    pageIndex : number;
+    pageSize : number;
   };
   return : string;
 }

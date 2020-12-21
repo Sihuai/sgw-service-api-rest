@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { OptionType } from '../../../domain/models/option.type';
 import { OptionTypeRepo } from '../../../infra/repository/option.type.repo';
@@ -50,8 +51,12 @@ export class OptionTypeServiceImpl extends AbstractBaseService<OptionType> imple
       const filters = {_key: model._key};
       const result = await this.optionTypeRepo.selectOneBy(filters);
       if (isEmptyObject(result) == true) return -10;
+
+      result.isActive = false;
+      result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      result.userLastUpdated = model.userLastUpdated;
   
-      return await this.optionTypeRepo.deleteByKey(result._key);
+      return await this.optionTypeRepo.update(result);
     } catch (e) {
       throw e;
     }

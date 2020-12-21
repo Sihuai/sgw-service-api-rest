@@ -10,15 +10,21 @@
 
 export const parseFilter = (filters) => {
 
+  const result: Array<string> = [];
   for (var key in filters) {
     const val = filters[key];
     if (typeof val === 'number') {
-      return `doc.${key} == ${filters[key]}`;
+      result.push(`doc.${key} == ${filters[key]}`);
+      continue;
     }
     if (typeof val === 'boolean') {
-      return `doc.${key} == ${filters[key]}`;
+      result.push(`doc.${key} == ${filters[key]}`);
+      continue;
     }
 
-    return `doc.${key} == "${filters[key]}"`;
+    result.push(`doc.${key} == "${filters[key]}"`);
   }
+
+  const newFilters = result.join(" && ");
+  return newFilters;
 }

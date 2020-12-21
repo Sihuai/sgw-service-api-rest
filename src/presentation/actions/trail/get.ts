@@ -13,6 +13,7 @@ export class GetTrailAction implements IAction {
     @inject(IOC_TYPE.TrailServiceImpl) public trailService: TrailService,
   ) { }
   async execute() : Promise<any>  {
-    return await this.trailService.findAll();
+    const filters = {isActive: true};
+    return await this.trailService.findAllBy(filters);
   }
 }

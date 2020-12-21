@@ -12,12 +12,12 @@ export class Pagination {
 
 export class Records {
   constructor() {
-      this.perPage = 0;
-      this.offset = 0;
+      this.pageSize = 0;
+      this.pageIndex = 0;
       this.total = 0;
   }
   
-  perPage: number;
-  offset: number;
+  pageSize: number;
+  pageIndex: number;
   total: number;
 }

@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { UserAddress } from '../../../domain/models/user.address';
 import { UserAddressRepo } from '../../../infra/repository/user.address.repo';
@@ -49,17 +50,27 @@ export class UserAddressServiceImpl extends AbstractBaseService<UserAddress> imp
     }
   }
 
-  async removeBy(filters): Promise<any> {
+  async removeBy(user: string, filters): Promise<any> {
     try {
       const result = await this.findAllBy(filters);
       if (isEmptyObject(result) == true) return -10;
   
-      const keys: Array<string> = [];
       for (let data of result) {
-        keys.push(data._key);
+        data.isActive = false;
+        data.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+        data.userLastUpdated = user;
+
+        const updateResult = await this.userAddressRepo.update(data);
+        if (isEmptyObject(updateResult) == true) return false;
       }
 
-      return await this.userAddressRepo.deleteByKey(keys);
+      return true;
+      // const keys: Array<string> = [];
+      // for (let data of result) {
+      //   keys.push(data._key);
+      // }
+
+      // return await this.userAddressRepo.deleteByKey(keys);
     } catch (e) {
       throw e;
     }

@@ -2,10 +2,8 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { BillBoardService } from '../../../app/service/bill.board.service';
 import { IOC_TYPE } from '../../../config/type';
-import { IBillBoardDTO } from '../../../domain/dtos/i.bill.board.dto';
 import { BillBoard } from '../../../domain/models/bill.board';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
-import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
 
 @provide(IOC_TYPE.DeleteBillBoardAction, true)

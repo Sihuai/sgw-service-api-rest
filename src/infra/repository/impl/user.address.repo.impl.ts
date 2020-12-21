@@ -38,8 +38,8 @@ export class UserAddressRepoImpl implements UserAddressRepo {
         for: 'doc',
         filter: parseFilter(filters),
         limit: {
-          offset: 0,
-          count: 10
+          pageIndex: 0,
+          pageSize: 10
         },
         return: 'doc'
       };
@@ -87,6 +87,21 @@ export class UserAddressRepoImpl implements UserAddressRepo {
     }
   }
 
+  async update(model) : Promise<any>  {
+    const con = await createConnection({...ormSGWConnParam, entities: [UserAddress]});
+
+    try {
+      const repo = con.repositoryFor<UserAddress>("UserAddress");
+      const result = await repo.edgeUpdate(model);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+  
   async deleteByKey(key: any) : Promise<any>  {
     const con = await createConnection({...ormSGWConnParam, entities: [UserAddress]});
 

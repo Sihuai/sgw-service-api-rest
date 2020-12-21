@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { Section } from '../../../domain/models/section';
 import { SectionRepo } from '../../../infra/repository/section.repo';
@@ -21,11 +22,12 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
   }
 
   async findAll() : Promise<Section[]> {
-    const sections = await this.sectionRepo.selectAll();
+    const sectionFilters = {isActive: true};
+    const sections = await this.sectionRepo.selectAllBy(sectionFilters);
 
     for (let section of sections) {
-      const filters = {_from: 'Section/' + section._key};
-      const sectionTrail = await this.sectionTrailService.page(filters);
+      const stFilters = {_from: 'Section/' + section._key, isActive: true};
+      const sectionTrail = await this.sectionTrailService.page(stFilters, 0, 10);
       if (isEmptyObject(sectionTrail) == true) break;
       
       const keys: Array<string> = [];
@@ -39,6 +41,25 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
     }
 
     return sections;
+  }
+
+  async page(sectionKey: string, pageIndex: number, pageSize: number) : Promise<any> {
+    const section = await this.sectionRepo.selectAllByKey(sectionKey);
+
+    const stFilters = {_from: 'Section/' + sectionKey, isActive: true};
+    const sectionTrail = await this.sectionTrailService.page(stFilters, pageIndex, pageSize);
+    if (isEmptyObject(sectionTrail) == true) return -12;
+    
+    const keys: Array<string> = [];
+    for (let data of sectionTrail.data) {
+      keys.push(data._to);
+    }
+    const trail = await this.trailService.findAllByKey(keys);
+
+    section[0].trails = trail;
+    section[0].pagination = sectionTrail.pagination;
+
+    return section[0];
   }
 
   async findAllBy(filters) : Promise<Section> {
@@ -82,12 +103,16 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
   
       // 1. Remove section trail relation collection
       const stFilters = {_from: 'Section/' + result._key};
-      const stResult = await this.sectionTrailService.removeBy(stFilters);
-      if (isEmptyObject(stResult) == true) return -10;
-      if (stResult.code != 200) return -10;
+      const stResult = await this.sectionTrailService.removeBy(model.userLastUpdated, stFilters);
+      // if (stResult == -10) return -10;
+      // if (stResult == false) return -13;
 
       // 2. Remove section collection
-      return await this.sectionRepo.deleteByKey(result._key);
+      result.isActive = false;
+      result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      result.userLastUpdated = model.userLastUpdated;
+
+      return await this.sectionRepo.update(result);
     } catch (e) {
       throw e;
     }

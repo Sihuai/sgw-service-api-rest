@@ -41,12 +41,22 @@ export class EditTrailAction implements IAction {
   constructor(
     @inject(IOC_TYPE.TrailServiceImpl) public trailService: TrailService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
     if (request.sequence < 0) return -1; // Sequence is empty!
     if (isEmptyObject(request.title) == true) return -2; // Title is empty!
     if (isEmptyObject(request.media) == true) return -3; // Media is empty!
-    if (isEmptyObject(request._key) == true) return -4;      // Key is empty!
+    if (isEmptyObject(request.media.type) == true) return -4; // Trail's type is empty!
+    if (isEmptyObject(request.media.orientation) == true) return -5; // Trail's orientation is empty!
+    if (isEmptyObject(request.media.format) == true) return -6; // Trail's format is empty!
+    if (isEmptyObject(request.media.uri) == true) return -7; // Trail's URI is empty!
+
+    const filters = {sequence: request.sequence, isActive: true};
+    const result = await this.trailService.findAllBy(filters);
+    if (isEmptyObject(result) == true) return -8; // Sequence is not existed!
+
+    if (isEmptyObject(request._key) == true) return -9;      // Key is empty!
+    if (result[0]._key != request._key) return -100; // Sequence is used to other trail!
 
     const model = new Trail();
     model._key = request._key;
@@ -55,7 +65,8 @@ export class EditTrailAction implements IAction {
     model.title = request.title;
     model.media = request.media;
     model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-    
+    model.userLastUpdated = token.email;
+
     return await this.trailService.editOne(model);
   }
 }

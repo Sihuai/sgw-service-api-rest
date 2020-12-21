@@ -32,7 +32,7 @@ export class CreateOptionTypeAction implements IAction {
   constructor(
     @inject(IOC_TYPE.OptionTypeServiceImpl) public optionTypeService: OptionTypeService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
     if (request.type < 0) return -1; // Type is empty!
     if (isEmptyObject(request.code) == true) return -2; // Code is empty!
@@ -45,6 +45,8 @@ export class CreateOptionTypeAction implements IAction {
     model.name = request.name;
     model.sequence = request.sequence;
     model.selected = request.selected === undefined ? false : request.selected;
+    model.userCreated = token.email;
+    model.userLastUpdated = token.email;
     
     return await this.optionTypeService.addOne(model);
   }

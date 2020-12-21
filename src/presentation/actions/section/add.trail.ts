@@ -8,8 +8,8 @@ import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
 
 interface IRequest extends INullable<ISectionTrailDTO> {
-  sectionid: string;
-  trialid: string;
+  sectionkey: string;
+  trialkey: string;
 }
 
 @provide(IOC_TYPE.CreateSectionTrailAction, true)
@@ -17,22 +17,24 @@ interface IRequest extends INullable<ISectionTrailDTO> {
 export class CreateSectionTrailAction implements IAction {
   payloadExample = `
   {
-    "sectionid": "Section/2589592",
-    "trialid": "Trail/1758453"
+    "sectionkey": "2589592",
+    "trialkey": "1758453"
   }
   `;
   description = '';
   constructor(
     @inject(IOC_TYPE.SectionTrailServiceImpl) public sectionTrailService: SectionTrailService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
-    if (isEmptyObject(request.sectionid) == true) return -1; // Section ID is empty!
-    if (isEmptyObject(request.trialid) == true) return -2; // Trial ID is empty!
+    if (isEmptyObject(request.sectionkey) == true) return -1; // Section Key is empty!
+    if (isEmptyObject(request.trialkey) == true) return -2; // Trial Key is empty!
 
     const model = new SectionTrail();
-    model._from = request.sectionid;
-    model._to = request.trialid;
+    model._from = 'Section/' + request.sectionkey;
+    model._to = 'Trail/' + request.trialkey;
+    model.userCreated = token.email;
+    model.userLastUpdated = token.email;
     
     return await this.sectionTrailService.addOne(model);
   }

@@ -54,13 +54,13 @@ export class TrailDetailSection {
 export class TrailDetail extends BaseModel {
     constructor() {
         super();
-        this.title = '';
+        this.name = '';
         this.personas = [];
         this.sections = [];
     }
 
     @Attribute()
-    title: string;
+    name: string;
     @Attribute()
     personas: BillBoard[];
     @Attribute()

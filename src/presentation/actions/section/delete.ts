@@ -14,11 +14,12 @@ export class DeleteSectionAction implements IAction {
   constructor(
     @inject(IOC_TYPE.SectionServiceImpl) public sectionService: SectionService,
   ) {}
-  execute(key: string) {
+  execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
     
     const model = new Section();
     model._key = key;
+    model.userLastUpdated = token.email;
 
     return this.sectionService.removeOne(model);
   }

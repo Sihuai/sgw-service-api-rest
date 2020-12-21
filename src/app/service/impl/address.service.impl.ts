@@ -78,22 +78,21 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
 
   async removeOne(model: Address): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const result = await this.addressRepo.selectOneBy(filters);
+      const result = await this.addressRepo.selectAllByKey(model._key);
       if (isEmptyObject(result) == true) return -10;
   
       // 1. Remove user address relation collection
-      const uaFilters = {_to: 'Address/' + result._key};
-      const uaResult = await this.userAddressService.removeBy(uaFilters);
-      if (isEmptyObject(uaResult) == true) return -10;
-      if (uaResult.code != 200) return -10;
-
-      result.isActive = false;
-      result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-      result.userLastUpdated = model.userLastUpdated;
-
+      const uaFilters = {_to: 'Address/' + result[0]._key};
+      const uaResult = await this.userAddressService.removeBy(model.userLastUpdated, uaFilters);
+      if (uaResult == -10) return -10;
+      if (uaResult == false) return -13;
+      
       // 2. Remove address collection
-      return await this.editOne(result);
+      result[0].isActive = false;
+      result[0].datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      result[0].userLastUpdated = model.userLastUpdated;
+
+      return await this.editOne(result[0]);
     } catch (e) {
       throw e;
     }

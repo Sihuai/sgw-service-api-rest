@@ -14,11 +14,12 @@ export class DeleteTrailDetailAction implements IAction {
   constructor(
     @inject(IOC_TYPE.TrailDetailServiceImpl) public trailDetailService: TrailDetailService,
   ) {}
-  execute(key: string) {
+  execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
     
     const model = new TrailDetail();
     model._key = key;
+    model.userLastUpdated = token.email;
 
     return this.trailDetailService.removeOne(model);
   }

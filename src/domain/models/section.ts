@@ -26,5 +26,6 @@ export class Section extends BaseModel {
     color: string;
     @Attribute()
     trails: Trail[];
+    @Attribute()
     pagination: Pagination;
 }

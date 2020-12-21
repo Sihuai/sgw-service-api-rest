@@ -30,7 +30,7 @@ export class SectionTrailRepoImpl implements SectionTrailRepo {
     }
   }
 
-  async page(filters) : Promise<any> {
+  async page(filters, pageIndex: number, pageSize: number) : Promise<any> {
     const con = await createConnection({...ormSGWConnParam, entities: [SectionTrail]});
 
     try {
@@ -38,8 +38,8 @@ export class SectionTrailRepoImpl implements SectionTrailRepo {
         for: 'doc',
         filter: parseFilter(filters),
         limit: {
-          offset: 0,
-          count: 10
+          pageIndex: pageIndex,
+          pageSize: pageSize
         },
         return: 'doc'
       };
@@ -86,6 +86,21 @@ export class SectionTrailRepoImpl implements SectionTrailRepo {
       con.db.close();
     }
   }
+
+  async update(model) : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [SectionTrail]});
+
+    try {
+      const repo = con.repositoryFor<SectionTrail>("SectionTrail");
+      const result = await repo.edgeUpdate(model);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+	}
 
   async deleteByKey(key: any) : Promise<any>  {
     const con = await createConnection({...ormSGWConnParam, entities: [SectionTrail]});

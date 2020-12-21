@@ -16,11 +16,12 @@ export class BillBoardServiceImpl extends AbstractBaseService<BillBoard> impleme
     super();
   }
 
-  async findAll() : Promise<BillBoard[]> {
-    return await this.billBoardRepo.selectAll();
+  async findAll() : Promise<any> {
+    const filters = {isActive: true};
+    return await this.billBoardRepo.selectAllBy(filters);
   }
 
-  async findAllBy(filters) : Promise<BillBoard> {
+  async findAllBy(filters) : Promise<any> {
     return await this.billBoardRepo.selectAllBy(filters);
   }
 
@@ -30,6 +31,9 @@ export class BillBoardServiceImpl extends AbstractBaseService<BillBoard> impleme
 
   async addOne(model: BillBoard): Promise<any> {
     try {
+      const rows = await this.billBoardRepo.count();
+      if (rows > 1) return -11; // Bill board information have one row.
+      
       return await this.billBoardRepo.insert(model);
     } catch (e) {
       if (e.message.match('duplicate key value violates unique constraint')) throw new AppErrorAlreadyExist(e);

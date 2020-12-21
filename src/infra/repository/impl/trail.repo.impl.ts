@@ -58,8 +58,8 @@ export class TrailRepoImpl implements TrailRepo {
       keys = (isMulti ? keys : [keys]) as string[];
 
       const limit = {
-        offset: 1,
-        count: 10
+        pageIndex: 1,
+        pageSize: 10
       };
 
       const repo = con.repositoryFor<Trail>("Trail");

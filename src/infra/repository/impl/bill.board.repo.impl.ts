@@ -62,6 +62,27 @@ export class BillBoardRepoImpl implements BillBoardRepo {
     }
   }
 
+  async count() : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [BillBoard]});
+
+    try {
+      const aql = {
+        for: 'doc',
+        return: 'doc'
+      };
+
+      const repo = con.repositoryFor<BillBoard>("BillBoard");
+      const result = await repo.countBy(aql);
+
+      if(!result) return null;
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
   async existsBy(filters) : Promise<boolean> {
     const con = await createConnection({...ormSGWConnParam, entities: [BillBoard]});
 

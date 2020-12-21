@@ -6,5 +6,5 @@ export interface TrailTrailDetailService extends BaseService<TrailTrailDetail> {
     findOneBy(filters) : Promise<any>;
     addOne(model: TrailTrailDetail): Promise<any>;
     removeOne(model: TrailTrailDetail): Promise<any>;
-    removeBy(filters): Promise<any>;
+    removeBy(user: string, filters): Promise<any>;
 }

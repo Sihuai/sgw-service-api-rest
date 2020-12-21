@@ -12,7 +12,7 @@ import { IAction } from '../base.action';
 
 interface IRequest extends INullable<ITrailDetailDTO> {
   _key: string;
-  title: string;
+  name: string;
   personas: BillBoard[];
   sections: TrailDetailSection[];
 }
@@ -67,19 +67,48 @@ export class EditTrailDetailAction implements IAction {
   constructor(
     @inject(IOC_TYPE.TrailDetailServiceImpl) public trailDetailService: TrailDetailService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
-    if (isEmptyObject(request.title) == true) return -1;      // Title is empty!
-    if (isEmptyObject(request.personas) == true) return -2;  // Bill board is empty!
+    if (isEmptyObject(request.name) == true) return -1;      // Name is empty!
+    if (isEmptyObject(request.personas) == true) return -2;  // Personas is empty!
     if (isEmptyObject(request.sections) == true) return -3;   // Sections is empty!
     if (isEmptyObject(request._key) == true) return -4;      // Key is empty!
 
+    for (let persona of request.personas) {
+      if (isEmptyObject(persona.type) == true) return -5; // Persona's type is empty!
+      if (isEmptyObject(persona.contents) == true) return -6; // Persona's contents is empty!
+
+      for (let content of persona.contents) {
+        if (content.sequence < 0) return -7; // Persona's contents sequence less than zero!
+
+        if (isEmptyObject(content.type) == true) return -8; // Persona's contents type is empty!
+        if (isEmptyObject(content.orientation) == true) return -9; // Persona's contents orientation is empty!
+        if (isEmptyObject(content.format) == true) return -100; // Persona's contents format is empty!
+        if (isEmptyObject(content.uri) == true) return -101; // Persona's contents URI is empty!
+        if (isEmptyObject(content.tag) == true) return -102; // Persona's contents tag is empty!
+
+        if (isEmptyObject(content.data) == true) return -103; // Persona's contents data is empty!
+        if (content.data != undefined && isEmptyObject(content.data.content) == true) return -104; // Persona's contents data content is empty!
+        if (content.data != undefined && isEmptyObject(content.data.price) == true) return -105; // Persona's contents data price is empty!
+        
+        if (content.data != undefined && content.data.price != undefined && content.data.price.value < 0) return -106; // Persona's contents data price value less than zero!
+        if (content.data != undefined && content.data.price != undefined && isEmptyObject(content.data.price.currency) == true) return -107; // Persona's contents data price currency is empty!
+      }
+    }
+
+    for (let section of request.sections) {
+      if (section.sequence < 0) return -108; // Section's sequence less than zero!
+      if (isEmptyObject(section.type) == true) return -109; // Section's type is empty!
+      if (isEmptyObject(section.contents) == true) return -110; // Section's contents is empty!
+    }
+    
     const model = new TrailDetail();
     model._key = request._key;
-    model.title = request.title;
+    model.name = request.name;
     model.personas = request.personas;
     model.sections = request.sections;
     model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    model.userLastUpdated = token.email;
     
     return await this.trailDetailService.editOne(model);
   }

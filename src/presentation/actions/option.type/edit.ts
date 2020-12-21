@@ -35,7 +35,7 @@ export class EditOptionTypeAction implements IAction {
   constructor(
     @inject(IOC_TYPE.OptionTypeServiceImpl) public optionTypeService: OptionTypeService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request.code) == true) return -2; // Code is empty!
     if (isEmptyObject(request.name) == true) return -3; // Name is empty!
@@ -52,6 +52,7 @@ export class EditOptionTypeAction implements IAction {
     model.sequence = request.sequence;
     model.selected = request.selected === undefined ? false : request.selected;
     model.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    model.userLastUpdated = token.email;
     
     return await this.optionTypeService.editOne(model);
   }

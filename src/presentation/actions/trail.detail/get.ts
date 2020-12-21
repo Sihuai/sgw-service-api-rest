@@ -16,7 +16,7 @@ export class GetTrailDetailAction implements IAction {
   async execute(trailKey: string) : Promise<any>  {
     if (isEmptyObject(trailKey) == true) return -4; // Trail Key is empty!
     
-    const filters = {_from: 'Trail/' + trailKey};
+    const filters = {_from: 'Trail/' + trailKey, isActive: true};
 
     return await this.trailDetailService.findOneBy(filters);
   }

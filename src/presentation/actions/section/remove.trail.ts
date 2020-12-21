@@ -14,12 +14,13 @@ export class DeleteSectionTrailAction implements IAction {
   constructor(
     @inject(IOC_TYPE.SectionTrailServiceImpl) public sectionTrailService: SectionTrailService,
   ) {}
-  execute(key: string) {
+  execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
     
     const model = new SectionTrail();
     model._key = key;
-
+    model.userLastUpdated = token.email;
+    
     return this.sectionTrailService.removeOne(model);
   }
 }

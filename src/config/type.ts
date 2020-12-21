@@ -50,6 +50,7 @@ export const IOC_TYPE = {
   CreateTrailAction : Symbol.for('CreateTrailAction'),
   EditTrailAction : Symbol.for('EditTrailAction'),
   GetTrailAction : Symbol.for('GetTrailAction'),
+  PagingSectionAction : Symbol.for('PagingSectionAction'),
   DeleteTrailAction : Symbol.for('DeleteTrailAction'),
   // - TrailDetail
   CreateTrailDetailAction : Symbol.for('CreateTrailDetailAction'),

@@ -30,18 +30,24 @@ export class CreateSectionAction implements IAction {
   constructor(
     @inject(IOC_TYPE.SectionServiceImpl) public sectionService: SectionService,
   ) {}
-  async execute(request: IRequest) : Promise<any> {
+  async execute(token, request: IRequest) : Promise<any> {
 
     if (request.sequence < 0) return -1; // Sequence is empty!
     if (isEmptyObject(request.header) == true) return -2; // Header is empty!
     if (isEmptyObject(request.uri) == true) return -3; // Image uri is empty!
     if (isEmptyObject(request.color) == true) return -4; // Color is empty!
 
+    const filters = {sequence: request.sequence, isActive: true};
+    const result = await this.sectionService.findOneBy(filters);
+    if (isEmptyObject(result) == false) return -5; // Sequence existed!
+
     const model = new Section();
     model.sequence = request.sequence;
     model.header = request.header;
     model.uri = request.uri;
     model.color = request.color;
+    model.userCreated = token.email;
+    model.userLastUpdated = token.email;
     
     return await this.sectionService.addOne(model);
   }

@@ -20,12 +20,13 @@ export class Option {
     personas?: TrailDetail;
 }
 
-@Entity('Cart')
-export class Cart extends BaseModel {
+@Entity('CartItemDetail')
+export class CartItemDetail extends BaseModel {
     constructor() {
         super();
         this.type = '';
         this.name = '';
+        this.description = '';
         this.uri = '';
         this.qty = 0;
         this.uom = '';
@@ -37,6 +38,8 @@ export class Cart extends BaseModel {
     type: string;
     @Attribute()
     name: string;
+    @Attribute()
+    description: string;
     @Attribute()
     uri: string;
     @Attribute()

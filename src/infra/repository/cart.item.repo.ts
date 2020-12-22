@@ -1,7 +1,6 @@
 import { ArrayOr } from "../utils/oct-orm/types/array.or.type";
-import { PageResult } from "../utils/oct-orm/types/pageResult";
 
-export interface CartRepo {
+export interface CartItemRepo {
     selectAll() : Promise<any>;
     selectAllBy(filters) : Promise<any>;
     selectAllByKey(key: string);

@@ -54,7 +54,7 @@ export class EditTrailDetailAction implements IAction {
               "icon": true,
               "text": true,
               "button": true,
-              "caption": "Add to Cart"
+              "caption": "Add to CartItem"
             }
           }
         ],

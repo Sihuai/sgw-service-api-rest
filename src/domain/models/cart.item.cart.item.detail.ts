@@ -1,8 +1,8 @@
 import { Entity, Attribute } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
 
-@Entity('CartCartDetail')
-export class CartCartDetail extends BaseModel {
+@Entity('CartItemCartItemDetail')
+export class CartItemCartItemDetail extends BaseModel {
     constructor() {
         super();
     }

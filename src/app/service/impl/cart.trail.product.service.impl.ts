@@ -1,5 +1,6 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { CartTrailProduct } from '../../../domain/models/cart.trail.product';
 import { CartTrailProductRepo } from '../../../infra/repository/cart.trail.product.repo';
@@ -45,17 +46,21 @@ export class CartTrailProductServiceImpl extends AbstractBaseService<CartTrailPr
     }
   }
 
-  async removeBy(filters): Promise<any> {
+  async removeBy(user: string, filters): Promise<any> {
     try {
       const result = await this.findAllBy(filters);
       if (isEmptyObject(result) == true) return -10;
   
-      const keys: Array<string> = [];
       for (let data of result) {
-        keys.push(data._key);
+        data.isActive = false;
+        data.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+        data.userLastUpdated = user;
+
+        const updateResult = await this.cartTrailProductRepo.update(data);
+        if (isEmptyObject(updateResult) == true) return false;
       }
 
-      return await this.cartTrailProductRepo.deleteByKey(keys);
+      return true;
     } catch (e) {
       throw e;
     }

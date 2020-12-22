@@ -102,7 +102,7 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
       if (isEmptyObject(result) == true) return -10;
   
       // 1. Remove section trail relation collection
-      const stFilters = {_from: 'Section/' + result._key};
+      const stFilters = {_from: 'Section/' + result._key, isActive: true};
       const stResult = await this.sectionTrailService.removeBy(model.userLastUpdated, stFilters);
       // if (stResult == -10) return -10;
       // if (stResult == false) return -13;

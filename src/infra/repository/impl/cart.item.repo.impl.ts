@@ -1,19 +1,19 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { CartDetail } from "../../../domain/models/cart.detail";
+import { CartItem } from "../../../domain/models/cart.item";
 import { createConnection } from "../../utils/oct-orm";
 import { ArrayOr } from "../../utils/oct-orm/types/array.or.type";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { CartDetailRepo } from "../cart.detail.repo";
+import { CartItemRepo } from "../cart.item.repo";
 
-@provide(IOC_TYPE.CartDetailRepoImpl)
-export class CartDetailRepoImpl implements CartDetailRepo {
+@provide(IOC_TYPE.CartItemRepoImpl)
+export class CartItemRepoImpl implements CartItemRepo {
   async selectAll() : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.findAll(false);
 
       if(!result) return null;
@@ -26,7 +26,7 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   }
 
   async selectAllBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
       const aql = {
@@ -35,7 +35,7 @@ export class CartDetailRepoImpl implements CartDetailRepo {
         return: 'doc'
       };
 
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.findAllBy(aql, false);
 
       if(!result) return null;
@@ -50,13 +50,13 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   async selectAllByKey(key: string);
   async selectAllByKey(keys: string[]);
   async selectAllByKey(keys: ArrayOr<string>) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
       const isMulti = Array.isArray(keys);
       keys = (isMulti ? keys : [keys]) as string[];
 
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.findByKey(keys, false);
 
       if(!result) return null;
@@ -69,10 +69,10 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   }
 
   async selectOneBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.findOneBy(filters, false);
 
       if(!result) return null;
@@ -85,7 +85,7 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   }
 
   async countBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
       const aql = {
@@ -94,7 +94,7 @@ export class CartDetailRepoImpl implements CartDetailRepo {
         return: 'doc'
       };
 
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.countBy(aql);
 
       if(!result) return null;
@@ -107,10 +107,10 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   }
 
   async existsBy(filters) : Promise<boolean> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.findOneBy(filters, false);
 
       return result != null ? true : false;
@@ -122,10 +122,10 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.create(model, false);
 
       return result;
@@ -137,10 +137,10 @@ export class CartDetailRepoImpl implements CartDetailRepo {
   }
 
   async update(model) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.update(model);
 
       return result;
@@ -152,10 +152,10 @@ export class CartDetailRepoImpl implements CartDetailRepo {
 	}
 
   async deleteByKey(key: string) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItem]});
 
     try {
-      const repo = con.repositoryFor<CartDetail>("CartDetail");
+      const repo = con.repositoryFor<CartItem>("CartItem");
       const result = await repo.deleteByKey(key);
 
       return result;

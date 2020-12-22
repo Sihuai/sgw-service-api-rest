@@ -61,6 +61,21 @@ export class CartTrailProductRepoImpl implements CartTrailProductRepo {
     }
   }
 
+  async update(model) : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [CartTrailProduct]});
+
+    try {
+      const repo = con.repositoryFor<CartTrailProduct>("CartTrailProduct");
+      const result = await repo.edgeUpdate(model);
+
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+  
   async deleteByKey(key: any) : Promise<any>  {
     const con = await createConnection({...ormSGWConnParam, entities: [CartTrailProduct]});
 

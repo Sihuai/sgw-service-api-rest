@@ -6,5 +6,5 @@ export interface CartTrailProductService extends BaseService<CartTrailProduct> {
     findOneBy(filters) : Promise<any>;
     addOne(model: CartTrailProduct): Promise<any>;
     removeOne(model: CartTrailProduct): Promise<any>;
-    removeBy(filters): Promise<any>;
+    removeBy(user: string, filters): Promise<any>;
 }

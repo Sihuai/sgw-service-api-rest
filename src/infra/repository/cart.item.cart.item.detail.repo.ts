@@ -1,4 +1,4 @@
-export interface CartCartDetailRepo {
+export interface CartItemCartItemDetailRepo {
     selectAllBy(filters) : Promise<any>;
     selectOneBy(filters) : Promise<any>;
     insert(model) : Promise<any>;

@@ -38,16 +38,6 @@ export class AddressController implements interfaces.Controller {
   *     description: Retrieve a list of user's address. Can be use for user profile, cart default address, order address.
   *     security:
   *       - apikey: []
-  *     parameters:
-  *       - in: query
-  *         name: userkey
-  *         required: true
-  *         allowEmptyValue: false
-  *         description: Key of the user.
-  *         schema:
-  *           type: string
-  *         style: simple
-  *         example: "123456"
   *     responses:
   *       200:
   *         description: A list of user's address.
@@ -208,14 +198,12 @@ export class AddressController implements interfaces.Controller {
   @httpGet('/get')
   private async get(
     @requestHeaders('authorization') authHeader: string,
-    @queryParam('userkey') userkey: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      getUserFromToken(authHeader, request.cookies['r-token']);
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
 
-      const result = await this.getAddressAction.execute(userkey);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'User key is empty!'));
+      const result = await this.getAddressAction.execute(token);
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist address!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -241,11 +229,6 @@ export class AddressController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               userkey:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The user's key.
-  *                 example: "123456"
   *               country:
   *                 type: string
   *                 allowEmptyValue: false
@@ -455,7 +438,6 @@ export class AddressController implements interfaces.Controller {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
       
       const result = await this.createAddressAction.execute(token, request.body);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'User key is empty!'));
       if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Country is empty!'));
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Property name is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Street is empty!'));
@@ -729,7 +711,7 @@ export class AddressController implements interfaces.Controller {
   *                   example: ""
   *                 data:
   *                   type: string
-  *                   description: Response code.
+  *                   description: Response data.
   *                   example: ""
   *       601:
   *         description: Invalid Token.

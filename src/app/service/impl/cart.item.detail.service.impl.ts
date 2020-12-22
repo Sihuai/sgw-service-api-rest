@@ -1,45 +1,45 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
-import { CartDetail } from '../../../domain/models/cart.detail';
-import { CartDetailRepo } from '../../../infra/repository/cart.detail.repo';
+import { CartItemDetail } from '../../../domain/models/cart.item.detail';
+import { CartItemDetailRepo } from '../../../infra/repository/cart.item.detail.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
-import { CartDetailService } from '../cart.detail.service';
+import { CartItemDetailService } from '../cart.item.detail.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.CartDetailServiceImpl)
-export class CartDetailServiceImpl extends AbstractBaseService<CartDetail> implements CartDetailService {
+export class CartDetailServiceImpl extends AbstractBaseService<CartItemDetail> implements CartItemDetailService {
   constructor(
-    @inject(IOC_TYPE.CartDetailRepoImpl) private cartDetailRepo: CartDetailRepo,
+    @inject(IOC_TYPE.CartItemDetailRepoImpl) private cartItemDetailRepo: CartItemDetailRepo,
     // @inject(IOC_TYPE.CartDetailProductServiceImpl) private cartProductService: CartDetailProductServiceImpl,
   ) {
     super();
   }
 
-  async findAll() : Promise<CartDetail[]> {
-    return await this.cartDetailRepo.selectAll();
+  async findAll() : Promise<CartItemDetail[]> {
+    return await this.cartItemDetailRepo.selectAll();
   }
 
-  async findAllBy(filters) : Promise<CartDetail> {
-    return await this.cartDetailRepo.selectAllBy(filters);
+  async findAllBy(filters) : Promise<CartItemDetail> {
+    return await this.cartItemDetailRepo.selectAllBy(filters);
   }
 
   async findAllByKey(filters) : Promise<any> {
-    return await this.cartDetailRepo.selectAllByKey(filters);
+    return await this.cartItemDetailRepo.selectAllByKey(filters);
   }
 
-  async findOneBy(filters) : Promise<CartDetail> {
-    return await this.cartDetailRepo.selectOneBy(filters);
+  async findOneBy(filters) : Promise<CartItemDetail> {
+    return await this.cartItemDetailRepo.selectOneBy(filters);
   }
 
   async countBy(filters) : Promise<any> {
-    return await this.cartDetailRepo.countBy(filters);
+    return await this.cartItemDetailRepo.countBy(filters);
   }
 
-  async addOne(model: CartDetail): Promise<any> {
+  async addOne(model: CartItemDetail): Promise<any> {
     try {
-      const cartResult = await this.cartDetailRepo.insert(model);
+      const cartResult = await this.cartItemDetailRepo.insert(model);
       if (isEmptyObject(cartResult) == true) return -11;
 
       return cartResult;
@@ -49,22 +49,22 @@ export class CartDetailServiceImpl extends AbstractBaseService<CartDetail> imple
     }
   }
 
-  async editOne(model: CartDetail): Promise<any> {
+  async editOne(model: CartItemDetail): Promise<any> {
     try {
       const filters = {_key: model._key};
-      const isExisted = await this.cartDetailRepo.existsBy(filters);
+      const isExisted = await this.cartItemDetailRepo.existsBy(filters);
       if (isExisted == false) return -10;
 
-      return await this.cartDetailRepo.update(model);
+      return await this.cartItemDetailRepo.update(model);
     } catch (e) {
       throw e;
     }
   }
 
-  async removeOne(model: CartDetail): Promise<any> {
+  async removeOne(model: CartItemDetail): Promise<any> {
     try {
       const cartFilters = {_key: model._key};
-      const cartResult = await this.cartDetailRepo.selectOneBy(cartFilters);
+      const cartResult = await this.cartItemDetailRepo.selectOneBy(cartFilters);
       if (isEmptyObject(cartResult) == true) return -10;
 
       // const cpFilters = {_to: cartResult._id};
@@ -73,7 +73,7 @@ export class CartDetailServiceImpl extends AbstractBaseService<CartDetail> imple
       // if (cpResult.code != 200) return -10;
       // if (cpResult == -10) return -10;
 
-      return await this.cartDetailRepo.deleteByKey(cartFilters._key);
+      return await this.cartItemDetailRepo.deleteByKey(cartFilters._key);
     } catch (e) {
       throw e;
     }

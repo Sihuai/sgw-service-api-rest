@@ -1,6 +1,6 @@
 import { ArrayOr } from "../utils/oct-orm/types/array.or.type";
 
-export interface CartDetailRepo {
+export interface CartItemDetailRepo {
     selectAll() : Promise<any>;
     selectAllBy(filters) : Promise<any>;
     selectAllByKey(key: string);

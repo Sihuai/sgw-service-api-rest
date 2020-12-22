@@ -678,7 +678,7 @@ export class BillBoardController implements interfaces.Controller {
   *                   example: ""
   *                 data:
   *                   type: string
-  *                   description: Response code.
+  *                   description: Response data.
   *                   example: ""
   *       601:
   *         description: Invalid Token.

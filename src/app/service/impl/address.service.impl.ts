@@ -9,6 +9,7 @@ import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { AddressService } from '../address.service';
 import { UserAddressService } from '../user.address.service';
+import { UserService } from '../user.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.AddressServiceImpl)
@@ -16,6 +17,7 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
   constructor(
     @inject(IOC_TYPE.AddressRepoImpl) private addressRepo: AddressRepo,
     @inject(IOC_TYPE.UserAddressServiceImpl) private userAddressService: UserAddressService,
+    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
   ) {
     super();
   }
@@ -40,10 +42,13 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
     return await this.addressRepo.selectOneBy(filters);
   }
 
-  async addOne(userkey: string, model: Address): Promise<any> {
+  async addOne(model: Address): Promise<any> {
     try {
+      const userFilters = {email:model.userCreated, isActive:true};
+      const user = await this.userService.findOneBy(userFilters);
+      
       if (model.isDefault == true) {
-        const filters = {_from: 'Users/' + userkey};
+        const filters = {_from: 'Users/' + user._key};
         const addresses = await this.findAllBy(filters);
         if (isEmptyObject(addresses) == false && addresses != -10) {
           for (let address of addresses) {
@@ -56,7 +61,7 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       const result = await this.addressRepo.insert(model);
       // 2. Insert into UserAddress
       const userAddress = new UserAddress();
-      userAddress._from = 'Users/' + userkey;
+      userAddress._from = 'Users/' + user._key;
       userAddress._to = 'Address/' + result._key;
       const uaResult = await this.userAddressService.addOne(userAddress);
       if (isEmptyObject(uaResult) == true) result -12;

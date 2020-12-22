@@ -1,15 +1,15 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { CartCartDetail } from "../../../domain/models/cart.cart.detail";
+import { CartItemCartItemDetail } from "../../../domain/models/cart.item.cart.item.detail";
 import { createConnection } from "../../utils/oct-orm";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { CartCartDetailRepo } from "../cart.cart.detail.repo";
+import { CartItemCartItemDetailRepo } from "../cart.item.cart.item.detail.repo";
 
-@provide(IOC_TYPE.CartCartDetailRepoImpl)
-export class CartCartDetailRepoImpl implements CartCartDetailRepo {
+@provide(IOC_TYPE.CartItemCartItemDetailRepoImpl)
+export class CartItemCartItemDetailRepoImpl implements CartItemCartItemDetailRepo {
   async selectAllBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartCartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
 
     try {
       const aql = {
@@ -18,7 +18,7 @@ export class CartCartDetailRepoImpl implements CartCartDetailRepo {
         return: 'doc'
       };
       
-      const repo = con.repositoryFor<CartCartDetail>("CartCartDetail");
+      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
       const result = await repo.edgeFindAllBy(aql, false);
 
       if(!result) return null;
@@ -31,10 +31,10 @@ export class CartCartDetailRepoImpl implements CartCartDetailRepo {
   }
 
   async selectOneBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartCartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
 
     try {
-      const repo = con.repositoryFor<CartCartDetail>("CartCartDetail");
+      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
       const result = await repo.edgeFindOneBy(filters, false);
 
       if(!result) return null;
@@ -47,10 +47,10 @@ export class CartCartDetailRepoImpl implements CartCartDetailRepo {
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartCartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
 
     try {
-      const repo = con.repositoryFor<CartCartDetail>("CartCartDetail");
+      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
       const result = await repo.edgeCreate(model);
 
       return result;
@@ -62,10 +62,10 @@ export class CartCartDetailRepoImpl implements CartCartDetailRepo {
   }
 
   async deleteByKey(key: any) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartCartDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
 
     try {
-      const repo = con.repositoryFor<CartCartDetail>("CartCartDetail");
+      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
       const result = await repo.edgeDeleteByKey(key);
 
       return result;

@@ -9,7 +9,6 @@ import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
 
 interface IRequest extends INullable<IAddressDTO> {
-  userkey: string;
   country: string;
   block: string;
   propertyName: string;
@@ -26,7 +25,6 @@ interface IRequest extends INullable<IAddressDTO> {
 export class CreateAddressAction implements IAction {
   payloadExample = `
   {
-    "userkey": 1,
     "country": "BUGIS",
     "block": "BUGIS Address",
     "propertyName": "",
@@ -44,7 +42,6 @@ export class CreateAddressAction implements IAction {
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 
-    if (isEmptyObject(request.userkey) == true) return -1; // User key is empty!
     if (isEmptyObject(request.country) == true) return -2; // Country is empty!
     if (isEmptyObject(request.propertyName) == true) return -3; // Property name is empty!
     if (isEmptyObject(request.street) == true) return -4; // Street is empty!
@@ -64,6 +61,6 @@ export class CreateAddressAction implements IAction {
     model.userCreated = token.email;
     model.userLastUpdated = token.email;
     
-    return await this.addressService.addOne(request.userkey, model);
+    return await this.addressService.addOne(model);
   }
 }

@@ -126,7 +126,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                                         value:
   *                                           type: number
   *                                           description: The trail detail price's value.
-  *                                           example: "10.0"
+  *                                           example: 10.0
   *                                         currency:
   *                                           type: string
   *                                           description: The trail detail price's currency.
@@ -187,7 +187,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                                     caption:
   *                                       type: string
   *                                       description: The trail detail section content includeAddToCart caption.
-  *                                       example: "Add to Cart"
+  *                                       example: "Add to Cart Item"
   *                                 photo:
   *                                   type: object
   *                                   properties:
@@ -393,7 +393,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                                     type: number
   *                                     allowEmptyValue: false
   *                                     description: The trail detail price's value.
-  *                                     example: "10.0"
+  *                                     example: 10.0
   *                                   currency:
   *                                     type: string
   *                                     allowEmptyValue: false
@@ -471,7 +471,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                                 type: string
   *                                 allowEmptyValue: false
   *                                 description: The trail detail section content includeAddToCart caption.
-  *                                 example: "Add to Cart"
+  *                                 example: "Add to Cart Item"
   *                           photo:
   *                             type: object
   *                             allowEmptyValue: true
@@ -657,7 +657,7 @@ export class TrailDetailController implements interfaces.Controller {
   * /traildetail/edit:
   *   post:
   *     summary: Edit trail detail.
-  *     description: Edit trail detail.
+  *     description: Edit trail detail(This function remove old trail detail and add new. It is for record old data.).
   *     security:
   *       - apikey: []
   *     requestBody:
@@ -740,7 +740,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                                     type: number
   *                                     allowEmptyValue: false
   *                                     description: The trail detail price's value.
-  *                                     example: "10.0"
+  *                                     example: 10.0
   *                                   currency:
   *                                     type: string
   *                                     allowEmptyValue: false
@@ -818,7 +818,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                                 type: string
   *                                 allowEmptyValue: false
   *                                 description: The trail detail section content includeAddToCart caption.
-  *                                 example: "Add to Cart"
+  *                                 example: "Add to Cart Item"
   *                           photo:
   *                             type: object
   *                             allowEmptyValue: true
@@ -862,22 +862,10 @@ export class TrailDetailController implements interfaces.Controller {
   *                 data:
   *                   type: object
   *                   properties:
-  *                     _id:
-  *                       type: string
-  *                       description: trail detail's id.
-  *                       example: "TrailDetail/123456"
   *                     _key:
   *                       type: string
   *                       description: trail detail's key.
   *                       example: "123456"
-  *                     _rev:
-  *                       type: string
-  *                       description: trail detail's revision.
-  *                       example: _blDWGNW---
-  *                     _oldRev:
-  *                       type: string
-  *                       description: trail detail's old revision.
-  *                       example: _blBFzW----
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -1004,6 +992,10 @@ export class TrailDetailController implements interfaces.Controller {
       if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Section type is empty!'));
       if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Section contents is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Trail Detail is not exist!'));
+      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to add Trail Detail!'));
+      if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to add Trail and Trail-Detail reladtion!'));
+      if (result == -13) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove Trail and Trail-Detail reladtion!'));
+      if (result == -14) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove Trail Detail!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -1049,7 +1041,7 @@ export class TrailDetailController implements interfaces.Controller {
   *                   example: ""
   *                 data:
   *                   type: string
-  *                   description: Response code.
+  *                   description: Response data.
   *                   example: ""
   *       601:
   *         description: Invalid Token.

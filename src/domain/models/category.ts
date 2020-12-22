@@ -34,4 +34,6 @@ export class Category extends Media {
     tag?: string;
     @Attribute()
     data?: Data;
+    @Attribute()
+    selected?: boolean;
 }

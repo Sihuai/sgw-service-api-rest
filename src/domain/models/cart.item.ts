@@ -1,9 +1,7 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
-import { Address } from "./address";
 import { BaseModel } from './base.model';
 import { OptionType } from "./option.type";
 import { Price } from "./price";
-import { TrailDetail } from "./trail.detail";
 
 export class Option {
     constructor() {
@@ -18,23 +16,11 @@ export class Option {
     @Attribute()
     wgt?: OptionType;
     @Attribute()
-    personas?: TrailDetail;
+    persona?: OptionType;
 }
 
-export class Delivery {
-    constructor() {
-        this.options = new OptionType();
-        this.address = new Address();
-    }
-
-    @Attribute()
-    options: OptionType;
-    @Attribute()
-    address: Address;
-}
-
-@Entity('CartDetail')
-export class CartDetail extends BaseModel {
+@Entity('CartItem')
+export class CartItem extends BaseModel {
     constructor() {
         super();
         this.type = '';

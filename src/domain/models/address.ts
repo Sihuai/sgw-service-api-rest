@@ -11,6 +11,8 @@ export class Address extends BaseModel {
         this.street = '';
         this.unit = '';
         this.isDefault = false;
+        this.recipient = '';
+        this.mobile = '';
     }
 
     @Attribute()
@@ -31,4 +33,8 @@ export class Address extends BaseModel {
     postal?: string;
     @Attribute()
     isDefault: boolean;
+    @Attribute()
+    recipient: string;
+    @Attribute()
+    mobile: string;
 }

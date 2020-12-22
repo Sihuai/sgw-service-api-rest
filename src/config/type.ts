@@ -1,11 +1,11 @@
 export const IOC_TYPE = {
   // 1. Repository
   AddressRepoImpl: Symbol.for('AddressRepoImpl'),
+  AnimationPlaybackRepoImpl: Symbol.for('AnimationPlaybackRepoImpl'),
   BillBoardRepoImpl: Symbol.for('BillBoardRepoImpl'),
   CategoryRepoImpl: Symbol.for('CategoryRepoImpl'),
   CartItemRepoImpl: Symbol.for('CartItemRepoImpl'),
   CartItemDetailRepoImpl: Symbol.for('CartItemDetailRepoImpl'),
-  CartItemCartItemDetailRepoImpl: Symbol.for('CartItemCartItemDetailRepoImpl'),
   CartTrailProductRepoImpl: Symbol.for('CartTrailProductRepoImpl'),
   MediaRepoImpl: Symbol.for('MediaRepoImpl'),
   OptionTypeRepoImpl: Symbol.for('OptionTypeRepoImpl'),
@@ -82,11 +82,11 @@ export const IOC_TYPE = {
 
   // 3. Service
   AddressServiceImpl: Symbol.for('AddressServiceImpl'),
+  AnimationPlaybackServiceImpl: Symbol.for('AnimationPlaybackServiceImpl'),
   BillBoardServiceImpl: Symbol.for('BillBoardServiceImpl'),
   CategoryServiceImpl: Symbol.for('CategoryServiceImpl'),
   CartItemServiceImpl: Symbol.for('CartItemServiceImpl'),
   CartItemDetailServiceImpl: Symbol.for('CartItemDetailServiceImpl'),
-  CartItemCartItemDetailServiceImpl: Symbol.for('CartItemCartItemDetailServiceImpl'),
   CartTrailProductServiceImpl: Symbol.for('CartTrailProductServiceImpl'),
   HomeServiceImpl: Symbol.for('HomeServiceImpl'),
   MediaServiceImpl: Symbol.for('MediaServiceImpl'),

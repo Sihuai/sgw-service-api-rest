@@ -1,15 +1,15 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { CartItemCartItemDetail } from "../../../domain/models/cart.item.cart.item.detail";
+import { AnimationPlayback } from "../../../domain/models/animation.playback";
 import { createConnection } from "../../utils/oct-orm";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { CartItemCartItemDetailRepo } from "../cart.item.cart.item.detail.repo";
+import { AnimationPlaybackRepo } from "../animation.playback.repo";
 
-@provide(IOC_TYPE.CartItemCartItemDetailRepoImpl)
-export class CartItemCartItemDetailRepoImpl implements CartItemCartItemDetailRepo {
+@provide(IOC_TYPE.AnimationPlaybackRepoImpl)
+export class AnimationPlaybackRepoImpl implements AnimationPlaybackRepo {
   async selectAllBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [AnimationPlayback]});
 
     try {
       const aql = {
@@ -18,7 +18,7 @@ export class CartItemCartItemDetailRepoImpl implements CartItemCartItemDetailRep
         return: 'doc'
       };
       
-      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
+      const repo = con.repositoryFor<AnimationPlayback>("AnimationPlayback");
       const result = await repo.edgeFindAllBy(aql, false);
 
       if(!result) return null;
@@ -31,10 +31,10 @@ export class CartItemCartItemDetailRepoImpl implements CartItemCartItemDetailRep
   }
 
   async selectOneBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [AnimationPlayback]});
 
     try {
-      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
+      const repo = con.repositoryFor<AnimationPlayback>("AnimationPlayback");
       const result = await repo.edgeFindOneBy(filters, false);
 
       if(!result) return null;
@@ -47,10 +47,10 @@ export class CartItemCartItemDetailRepoImpl implements CartItemCartItemDetailRep
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [AnimationPlayback]});
 
     try {
-      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
+      const repo = con.repositoryFor<AnimationPlayback>("AnimationPlayback");
       const result = await repo.edgeCreate(model);
 
       return result;
@@ -62,10 +62,10 @@ export class CartItemCartItemDetailRepoImpl implements CartItemCartItemDetailRep
   }
 
   async deleteByKey(key: any) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [CartItemCartItemDetail]});
+    const con = await createConnection({...ormSGWConnParam, entities: [AnimationPlayback]});
 
     try {
-      const repo = con.repositoryFor<CartItemCartItemDetail>("CartItemCartItemDetail");
+      const repo = con.repositoryFor<AnimationPlayback>("AnimationPlayback");
       const result = await repo.edgeDeleteByKey(key);
 
       return result;

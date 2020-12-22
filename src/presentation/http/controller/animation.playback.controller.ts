@@ -21,7 +21,7 @@ import { CreateAddressAction } from '../../actions/address/create';
 import { EditAddressAction } from '../../actions/address/edit';
 import { DeleteAddressAction } from '../../actions/address/delete';
 
-@controller('/address')
+@controller('/animationplayback')
 export class AddressController implements interfaces.Controller {
   constructor(
     @inject(IOC_TYPE.GetAddressAction) private getAddressAction: GetAddressAction,
@@ -32,15 +32,15 @@ export class AddressController implements interfaces.Controller {
 
   /**
 * @swagger
-  * /address/get:
+  * /animationplayback/get:
   *   get:
-  *     summary: Retrieve a list of user's address.
-  *     description: Retrieve a list of user's address. Can be use for user profile, cart default address, order address.
+  *     summary: Retrieve animation playback.
+  *     description: Retrieve animation playback.
   *     security:
   *       - apikey: []
   *     responses:
   *       200:
-  *         description: A list of user's address.
+  *         description: Animation playback.
   *         content:
   *           application/json:
   *             schema:
@@ -95,10 +95,14 @@ export class AddressController implements interfaces.Controller {
   *                         type: boolean
   *                         description: The user's default address.
   *                         example: false
-  *                       recipient:
+  *                       nameFirst:
   *                         type: string
-  *                         description: The address's recipient.
-  *                         example: "Mark Louise"
+  *                         description: The address's name first.
+  *                         example: "Mark"
+  *                       nameLast:
+  *                         type: string
+  *                         description: The address's name last.
+  *                         example: "Louise"
   *                       mobile:
   *                         type: string
   *                         description: The address's mobile.
@@ -224,10 +228,10 @@ export class AddressController implements interfaces.Controller {
 
   /**
 * @swagger
-  * /address/create:
+  * /animationplayback/create:
   *   post:
-  *     summary: Create user address in user profile.
-  *     description: Create user address in user profile.
+  *     summary: Create animation playback.
+  *     description: Create animation playback.
   *     security:
   *       - apikey: []
   *     requestBody:
@@ -282,11 +286,11 @@ export class AddressController implements interfaces.Controller {
   *                 allowEmptyValue: false
   *                 description: The user's default address.
   *                 example: false
-  *               recipient:
+  *               nameFirst:
   *                 type: string
   *                 allowEmptyValue: true
-  *                 description: The address's recipient.
-  *                 example: "Mark Louise"
+  *                 description: The address's name first.
+  *                 example: "Mark"
   *               nameLast:
   *                 type: string
   *                 allowEmptyValue: true
@@ -356,10 +360,14 @@ export class AddressController implements interfaces.Controller {
   *                       type: boolean
   *                       description: The user's default address.
   *                       example: false
-  *                     recipient:
+  *                     nameFirst:
   *                       type: string
-  *                       description: The address's recipient.
-  *                       example: "Mark Louise"
+  *                       description: The address's name first.
+  *                       example: "Mark"
+  *                     nameLast:
+  *                       type: string
+  *                       description: The address's name last.
+  *                       example: "Louise"
   *                     mobile:
   *                       type: string
   *                       description: The address's mobile.
@@ -487,10 +495,10 @@ export class AddressController implements interfaces.Controller {
 
   /**
 * @swagger
-  * /address/edit:
+  * /animationplayback/edit:
   *   post:
-  *     summary: Edit user's address.
-  *     description: Edit user's address.
+  *     summary: Edit animation playback.
+  *     description: Edit animation playback.
   *     security:
   *       - apikey: []
   *     requestBody:
@@ -545,11 +553,16 @@ export class AddressController implements interfaces.Controller {
   *                 allowEmptyValue: false
   *                 description: The user's default address.
   *                 example: false
-  *               recipient:
+  *               nameFirst:
   *                 type: string
   *                 allowEmptyValue: true
-  *                 description: The address's recipient.
-  *                 example: "Mark Louise"
+  *                 description: The address's name first.
+  *                 example: "Mark"
+  *               nameLast:
+  *                 type: string
+  *                 allowEmptyValue: true
+  *                 description: The address's name last.
+  *                 example: "Louise"
   *               mobile:
   *                 type: string
   *                 allowEmptyValue: true
@@ -718,10 +731,10 @@ export class AddressController implements interfaces.Controller {
 
   /**
 * @swagger
-  * /address/delete:
+  * /animationplayback/delete:
   *   delete:
-  *     summary: Delete user's address.
-  *     description: Delete user's address.
+  *     summary: Delete animation playback.
+  *     description: Delete animation playback.
   *     security:
   *       - apikey: []
   *     parameters:
@@ -729,7 +742,7 @@ export class AddressController implements interfaces.Controller {
   *         name: key
   *         required: true
   *         allowEmptyValue: false
-  *         description: Key of the address.
+  *         description: Key of the animation playback.
   *         schema:
   *           type: string
   *         style: simple

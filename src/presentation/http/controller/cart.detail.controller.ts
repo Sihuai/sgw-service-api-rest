@@ -2,16 +2,12 @@ import { Request, Response } from 'express-serve-static-core';
 import { inject } from 'inversify';
 import {
   controller,
-  httpDelete,
   httpGet,
-  httpPatch,
-  httpPost,
   interfaces,
   next,
   queryParam,
   request,
   requestHeaders,
-  requestParam,
   response,
 } from 'inversify-express-utils';
 import { IOC_TYPE } from '../../../config/type';
@@ -122,6 +118,10 @@ export class CartDetailController implements interfaces.Controller {
   *                           model:
   *                             type: object
   *                             properties:
+  *                               _key:
+  *                                 type: string
+  *                                 description: The cart options model's key.
+  *                                 example: "123456"
   *                               type:
   *                                 type: number
   *                                 description: The cart options model's type.
@@ -137,6 +137,10 @@ export class CartDetailController implements interfaces.Controller {
   *                           bundle:
   *                             type: object
   *                             properties:
+  *                               _key:
+  *                                 type: string
+  *                                 description: The cart options bundle's key.
+  *                                 example: "123456"
   *                               type:
   *                                 type: number
   *                                 description: The cart options bundle's type.
@@ -152,6 +156,10 @@ export class CartDetailController implements interfaces.Controller {
   *                           color:
   *                             type: object
   *                             properties:
+  *                               _key:
+  *                                 type: string
+  *                                 description: The cart options color's key.
+  *                                 example: "123456"
   *                               type:
   *                                 type: number
   *                                 description: The cart options color's type.
@@ -167,6 +175,10 @@ export class CartDetailController implements interfaces.Controller {
   *                           wgt:
   *                             type: object
   *                             properties:
+  *                               _key:
+  *                                 type: string
+  *                                 description: The cart options wgt's key.
+  *                                 example: "123456"
   *                               type:
   *                                 type: number
   *                                 description: The cart options wgt's type.
@@ -179,21 +191,74 @@ export class CartDetailController implements interfaces.Controller {
   *                                 type: string
   *                                 description: The cart options wgt's name?
   *                                 example: "250g"
-  *                           persona:
-  *                             type: object
-  *                             properties:
-  *                               type:
-  *                                 type: number
-  *                                 description: The cart options persona's type (trail detail persona sequence).
-  *                                 example: 1
-  *                               code:
-  *                                 type: string
-  *                                 description: The cart options persona's code (trail detail persona tag).
-  *                                 example: "PERSONA-FAMILY-3PAX"
-  *                               name:
-  *                                 type: string
-  *                                 description: The cart options persona's name (trail detail persona tag)?
-  *                                 example: "PERSONA-FAMILY-3PAX"
+  *                           personas:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 type:
+  *                                   type: string
+  *                                   description: The cart options personas's type.
+  *                                   example: 1
+  *                                 contents:
+  *                                   type: array
+  *                                   items:
+  *                                     type: object
+  *                                     properties:
+  *                                       sequence:
+  *                                         type: number
+  *                                         description: The trail detail's sequence.
+  *                                         example: 1
+  *                                       type:
+  *                                         type: string
+  *                                         description: The trail detail's type.
+  *                                         example: "PHOTO"
+  *                                       orientation:
+  *                                         type: string
+  *                                         description: The trail detail's orientation.
+  *                                         example: "orientation"
+  *                                       format:
+  *                                         type: string
+  *                                         description: The trail detail's format.
+  *                                         example: "3R"
+  *                                       uri:
+  *                                         type: string
+  *                                         description: The trail detail's uri.
+  *                                         example: "https://fs.zulundatumsolutions.net:3001/images/personas/SGW_Png_Images_Main_Page_Mobile_App_201123_14@3x.png"
+  *                                       tag:
+  *                                         type: string
+  *                                         description: The trail detail's tag.
+  *                                         example: "TOURIST-INDIVIDUAL"
+  *                                       data:
+  *                                         type: object
+  *                                         properties:
+  *                                           content:
+  *                                             type: string
+  *                                             description: The trail detail's content.
+  *                                             example: "Tourist Individual participation information here...."
+  *                                           price:
+  *                                             type: object
+  *                                             properties:
+  *                                               value:
+  *                                                 type: number
+  *                                                 description: The trail detail price's value.
+  *                                                 example: 10.0
+  *                                               currency:
+  *                                                 type: string
+  *                                                 description: The trail detail price's currency.
+  *                                                 example: "SGD"
+  *                                               taxable:
+  *                                                 type: boolean
+  *                                                 description: Does trail detail price taxable?
+  *                                                 example: false
+  *                                               taxInPercentage:
+  *                                                 type: number
+  *                                                 description: The trail detail price tax in percentage.
+  *                                                 example: 7
+  *                                               taxIncluded:
+  *                                                 type: boolean
+  *                                                 description: Does trail detail price included tax?
+  *                                                 example: false
   *       601:
   *         description: Invalid Token.
   *         content:

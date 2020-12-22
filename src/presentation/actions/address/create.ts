@@ -18,6 +18,8 @@ interface IRequest extends INullable<IAddressDTO> {
   city?: string;
   postal?: string;
   isDefault: boolean;
+  recipient: string;
+  mobile: string;
 }
 
 @provide(IOC_TYPE.CreateAddressAction, true)
@@ -34,6 +36,8 @@ export class CreateAddressAction implements IAction {
     "city": "",
     "postal": "",
     "isDefault": "",
+    "recipient": "",
+    "mobile": "",
   }
   `;
   description = '';
@@ -58,6 +62,8 @@ export class CreateAddressAction implements IAction {
     model.city = request.city;
     model.postal = request.postal;
     model.isDefault = request.isDefault;
+    model.recipient = request.recipient;
+    model.mobile = request.mobile;
     model.userCreated = token.email;
     model.userLastUpdated = token.email;
     

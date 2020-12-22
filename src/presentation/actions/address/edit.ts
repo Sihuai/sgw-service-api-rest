@@ -20,6 +20,8 @@ interface IRequest extends INullable<IAddressDTO> {
   city?: string;
   postal?: string;
   isDefault: boolean;
+  recipient: string;
+  mobile: string;
 }
 
 @provide(IOC_TYPE.EditAddressAction, true)
@@ -36,6 +38,8 @@ export class EditAddressAction implements IAction {
     "city": "",
     "postal": "",
     "isDefault": "",
+    "recipient": "",
+    "mobile": "",
   `;
   description = '';
   constructor(
@@ -67,6 +71,8 @@ export class EditAddressAction implements IAction {
     if (isEmptyObject(request.city) == false) address.city = request.city;
     address.postal = request.postal;
     if (isEmptyObject(request.isDefault) == false) address.isDefault = request.isDefault;
+    if (isEmptyObject(request.recipient) == false) address.recipient = request.recipient;
+    if (isEmptyObject(request.mobile) == false) address.mobile = request.mobile;
     address.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     address.userLastUpdated = token.email;
     

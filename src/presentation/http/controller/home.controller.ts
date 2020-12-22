@@ -18,7 +18,7 @@ import { getUserFromToken } from '../../../infra/utils/security';
 @controller('/home')
 export class HomeController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetHomeAction) public getHomeAction: GetHomeAction,
+    @inject(IOC_TYPE.GetHomeAction) private getHomeAction: GetHomeAction,
   ) { }
 
   /**

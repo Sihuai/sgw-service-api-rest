@@ -10,7 +10,7 @@ export class GetUserAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
   ) { }
   async execute(token) : Promise<any>  {
     const filters = {email:token.email, isActive:true};

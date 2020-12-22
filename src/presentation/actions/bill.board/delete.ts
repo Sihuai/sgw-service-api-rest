@@ -12,7 +12,7 @@ export class DeleteBillBoardAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(
-    @inject(IOC_TYPE.BillBoardServiceImpl) public billBoardService: BillBoardService,
+    @inject(IOC_TYPE.BillBoardServiceImpl) private billBoardService: BillBoardService,
   ) {}
   execute(key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!

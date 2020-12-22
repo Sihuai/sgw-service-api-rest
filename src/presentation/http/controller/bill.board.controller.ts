@@ -24,10 +24,10 @@ import { getUserFromToken } from '../../../infra/utils/security';
 @controller('/billboard')
 export class BillBoardController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetBillBoardAction) public getBillBoardAction: GetBillBoardAction,
-    @inject(IOC_TYPE.CreateBillBoardAction) public createBillBoardAction: CreateBillBoardAction,
-    @inject(IOC_TYPE.EditBillBoardAction) public editBillBoardAction: EditBillBoardAction,
-    @inject(IOC_TYPE.DeleteBillBoardAction) public deleteBillBoardAction: DeleteBillBoardAction,
+    @inject(IOC_TYPE.GetBillBoardAction) private getBillBoardAction: GetBillBoardAction,
+    @inject(IOC_TYPE.CreateBillBoardAction) private createBillBoardAction: CreateBillBoardAction,
+    @inject(IOC_TYPE.EditBillBoardAction) private editBillBoardAction: EditBillBoardAction,
+    @inject(IOC_TYPE.DeleteBillBoardAction) private deleteBillBoardAction: DeleteBillBoardAction,
   ) { }
 
   /**

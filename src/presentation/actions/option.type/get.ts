@@ -12,7 +12,7 @@ export class GetOptionTypeAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.OptionTypeServiceImpl) public optionTypeService: OptionTypeService,
+    @inject(IOC_TYPE.OptionTypeServiceImpl) private optionTypeService: OptionTypeService,
   ) { }
   async execute(type: number) : Promise<any>  {
 

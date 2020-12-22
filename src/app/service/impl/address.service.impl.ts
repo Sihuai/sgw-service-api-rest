@@ -17,7 +17,7 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
   constructor(
     @inject(IOC_TYPE.AddressRepoImpl) private addressRepo: AddressRepo,
     @inject(IOC_TYPE.UserAddressServiceImpl) private userAddressService: UserAddressService,
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
   ) {
     super();
   }

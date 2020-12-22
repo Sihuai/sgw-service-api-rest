@@ -23,7 +23,7 @@ export class CreateSectionTrailAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.SectionTrailServiceImpl) public sectionTrailService: SectionTrailService,
+    @inject(IOC_TYPE.SectionTrailServiceImpl) private sectionTrailService: SectionTrailService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

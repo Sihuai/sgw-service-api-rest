@@ -10,7 +10,7 @@ export class GetTrailAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TrailServiceImpl) public trailService: TrailService,
+    @inject(IOC_TYPE.TrailServiceImpl) private trailService: TrailService,
   ) { }
   async execute() : Promise<any>  {
     const filters = {isActive: true};

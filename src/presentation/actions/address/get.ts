@@ -11,8 +11,8 @@ export class GetAddressAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.AddressServiceImpl) public addressService: AddressService,
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.AddressServiceImpl) private addressService: AddressService,
+    @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
   ) { }
   async execute(token) : Promise<any>  {
 

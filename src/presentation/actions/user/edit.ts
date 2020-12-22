@@ -25,7 +25,7 @@ export class EditUserAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
   ) {}
   async execute(request: IRequest) : Promise<any> {
 

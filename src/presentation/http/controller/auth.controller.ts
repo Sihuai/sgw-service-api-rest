@@ -20,9 +20,9 @@ import { getResponseDataCode, ResponseDataCode } from '../constants/response.dat
 @controller('/auth')
 export class AuthController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.RegisterUserAction) public registerUserAction: RegisterUserAction,
-    @inject(IOC_TYPE.SigninAuthAction) public signinAuthAction: SigninAuthAction,
-    @inject(IOC_TYPE.SignoutAuthAction) public signoutAuthAction: SignoutAuthAction,
+    @inject(IOC_TYPE.RegisterUserAction) private registerUserAction: RegisterUserAction,
+    @inject(IOC_TYPE.SigninAuthAction) private signinAuthAction: SigninAuthAction,
+    @inject(IOC_TYPE.SignoutAuthAction) private signoutAuthAction: SignoutAuthAction,
   ) { }
 
   /**

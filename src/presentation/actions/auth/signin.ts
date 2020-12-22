@@ -22,8 +22,8 @@ export class SigninAuthAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
-    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
+    @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
+    @inject(IOC_TYPE.TokenServiceImpl) private tokenService: TokenService,
   ) { }
   async execute(request: IRequest) : Promise<any> {
     if (isEmptyObject(request.email) == true) return -1; // Email is empty!

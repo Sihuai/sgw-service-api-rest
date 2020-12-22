@@ -12,7 +12,7 @@ export class DeleteCartAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(
-    @inject(IOC_TYPE.CartItemServiceImpl) public cartItemService: CartItemService,
+    @inject(IOC_TYPE.CartItemServiceImpl) private cartItemService: CartItemService,
   ) {}
   execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!

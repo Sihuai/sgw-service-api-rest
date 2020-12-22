@@ -10,7 +10,7 @@ export class GetSectionAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.SectionServiceImpl) public sectionService: SectionService,
+    @inject(IOC_TYPE.SectionServiceImpl) private sectionService: SectionService,
   ) { }
   async execute() : Promise<any>  {
     return await this.sectionService.findAll();

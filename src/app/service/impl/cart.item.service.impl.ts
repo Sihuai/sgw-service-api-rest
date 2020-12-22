@@ -17,8 +17,6 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
   constructor(
     @inject(IOC_TYPE.CartItemRepoImpl) private cartItemRepo: CartItemRepo,
     @inject(IOC_TYPE.CartTrailProductServiceImpl) private cartTrailProductService: CartTrailProductService,
-    // @inject(IOC_TYPE.CartItemDetailServiceImpl) private cartItemDetailService: CartItemDetailService,
-    // @inject(IOC_TYPE.CartItemCartItemDetailServiceImpl) private cartItemCartItemDetailService: CartItemCartItemDetailService,
   ) {
     super();
   }
@@ -52,20 +50,20 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
       if (isEmptyObject(cResult) == true) return -11;
 
       // 2. insert into CartItem Product/Trail edge.
-      const cp = new CartTrailProduct();
-      cp._to = 'CartItem/' + cResult._key;
+      const ctp = new CartTrailProduct();
+      ctp._to = 'CartItem/' + cResult._key;
       switch(cartItem.type)
       {
         case 'PRODUCT':
-          cp._from = 'Product/' + typekey;
+          ctp._from = 'Product/' + typekey;
           break;
         case 'TRAIL':
-          cp._from = 'TrailDetail/' + typekey;
+          ctp._from = 'TrailDetail/' + typekey;
           break;
       }
       
-      const cpResult = await this.cartTrailProductService.addOne(cp);
-      if (isEmptyObject(cpResult) == true) return -12;
+      const ctpResult = await this.cartTrailProductService.addOne(ctp);
+      if (isEmptyObject(ctpResult) == true) return -12;
 
       // // 3. Insert into cart item detail collection.
       // const cdResult = await this.cartDetailService.addOne(cartItemDetail);

@@ -26,10 +26,10 @@ import { DeleteOptionTypeAction } from '../../actions/option.type/delete';
 @controller('/optiontype')
 export class OptionTypeController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetOptionTypeAction) public getOptionTypeAction: GetOptionTypeAction,
-    @inject(IOC_TYPE.CreateOptionTypeAction) public createOptionTypeAction: CreateOptionTypeAction,
-    @inject(IOC_TYPE.EditOptionTypeAction) public editOptionTypeAction: EditOptionTypeAction,
-    @inject(IOC_TYPE.DeleteOptionTypeAction) public deleteOptionTypeAction: DeleteOptionTypeAction,
+    @inject(IOC_TYPE.GetOptionTypeAction) private getOptionTypeAction: GetOptionTypeAction,
+    @inject(IOC_TYPE.CreateOptionTypeAction) private createOptionTypeAction: CreateOptionTypeAction,
+    @inject(IOC_TYPE.EditOptionTypeAction) private editOptionTypeAction: EditOptionTypeAction,
+    @inject(IOC_TYPE.DeleteOptionTypeAction) private deleteOptionTypeAction: DeleteOptionTypeAction,
   ) { }
 
   /**

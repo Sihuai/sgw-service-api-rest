@@ -10,7 +10,7 @@ export class GetCartAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.CartItemServiceImpl) public cartItemService: CartItemService,
+    @inject(IOC_TYPE.CartItemServiceImpl) private cartItemService: CartItemService,
   ) { }
   async execute(token) : Promise<any>  {
     const filters = {tag: token.email, isActive: true};

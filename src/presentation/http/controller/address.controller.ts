@@ -24,10 +24,10 @@ import { DeleteAddressAction } from '../../actions/address/delete';
 @controller('/address')
 export class AddressController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetAddressAction) public getAddressAction: GetAddressAction,
-    @inject(IOC_TYPE.CreateAddressAction) public createAddressAction: CreateAddressAction,
-    @inject(IOC_TYPE.EditAddressAction) public editAddressAction: EditAddressAction,
-    @inject(IOC_TYPE.DeleteAddressAction) public deleteAddressAction: DeleteAddressAction,
+    @inject(IOC_TYPE.GetAddressAction) private getAddressAction: GetAddressAction,
+    @inject(IOC_TYPE.CreateAddressAction) private createAddressAction: CreateAddressAction,
+    @inject(IOC_TYPE.EditAddressAction) private editAddressAction: EditAddressAction,
+    @inject(IOC_TYPE.DeleteAddressAction) private deleteAddressAction: DeleteAddressAction,
   ) { }
 
   /**

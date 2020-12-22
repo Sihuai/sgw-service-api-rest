@@ -12,7 +12,7 @@ export class DeleteOptionTypeAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(
-    @inject(IOC_TYPE.OptionTypeServiceImpl) public optionTypeService: OptionTypeService,
+    @inject(IOC_TYPE.OptionTypeServiceImpl) private optionTypeService: OptionTypeService,
   ) {}
   execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!

@@ -30,7 +30,7 @@ export class CreateOptionTypeAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.OptionTypeServiceImpl) public optionTypeService: OptionTypeService,
+    @inject(IOC_TYPE.OptionTypeServiceImpl) private optionTypeService: OptionTypeService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

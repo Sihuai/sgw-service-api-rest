@@ -25,11 +25,11 @@ import { CountCartAction } from '../../actions/cart/count';
 @controller('/cart')
 export class CartController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetCartAction) public getCartAction: GetCartAction,
-    @inject(IOC_TYPE.CreateCartAction) public createCartAction: CreateCartAction,
-    @inject(IOC_TYPE.EditCartAction) public editCartAction: EditCartAction,
-    @inject(IOC_TYPE.DeleteCartAction) public deleteCartAction: DeleteCartAction,
-    @inject(IOC_TYPE.CountCartAction) public countCartAction: CountCartAction,
+    @inject(IOC_TYPE.GetCartAction) private getCartAction: GetCartAction,
+    @inject(IOC_TYPE.CreateCartAction) private createCartAction: CreateCartAction,
+    @inject(IOC_TYPE.EditCartAction) private editCartAction: EditCartAction,
+    @inject(IOC_TYPE.DeleteCartAction) private deleteCartAction: DeleteCartAction,
+    @inject(IOC_TYPE.CountCartAction) private countCartAction: CountCartAction,
   ) { }
 
   /**

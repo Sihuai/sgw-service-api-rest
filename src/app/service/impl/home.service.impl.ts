@@ -9,7 +9,7 @@ import { AbstractBaseService } from './base.service.impl';
 @provide(IOC_TYPE.HomeServiceImpl)
 export class HomeServiceImpl extends AbstractBaseService<any> implements HomeService {
   constructor(
-    @inject(IOC_TYPE.BillBoardServiceImpl) public billBoardService: BillBoardService,
+    @inject(IOC_TYPE.BillBoardServiceImpl) private billBoardService: BillBoardService,
     @inject(IOC_TYPE.SectionServiceImpl) private sectionService: SectionService,
   ) {
     super();

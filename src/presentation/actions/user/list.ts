@@ -9,7 +9,7 @@
 //   payloadExample = '';
 //   description = '';
 //   constructor(
-//     @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+//     @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
 //   ) {}
 //   execute() {
 //     return this.userService.list();

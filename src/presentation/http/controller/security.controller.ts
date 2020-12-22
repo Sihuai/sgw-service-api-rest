@@ -24,12 +24,12 @@ import { getUserFromToken } from '../../../infra/utils/security';
 @controller('/security')
 export class SecurityController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.RegisterUserAction) public registerUserAction: RegisterUserAction,
-    @inject(IOC_TYPE.SigninAuthAction) public signinAuthAction: SigninAuthAction,
-    @inject(IOC_TYPE.SignoutAuthAction) public signoutAuthAction: SignoutAuthAction,
-    @inject(IOC_TYPE.GetTokenAction) public getTokenAction: GetTokenAction,
-    @inject(IOC_TYPE.ResetPWRequestUserAction) public resetPWRequestUserAction: ResetPWRequestUserAction,
-    @inject(IOC_TYPE.ResetPWExecuteUserAction) public resetPWExecuteUserAction: ResetPWExecuteUserAction,
+    @inject(IOC_TYPE.RegisterUserAction) private registerUserAction: RegisterUserAction,
+    @inject(IOC_TYPE.SigninAuthAction) private signinAuthAction: SigninAuthAction,
+    @inject(IOC_TYPE.SignoutAuthAction) private signoutAuthAction: SignoutAuthAction,
+    @inject(IOC_TYPE.GetTokenAction) private getTokenAction: GetTokenAction,
+    @inject(IOC_TYPE.ResetPWRequestUserAction) private resetPWRequestUserAction: ResetPWRequestUserAction,
+    @inject(IOC_TYPE.ResetPWExecuteUserAction) private resetPWExecuteUserAction: ResetPWExecuteUserAction,
   ) { }
 
   /**

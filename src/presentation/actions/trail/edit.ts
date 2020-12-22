@@ -39,7 +39,7 @@ export class EditTrailAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TrailServiceImpl) public trailService: TrailService,
+    @inject(IOC_TYPE.TrailServiceImpl) private trailService: TrailService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

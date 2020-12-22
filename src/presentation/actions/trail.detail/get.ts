@@ -11,7 +11,7 @@ export class GetTrailDetailAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TrailDetailServiceImpl) public trailDetailService: TrailDetailService,
+    @inject(IOC_TYPE.TrailDetailServiceImpl) private trailDetailService: TrailDetailService,
   ) { }
   async execute(trailKey: string) : Promise<any>  {
     if (isEmptyObject(trailKey) == true) return -4; // Trail Key is empty!

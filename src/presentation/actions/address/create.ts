@@ -38,7 +38,7 @@ export class CreateAddressAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.AddressServiceImpl) public addressService: AddressService,
+    @inject(IOC_TYPE.AddressServiceImpl) private addressService: AddressService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

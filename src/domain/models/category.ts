@@ -19,6 +19,7 @@ export class Category extends Media {
     constructor() {
         super();
         this.sequence = -1;
+        this.selected = false;
         // this.titles = '';
         // this.captions = '';
     }
@@ -35,5 +36,5 @@ export class Category extends Media {
     @Attribute()
     data?: Data;
     @Attribute()
-    selected?: boolean;
+    selected: boolean;
 }

@@ -28,7 +28,7 @@ export class CreateCartAction implements IAction {
   payloadExample = `  `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.CartItemServiceImpl) public cartItemService: CartItemService,
+    @inject(IOC_TYPE.CartItemServiceImpl) private cartItemService: CartItemService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

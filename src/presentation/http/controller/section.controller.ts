@@ -27,13 +27,13 @@ import { PagingSectionAction } from '../../actions/section/paging';
 @controller('/section')
 export class SectionController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetSectionAction) public getSectionAction: GetSectionAction,
-    @inject(IOC_TYPE.PagingSectionAction) public pagingSectionAction: PagingSectionAction,
-    @inject(IOC_TYPE.CreateSectionAction) public createSectionAction: CreateSectionAction,
-    @inject(IOC_TYPE.EditSectionAction) public editSectionAction: EditSectionAction,
-    @inject(IOC_TYPE.DeleteSectionAction) public deleteSectionAction: DeleteSectionAction,
-    @inject(IOC_TYPE.CreateSectionTrailAction) public createSectionTrailAction: CreateSectionTrailAction,
-    @inject(IOC_TYPE.DeleteSectionTrailAction) public deleteSectionTrailAction: DeleteSectionTrailAction,
+    @inject(IOC_TYPE.GetSectionAction) private getSectionAction: GetSectionAction,
+    @inject(IOC_TYPE.PagingSectionAction) private pagingSectionAction: PagingSectionAction,
+    @inject(IOC_TYPE.CreateSectionAction) private createSectionAction: CreateSectionAction,
+    @inject(IOC_TYPE.EditSectionAction) private editSectionAction: EditSectionAction,
+    @inject(IOC_TYPE.DeleteSectionAction) private deleteSectionAction: DeleteSectionAction,
+    @inject(IOC_TYPE.CreateSectionTrailAction) private createSectionTrailAction: CreateSectionTrailAction,
+    @inject(IOC_TYPE.DeleteSectionTrailAction) private deleteSectionTrailAction: DeleteSectionTrailAction,
   ) { }
 
   /**

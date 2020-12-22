@@ -63,7 +63,7 @@ export class CreateTrailDetailAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.TrailDetailServiceImpl) public trailDetailService: TrailDetailService,
+    @inject(IOC_TYPE.TrailDetailServiceImpl) private trailDetailService: TrailDetailService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

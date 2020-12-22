@@ -23,7 +23,7 @@ export class ResetPWExecuteUserAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.UserServiceImpl) public userService: UserService,
+    @inject(IOC_TYPE.UserServiceImpl) private userService: UserService,
   ) { }
   async execute(request: IRequest) : Promise<any>  {
     if (isEmptyObject(request.email) == true) return -1; // Email is empty!

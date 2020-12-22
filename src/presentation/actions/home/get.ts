@@ -10,7 +10,7 @@ export class GetHomeAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.HomeServiceImpl) public homeService: HomeServiceImpl,
+    @inject(IOC_TYPE.HomeServiceImpl) private homeService: HomeServiceImpl,
   ) { }
   async execute() {
     return this.homeService.findAll();

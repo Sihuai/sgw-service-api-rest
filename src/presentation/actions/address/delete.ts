@@ -12,7 +12,7 @@ export class DeleteAddressAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(
-    @inject(IOC_TYPE.AddressServiceImpl) public addressService: AddressService,
+    @inject(IOC_TYPE.AddressServiceImpl) private addressService: AddressService,
   ) {}
   execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!

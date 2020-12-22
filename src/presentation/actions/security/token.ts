@@ -13,7 +13,7 @@ export class GetTokenAction implements IAction {
   description = '';
 
   constructor(
-    @inject(IOC_TYPE.TokenServiceImpl) public tokenService: TokenService,
+    @inject(IOC_TYPE.TokenServiceImpl) private tokenService: TokenService,
   ) { }
   async execute(token: string) : Promise<any> {
     const filters = {token:token};

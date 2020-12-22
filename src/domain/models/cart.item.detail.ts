@@ -1,8 +1,8 @@
 import { Entity, Attribute, HashIndex } from "../../infra/utils/oct-orm";
 import { BaseModel } from './base.model';
+import { BillBoard } from "./bill.board";
 import { OptionType } from "./option.type";
 import { Price } from "./price";
-import { TrailDetail } from "./trail.detail";
 
 export class Option {
     constructor() {
@@ -17,7 +17,7 @@ export class Option {
     @Attribute()
     wgt?: OptionType;
     @Attribute()
-    personas?: TrailDetail;
+    personas?: BillBoard[];
 }
 
 @Entity('CartItemDetail')
@@ -32,6 +32,7 @@ export class CartItemDetail extends BaseModel {
         this.uom = '';
         this.tag = '';
         this.price = new Price();
+        this.options = new Option;
     }
 
     @Attribute()
@@ -51,5 +52,5 @@ export class CartItemDetail extends BaseModel {
     @Attribute()
     price: Price;
     @Attribute()
-    options?: Option;
+    options: Option;
 }

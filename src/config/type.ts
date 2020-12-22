@@ -85,7 +85,7 @@ export const IOC_TYPE = {
   BillBoardServiceImpl: Symbol.for('BillBoardServiceImpl'),
   CategoryServiceImpl: Symbol.for('CategoryServiceImpl'),
   CartItemServiceImpl: Symbol.for('CartItemServiceImpl'),
-  CartDetailServiceImpl: Symbol.for('CartDetailServiceImpl'),
+  CartItemDetailServiceImpl: Symbol.for('CartItemDetailServiceImpl'),
   CartItemCartItemDetailServiceImpl: Symbol.for('CartItemCartItemDetailServiceImpl'),
   CartTrailProductServiceImpl: Symbol.for('CartTrailProductServiceImpl'),
   HomeServiceImpl: Symbol.for('HomeServiceImpl'),

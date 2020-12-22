@@ -10,7 +10,7 @@ export class PagingSectionAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.SectionServiceImpl) public sectionService: SectionService,
+    @inject(IOC_TYPE.SectionServiceImpl) private sectionService: SectionService,
   ) { }
   async execute(key: string, index: number) : Promise<any>  {
     return await this.sectionService.page(key, index, 10);

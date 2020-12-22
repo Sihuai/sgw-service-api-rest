@@ -20,8 +20,8 @@ import { getUserFromToken } from '../../../infra/utils/security';
 @controller('/user')
 export class UserController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetUserAction) public getUserAction: GetUserAction,
-    @inject(IOC_TYPE.EditUserAction) public editUserAction: EditUserAction,
+    @inject(IOC_TYPE.GetUserAction) private getUserAction: GetUserAction,
+    @inject(IOC_TYPE.EditUserAction) private editUserAction: EditUserAction,
   ) { }
 
   /**

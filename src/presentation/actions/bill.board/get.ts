@@ -10,7 +10,7 @@ export class GetBillBoardAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(
-    @inject(IOC_TYPE.BillBoardServiceImpl) public billBoardService: BillBoardService,
+    @inject(IOC_TYPE.BillBoardServiceImpl) private billBoardService: BillBoardService,
   ) { }
   async execute() : Promise<any>  {
     const filters = {isActive: true};

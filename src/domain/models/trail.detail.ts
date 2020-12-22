@@ -62,7 +62,7 @@ export class TrailDetail extends BaseModel {
     @Attribute()
     name: string;
     @Attribute()
-    personas: BillBoard[];
+    personas: BillBoard[]; // Personas, in face, always one row.
     @Attribute()
     sections: TrailDetailSection[];
 }

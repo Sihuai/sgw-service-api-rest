@@ -23,7 +23,7 @@ export class CreateBillBoardAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.BillBoardServiceImpl) public billBoardService: BillBoardService,
+    @inject(IOC_TYPE.BillBoardServiceImpl) private billBoardService: BillBoardService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

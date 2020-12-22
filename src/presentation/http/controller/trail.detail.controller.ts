@@ -24,10 +24,10 @@ import { DeleteTrailDetailAction } from '../../actions/trail.detail/delete';
 @controller('/traildetail')
 export class TrailDetailController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetTrailDetailAction) public getTrailDetailAction: GetTrailDetailAction,
-    @inject(IOC_TYPE.CreateTrailDetailAction) public createTrailDetailAction: CreateTrailDetailAction,
-    @inject(IOC_TYPE.EditTrailDetailAction) public editTrailDetailAction: EditTrailDetailAction,
-    @inject(IOC_TYPE.DeleteTrailDetailAction) public deleteTrailDetailAction: DeleteTrailDetailAction,
+    @inject(IOC_TYPE.GetTrailDetailAction) private getTrailDetailAction: GetTrailDetailAction,
+    @inject(IOC_TYPE.CreateTrailDetailAction) private createTrailDetailAction: CreateTrailDetailAction,
+    @inject(IOC_TYPE.EditTrailDetailAction) private editTrailDetailAction: EditTrailDetailAction,
+    @inject(IOC_TYPE.DeleteTrailDetailAction) private deleteTrailDetailAction: DeleteTrailDetailAction,
   ) { }
 
   /**

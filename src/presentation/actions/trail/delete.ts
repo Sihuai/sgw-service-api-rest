@@ -12,7 +12,7 @@ export class DeleteTrailAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(
-    @inject(IOC_TYPE.TrailServiceImpl) public trailService: TrailService,
+    @inject(IOC_TYPE.TrailServiceImpl) private trailService: TrailService,
   ) {}
   execute(token, key: string) {
     if (isEmptyObject(key) == true) return -1; // Key is empty!

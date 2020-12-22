@@ -9,7 +9,7 @@
 //   payloadExample = '"ids": [1, 2], "token": "verysecret"';
 //   description = '';
 //   constructor(
-//     @inject(IOC_TYPE.AttachmentService) public service: AttachmentService,
+//     @inject(IOC_TYPE.AttachmentService) private service: AttachmentService,
 //   ) {}
 //   execute(request: { ids: number[]; token: string }) {
 //     return this.service.delete(request.ids, request.token);

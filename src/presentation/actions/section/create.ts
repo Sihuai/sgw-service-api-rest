@@ -28,7 +28,7 @@ export class CreateSectionAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.SectionServiceImpl) public sectionService: SectionService,
+    @inject(IOC_TYPE.SectionServiceImpl) private sectionService: SectionService,
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 

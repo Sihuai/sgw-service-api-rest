@@ -12,6 +12,7 @@ export const bindings = new AsyncContainerModule(
   async (bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
     await require('../presentation/http/controller/address.controller');
+    await require('../presentation/http/controller/animation.playback.controller');
     await require('../presentation/http/controller/auth.controller');
     await require('../presentation/http/controller/bill.board.controller');
     await require('../presentation/http/controller/cart.controller');

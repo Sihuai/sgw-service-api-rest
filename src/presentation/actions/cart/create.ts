@@ -57,17 +57,6 @@ export class CreateCartAction implements IAction {
     cartitem.userCreated = token.email;
     cartitem.userLastUpdated = token.email;
 
-    const cartItemDetail = new CartItemDetail();
-    // cartItemDetail.type = request.type;
-    // cartItemDetail.name = request.name;
-    // cartItemDetail.description = request.description;
-    // cartItemDetail.uri = request.uri;
-    // cartItemDetail.qty = request.qty;
-    // cartItemDetail.uom = request.uom;
-    // cartItemDetail.tag = token.email;
-    // cartItemDetail.price = request.price;
-    // cartItemDetail.options = request.options;
-
-    return await this.cartItemService.addOne(request.typekey, cartitem, cartItemDetail);
+    return await this.cartItemService.addOne(request.typekey, cartitem);
   }
 }

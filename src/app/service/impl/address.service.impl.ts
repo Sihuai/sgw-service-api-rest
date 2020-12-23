@@ -87,7 +87,7 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       if (isEmptyObject(result) == true) return -10;
   
       // 1. Remove user address relation collection
-      const uaFilters = {_to: 'Address/' + result[0]._key};
+      const uaFilters = {_to: 'Address/' + result[0]._key, isActive:true};
       const uaResult = await this.userAddressService.removeBy(model.userLastUpdated, uaFilters);
       if (uaResult == -10) return -10;
       if (uaResult == false) return -13;

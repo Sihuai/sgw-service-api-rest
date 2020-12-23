@@ -2,6 +2,7 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
 import { CartItemDetail } from '../../../domain/models/cart.item.detail';
+import { normalizeSimpleDataForRead } from '../../../infra/utils/oct-orm/lib/util';
 import { CartItemDetailService } from '../cart.item.detail.service';
 import { CartItemService } from '../cart.item.service';
 import { CartTrailProductService } from '../cart.trail.product.service';
@@ -18,7 +19,7 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
     super();
   }
 
-  async findOneBy(cartItemKey: string) : Promise<CartItemDetail> {
+  async findOneBy(cartItemKey: string) : Promise<any> {
     // 1. Get cart item.
     const ciResult = await this.cartItemService.findAllByKey(cartItemKey);
     // 2. Get cart trail product edge
@@ -27,6 +28,7 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
 
     // 3. Map
     const cartItemDetail = new CartItemDetail();
+    cartItemDetail._key = ciResult[0]._key;
     cartItemDetail.type = ciResult[0].type;
     cartItemDetail.name = ciResult[0].name;
     cartItemDetail.description = ciResult[0].description;
@@ -59,6 +61,6 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
           break;
       }
 
-    return cartItemDetail;
+    return normalizeSimpleDataForRead(CartItemDetail, cartItemDetail);
   }
 }

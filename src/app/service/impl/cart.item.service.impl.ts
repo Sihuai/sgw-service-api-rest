@@ -3,7 +3,6 @@ import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
 import { CartItem } from '../../../domain/models/cart.item';
-import { CartItemDetail } from '../../../domain/models/cart.item.detail';
 import { CartTrailProduct } from '../../../domain/models/cart.trail.product';
 import { CartItemRepo } from '../../../infra/repository/cart.item.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
@@ -43,7 +42,7 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
     return result;
   }
 
-  async addOne(typekey: string, cartItem: CartItem, cartItemDetail: CartItemDetail): Promise<any> {
+  async addOne(typekey: string, cartItem: CartItem): Promise<any> {
     try {
       // 1. Insert into Cart Item collection.
       const cResult = await this.cartItemRepo.insert(cartItem);
@@ -64,18 +63,6 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
       
       const ctpResult = await this.cartTrailProductService.addOne(ctp);
       if (isEmptyObject(ctpResult) == true) return -12;
-
-      // // 3. Insert into cart item detail collection.
-      // const cdResult = await this.cartDetailService.addOne(cartItemDetail);
-      // if (isEmptyObject(cdResult) == true || cdResult == -11) return -12;
-
-      // // 4. Insert into cart item & cart item detail edge.
-      // const ccd = new CartItemCartItemDetail();
-      // ccd._from = 'CartItem/' + cResult._key;
-      // ccd._to = 'CartItemDetail/' + cdResult._key;
-      
-      // const ccdResult = await this.cartCartDetailService.addOne(cartItemDetail);
-      // if (isEmptyObject(ccdResult) == true) return -12;
 
       return cResult;
     } catch (e) {

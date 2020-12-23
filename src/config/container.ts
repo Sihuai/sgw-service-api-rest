@@ -11,7 +11,6 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/bill.board.repo.impl');
   await require('../infra/repository/impl/category.repo.impl');
   await require('../infra/repository/impl/cart.item.repo.impl');
-  await require('../infra/repository/impl/cart.item.detail.repo.impl');
   await require('../infra/repository/impl/cart.trail.product.repo.impl');
   await require('../infra/repository/impl/media.repo.impl');
   await require('../infra/repository/impl/option.type.repo.impl');
@@ -23,6 +22,7 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/trail.trail.detail.repo.impl');
   await require('../infra/repository/impl/user.repo.impl');
   await require('../infra/repository/impl/user.address.repo.impl');
+  await require('../infra/repository/impl/user.animation.playback.repo.impl');
   
   // 2. Service
   await require('../app/service/impl/address.service.impl');
@@ -43,6 +43,7 @@ export const createContainer = async () => {
   await require('../app/service/impl/trail.trail.detail.service.impl');
   await require('../app/service/impl/user.service.impl');
   await require('../app/service/impl/user.address.service.impl');
+  await require('../app/service/impl/user.animation.playback.service.impl');
   
   await container.loadAsync(bindings);
 

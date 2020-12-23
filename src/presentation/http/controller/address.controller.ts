@@ -212,7 +212,7 @@ export class AddressController implements interfaces.Controller {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
 
       const result = await this.getAddressAction.execute(token);
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist address!'));
+      if (result == -10) return response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

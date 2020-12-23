@@ -16,18 +16,18 @@ import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 import { getUserFromToken } from '../../../infra/utils/security';
-import { GetAddressAction } from '../../actions/address/get';
-import { CreateAddressAction } from '../../actions/address/create';
-import { EditAddressAction } from '../../actions/address/edit';
-import { DeleteAddressAction } from '../../actions/address/delete';
+import { GetAnimationPlaybackAction } from '../../actions/animation.playback/get';
+import { CreateAnimationPlaybackAction } from '../../actions/animation.playback/create';
+import { DeleteAnimationPlaybackAction } from '../../actions/animation.playback/delete';
+import { EditAnimationPlaybackAction } from '../../actions/animation.playback/edit';
 
 @controller('/animationplayback')
-export class AddressController implements interfaces.Controller {
+export class AnimationPlaybackController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetAddressAction) private getAddressAction: GetAddressAction,
-    @inject(IOC_TYPE.CreateAddressAction) private createAddressAction: CreateAddressAction,
-    @inject(IOC_TYPE.EditAddressAction) private editAddressAction: EditAddressAction,
-    @inject(IOC_TYPE.DeleteAddressAction) private deleteAddressAction: DeleteAddressAction,
+    @inject(IOC_TYPE.GetAnimationPlaybackAction) private getAnimationPlaybackAction: GetAnimationPlaybackAction,
+    @inject(IOC_TYPE.CreateAnimationPlaybackAction) private createAnimationPlaybackAction: CreateAnimationPlaybackAction,
+    @inject(IOC_TYPE.EditAnimationPlaybackAction) private editAnimationPlaybackAction: EditAnimationPlaybackAction,
+    @inject(IOC_TYPE.DeleteAnimationPlaybackAction) private deleteAnimationPlaybackAction: DeleteAnimationPlaybackAction,
   ) { }
 
   /**
@@ -55,62 +55,78 @@ export class AddressController implements interfaces.Controller {
   *                   description: Response message.
   *                   example: ""
   *                 data:
-  *                   type: array
-  *                   items:
-  *                     type: object
-  *                     properties:
-  *                       country:
-  *                         type: string
-  *                         description: The address's country.
-  *                         example: SINGAPORE
-  *                       block:
-  *                         type: string
-  *                         description: The address's block.
-  *                         example: 40
-  *                       propertyName:
-  *                         type: string
-  *                         description: The address's property name.
-  *                         example: The Excell
-  *                       street:
-  *                         type: string
-  *                         description: The address's street.
-  *                         example: East Coast Road
-  *                       unit:
-  *                         type: string
-  *                         description: The address's unit.
-  *                         example: 03-80
-  *                       province:
-  *                         type: string
-  *                         description: The address's province.
-  *                         example: SINGAPORE
-  *                       city:
-  *                         type: string
-  *                         description: The address's city.
-  *                         example: SINGAPORE
-  *                       postal:
-  *                         type: string
-  *                         description: The address's postal.
-  *                         example: 090088
-  *                       isDefault:
-  *                         type: boolean
-  *                         description: The user's default address.
-  *                         example: false
-  *                       nameFirst:
-  *                         type: string
-  *                         description: The address's name first.
-  *                         example: "Mark"
-  *                       nameLast:
-  *                         type: string
-  *                         description: The address's name last.
-  *                         example: "Louise"
-  *                       mobile:
-  *                         type: string
-  *                         description: The address's mobile.
-  *                         example: "+082 2568425"
-  *                       _key:
-  *                         type: string
-  *                         description: The address's key.
-  *                         example: "123456"
+  *                   type: object
+  *                   properties:
+  *                     _key:
+  *                       type: string
+  *                       description: The animation playback's key.
+  *                       example: "123456"
+  *                     type:
+  *                       type: string
+  *                       description: The animation playback's type.
+  *                       example: "SINGLE"
+  *                     orientation:
+  *                       type: string
+  *                       description: The animation playback's orientation.
+  *                       example: "LANDSCAPE"
+  *                     nextPitStop:
+  *                       type: object
+  *                       properties:
+  *                         name:
+  *                           type: string
+  *                           description: The animation playback's name.
+  *                           example: "01"
+  *                         animations:
+  *                           type: array
+  *                           items:
+  *                             type: object
+  *                             properties:
+  *                               tag:
+  *                                 type: string
+  *                                 description: The animation playback animations's tag.
+  *                                 example: "BASE"
+  *                               uri:
+  *                                 type: string
+  *                                 description: The animation playback animations's uri.
+  *                                 example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *                     buttons:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           sequence:
+  *                             type: number
+  *                             description: The animation playback buttons's sequence.
+  *                             example: 1
+  *                           tag:
+  *                             type: string
+  *                             description: The animation playback buttons's tag.
+  *                             example: "01"
+  *                           uri:
+  *                             type: string
+  *                             description: The animation playback buttons's uri.
+  *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                           isNext:
+  *                             type: boolean
+  *                             description: The animation playback buttons's isNext.
+  *                             example: false
+  *                     icons:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           sequence:
+  *                             type: number
+  *                             description: The animation playback icons's sequence.
+  *                             example: 1
+  *                           tag:
+  *                             type: string
+  *                             description: The animation playback icons's tag.
+  *                             example: "01"
+  *                           uri:
+  *                             type: string
+  *                             description: The animation playback icons's uri.
+  *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -215,10 +231,10 @@ export class AddressController implements interfaces.Controller {
     try {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
 
-      const result = await this.getAddressAction.execute(token);
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist address!'));
+      const result = await this.getAnimationPlaybackAction.execute(token);
+      if (result == -10) return response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
 
-      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result[0]));
     } catch (e) {
       const code = getResponseDataCode(e.name);
       response.status(code).json(ResponseFailure(code, e.stack));
@@ -241,66 +257,91 @@ export class AddressController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               country:
+  *               type:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The address's country.
-  *                 example: SINGAPORE
-  *               block:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's block.
-  *                 example: "40"
-  *               propertyName:
+  *                 description: The animation playback's type.
+  *                 example: "SINGLE"
+  *               orientation:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The address's property name.
-  *                 example: The Excell
-  *               street:
-  *                 type: string
+  *                 description: The animation playback's orientation.
+  *                 example: "LANDSCAPE"
+  *               nextPitStop:
+  *                 type: object
   *                 allowEmptyValue: false
-  *                 description: The address's street.
-  *                 example: East Coast Road
-  *               unit:
-  *                 type: string
+  *                 properties:
+  *                   name:
+  *                     type: string
+  *                     allowEmptyValue: false
+  *                     description: The animation playback's name.
+  *                     example: "01"
+  *                   animations:
+  *                     type: array
+  *                     allowEmptyValue: false
+  *                     items:
+  *                       type: object
+  *                       allowEmptyValue: false
+  *                       properties:
+  *                         tag:
+  *                           type: string
+  *                           allowEmptyValue: false
+  *                           description: The animation playback animations's tag.
+  *                           example: "BASE"
+  *                         uri:
+  *                           type: string
+  *                           allowEmptyValue: false
+  *                           description: The animation playback animations's uri.
+  *                           example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *               buttons:
+  *                 type: array
   *                 allowEmptyValue: false
-  *                 description: The address's unit.
-  *                 example: "03-80"
-  *               province:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's province.
-  *                 example: SINGAPORE
-  *               city:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's city.
-  *                 example: SINGAPORE
-  *               postal:
-  *                 type: string
+  *                 items:
+  *                   type: object
+  *                   allowEmptyValue: false
+  *                   properties:
+  *                     sequence:
+  *                       type: number
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's sequence.
+  *                       example: 1
+  *                     tag:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's tag.
+  *                       example: "01"
+  *                     uri:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's uri.
+  *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                     isNext:
+  *                       type: boolean
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's isNext.
+  *                       example: false
+  *               icons:
+  *                 type: array
   *                 allowEmptyValue: false
-  *                 description: The address's postal.
-  *                 example: "090088"
-  *               isDefault:
-  *                 type: boolean
-  *                 allowEmptyValue: false
-  *                 description: The user's default address.
-  *                 example: false
-  *               nameFirst:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's name first.
-  *                 example: "Mark"
-  *               nameLast:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's name last.
-  *                 example: "Louise"
-  *               mobile:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's mobile.
-  *                 example: "+082 2568425"
+  *                 items:
+  *                   type: object
+  *                   allowEmptyValue: false
+  *                   properties:
+  *                     sequence:
+  *                       type: number
+  *                       allowEmptyValue: false
+  *                       description: The animation playback icons's sequence.
+  *                       example: 1
+  *                     tag:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback icons's tag.
+  *                       example: "01"
+  *                     uri:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback icons's uri.
+  *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
   *     responses:
   *       200:
   *         description: Create Success.
@@ -322,56 +363,74 @@ export class AddressController implements interfaces.Controller {
   *                   properties:
   *                     _key:
   *                       type: string
-  *                       description: address's key.
+  *                       description: animation playback's key.
   *                       example: "123456"
-  *                     country:
+  *                     type:
   *                       type: string
-  *                       description: The address's country.
-  *                       example: SINGAPORE
-  *                     block:
+  *                       description: The animation playback's type.
+  *                       example: "SINGLE"
+  *                     orientation:
   *                       type: string
-  *                       description: The address's block.
-  *                       example: "40"
-  *                     propertyName:
-  *                       type: string
-  *                       description: The address's property name.
-  *                       example: The Excell
-  *                     street:
-  *                       type: string
-  *                       description: The address's street.
-  *                       example: East Coast Road
-  *                     unit:
-  *                       type: string
-  *                       description: The address's unit.
-  *                       example: "03-80"
-  *                     province:
-  *                       type: string
-  *                       description: The address's province.
-  *                       example: SINGAPORE
-  *                     city:
-  *                       type: string
-  *                       description: The address's city.
-  *                       example: SINGAPORE
-  *                     postal:
-  *                       type: string
-  *                       description: The address's postal.
-  *                       example: "090088"
-  *                     isDefault:
-  *                       type: boolean
-  *                       description: The user's default address.
-  *                       example: false
-  *                     nameFirst:
-  *                       type: string
-  *                       description: The address's name first.
-  *                       example: "Mark"
-  *                     nameLast:
-  *                       type: string
-  *                       description: The address's name last.
-  *                       example: "Louise"
-  *                     mobile:
-  *                       type: string
-  *                       description: The address's mobile.
-  *                       example: "+082 2568425"
+  *                       description: The animation playback's orientation.
+  *                       example: "LANDSCAPE"
+  *                     nextPitStop:
+  *                       type: object
+  *                       properties:
+  *                         name:
+  *                           type: string
+  *                           description: The animation playback's name.
+  *                           example: "01"
+  *                         animations:
+  *                           type: array
+  *                           items:
+  *                             type: object
+  *                             properties:
+  *                               tag:
+  *                                 type: string
+  *                                 description: The animation playback animations's tag.
+  *                                 example: "BASE"
+  *                               uri:
+  *                                 type: string
+  *                                 description: The animation playback animations's uri.
+  *                                 example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *                     buttons:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           sequence:
+  *                             type: number
+  *                             description: The animation playback buttons's sequence.
+  *                             example: 1
+  *                           tag:
+  *                             type: string
+  *                             description: The animation playback buttons's tag.
+  *                             example: "01"
+  *                           uri:
+  *                             type: string
+  *                             description: The animation playback buttons's uri.
+  *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                           isNext:
+  *                             type: boolean
+  *                             description: The animation playback buttons's isNext.
+  *                             example: false
+  *                     icons:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           sequence:
+  *                             type: number
+  *                             description: The animation playback icons's sequence.
+  *                             example: 1
+  *                           tag:
+  *                             type: string
+  *                             description: The animation playback icons's tag.
+  *                             example: "01"
+  *                           uri:
+  *                             type: string
+  *                             description: The animation playback icons's uri.
+  *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -476,13 +535,25 @@ export class AddressController implements interfaces.Controller {
     try {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
       
-      const result = await this.createAddressAction.execute(token, request.body);
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Country is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Property name is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Street is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Unit is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Postal is empty!'));
-      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Existed default address!'));
+      const result = await this.createAnimationPlaybackAction.execute(token, request.body);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Orientation is empty!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop is empty!'));
+      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Buttons is empty!'));
+      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icons is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name is empty!'));
+      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations is empty!'));
+      if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations tag is empty!'));
+      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations uri is empty!'));
+      if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence less than zero!'));
+      if (result == -101) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button tag is empty!'));
+      if (result == -102) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button uri is empty!'));
+      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
+      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
+      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
+      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
+      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
       if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to create!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -508,71 +579,96 @@ export class AddressController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               country:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's country.
-  *                 example: SINGAPORE
-  *               block:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's block.
-  *                 example: 40
-  *               propertyName:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's property name.
-  *                 example: The Excell
-  *               street:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's street.
-  *                 example: East Coast Road
-  *               unit:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's unit.
-  *                 example: 03-80
-  *               province:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's province.
-  *                 example: SINGAPORE
-  *               city:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's city.
-  *                 example: SINGAPORE
-  *               postal:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's postal.
-  *                 example: 090088
-  *               isDefault:
-  *                 type: boolean
-  *                 allowEmptyValue: false
-  *                 description: The user's default address.
-  *                 example: false
-  *               nameFirst:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's name first.
-  *                 example: "Mark"
-  *               nameLast:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's name last.
-  *                 example: "Louise"
-  *               mobile:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's mobile.
-  *                 example: "+082 2568425"
   *               _key:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The address's key.
+  *                 description: The animation playback's key.
   *                 example: "123456"
+  *               type:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The animation playback's type.
+  *                 example: "SINGLE"
+  *               orientation:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The animation playback's orientation.
+  *                 example: "LANDSCAPE"
+  *               nextPitStop:
+  *                 type: object
+  *                 allowEmptyValue: false
+  *                 properties:
+  *                   name:
+  *                     type: string
+  *                     allowEmptyValue: false
+  *                     description: The animation playback's name.
+  *                     example: "01"
+  *                   animations:
+  *                     type: array
+  *                     allowEmptyValue: false
+  *                     items:
+  *                       type: object
+  *                       allowEmptyValue: false
+  *                       properties:
+  *                         tag:
+  *                           type: string
+  *                           allowEmptyValue: false
+  *                           description: The animation playback animations's tag.
+  *                           example: "BASE"
+  *                         uri:
+  *                           type: string
+  *                           allowEmptyValue: false
+  *                           description: The animation playback animations's uri.
+  *                           example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *               buttons:
+  *                 type: array
+  *                 allowEmptyValue: false
+  *                 items:
+  *                   type: object
+  *                   allowEmptyValue: false
+  *                   properties:
+  *                     sequence:
+  *                       type: number
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's sequence.
+  *                       example: 1
+  *                     tag:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's tag.
+  *                       example: "01"
+  *                     uri:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's uri.
+  *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                     isNext:
+  *                       type: boolean
+  *                       allowEmptyValue: false
+  *                       description: The animation playback buttons's isNext.
+  *                       example: false
+  *               icons:
+  *                 type: array
+  *                 allowEmptyValue: false
+  *                 items:
+  *                   type: object
+  *                   allowEmptyValue: false
+  *                   properties:
+  *                     sequence:
+  *                       type: number
+  *                       allowEmptyValue: false
+  *                       description: The animation playback icons's sequence.
+  *                       example: 1
+  *                     tag:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback icons's tag.
+  *                       example: "01"
+  *                     uri:
+  *                       type: string
+  *                       allowEmptyValue: false
+  *                       description: The animation playback icons's uri.
+  *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
   *     responses:
   *       200:
   *         description: Success edit.
@@ -594,19 +690,19 @@ export class AddressController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: address's id.
-  *                       example: "Address/123456"
+  *                       description: animation playback's id.
+  *                       example: "AnimationPlayback/123456"
   *                     _key:
   *                       type: string
-  *                       description: address's key.
+  *                       description: animation playback's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: address's revision.
+  *                       description: animation playback's revision.
   *                       example: _blDWGNW---
   *                     _oldRev:
   *                       type: string
-  *                       description: address's old revision.
+  *                       description: animation playback's old revision.
   *                       example: _blBFzW----
   *       601:
   *         description: Invalid Token.
@@ -712,14 +808,26 @@ export class AddressController implements interfaces.Controller {
     try {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
 
-      const result = await this.editAddressAction.execute(token, request.body);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Address key is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Country is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Property name is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Street is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Unit is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Postal is empty!'));
-      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Address isnot exist!!'));
+      const result = await this.editAnimationPlaybackAction.execute(token, request.body);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Orientation is empty!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop is empty!'));
+      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Buttons is empty!'));
+      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icons is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name is empty!'));
+      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations is empty!'));
+      if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations tag is empty!'));
+      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations uri is empty!'));
+      if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence less than zero!'));
+      if (result == -101) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button tag is empty!'));
+      if (result == -102) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button uri is empty!'));
+      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
+      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
+      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
+      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
+      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback key is empty!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -872,10 +980,10 @@ export class AddressController implements interfaces.Controller {
     try {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
 
-      const result = await this.deleteAddressAction.execute(token, key);
+      const result = await this.deleteAnimationPlaybackAction.execute(token, key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist address!'));
-      if (result == -13) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove Address User-Address data!'));
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist animation playback!'));
+      if (result == -13) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove AnimationPlayback User-AnimationPlayback data!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
     } catch (e) {

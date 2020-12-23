@@ -5,7 +5,6 @@ export const IOC_TYPE = {
   BillBoardRepoImpl: Symbol.for('BillBoardRepoImpl'),
   CategoryRepoImpl: Symbol.for('CategoryRepoImpl'),
   CartItemRepoImpl: Symbol.for('CartItemRepoImpl'),
-  CartItemDetailRepoImpl: Symbol.for('CartItemDetailRepoImpl'),
   CartTrailProductRepoImpl: Symbol.for('CartTrailProductRepoImpl'),
   MediaRepoImpl: Symbol.for('MediaRepoImpl'),
   OptionTypeRepoImpl: Symbol.for('OptionTypeRepoImpl'),
@@ -17,6 +16,7 @@ export const IOC_TYPE = {
   TokenRepoImpl: Symbol.for('TokenRepoImpl'),
   UserRepoImpl: Symbol.for('UserRepoImpl'),
   UserAddressRepoImpl: Symbol.for('UserAddressRepoImpl'),
+  UserAnimationPlaybackRepoImpl: Symbol.for('UserAnimationPlaybackRepoImpl'),
 
   // 2. Action
   // - User
@@ -79,6 +79,11 @@ export const IOC_TYPE = {
   EditAddressAction : Symbol.for('EditAddressAction'),
   GetAddressAction : Symbol.for('GetAddressAction'),
   DeleteAddressAction : Symbol.for('DeleteAddressAction'),
+  // - Animation Playback
+  CreateAnimationPlaybackAction : Symbol.for('CreateAnimationPlaybackAction'),
+  EditAnimationPlaybackAction : Symbol.for('EditAnimationPlaybackAction'),
+  GetAnimationPlaybackAction : Symbol.for('GetAnimationPlaybackAction'),
+  DeleteAnimationPlaybackAction : Symbol.for('DeleteAnimationPlaybackAction'),
 
   // 3. Service
   AddressServiceImpl: Symbol.for('AddressServiceImpl'),
@@ -99,4 +104,5 @@ export const IOC_TYPE = {
   TokenServiceImpl: Symbol.for('TokenServiceImpl'),
   UserServiceImpl: Symbol.for('UserServiceImpl'),
   UserAddressServiceImpl: Symbol.for('UserAddressServiceImpl'),
+  UserAnimationPlaybackServiceImpl: Symbol.for('UserAnimationPlaybackServiceImpl'),
 };

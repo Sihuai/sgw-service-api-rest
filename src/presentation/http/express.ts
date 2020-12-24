@@ -36,7 +36,8 @@ export const configAppFactory = ({ port }) => (app: Application) => {
       securitySchemes: {
         apikey: {
           name: 'authorization',
-          type: 'apiKey',
+          type: 'http',
+          scheme: 'bearer',
           in: 'header'
         }
       }

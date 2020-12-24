@@ -40,6 +40,8 @@ export const getUserFromToken = (headerToken, cookieToken): any => {
     throw newError;
   }
 
+  headerToken = headerToken.split(' ')[1];
+
   // if (isEmptyObject(cookieToken) === true)
   // {
   //   newError.name = APP_ERRORS.InvalidToken;

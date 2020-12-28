@@ -24,7 +24,7 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
     return await this.cartItemRepo.selectAll();
   }
 
-  async findAllBy(filters) : Promise<CartItem> {
+  async findAllBy(filters) : Promise<CartItem[]> {
     return await this.cartItemRepo.selectAllBy(filters);
   }
 
@@ -89,24 +89,13 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
       const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10;
 
-      // // 1. Get CartItem CartItemDetail information
-      // const ccdFilters = {_from: model._key};
-      // const ccdResult = await this.cartCartDetailService.findOneBy(ccdFilters);
-      // if (isEmptyObject(ccdResult) == true) return -10;
-
-      // 2. Remove CartItem Trail Product edge
+      // 1. Remove CartItem Trail Product edge
       const ctpFilters = {_to: 'CartItem/' + model._key, isActive: true};
       const ctpResult = await this.cartTrailProductService.removeBy(model.userLastUpdated, ctpFilters);
       if (ctpResult == -10) return -10;
       if (ctpResult == false) return -13;
 
-      // // 3. Remove CartItem CartItemDetail
-      // const cd = new CartItemDetail();
-      // cd._key = ccdResult._to;
-      // const cdResult = await this.cartDetailService.removeOne(cd);
-      // if (isEmptyObject(cdResult) == true) return -10;
-
-      // 4. Remove CartItem
+      // 2. Remove CartItem
       result.isActive = false;
       result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
       result.userLastUpdated = model.userLastUpdated;

@@ -28,7 +28,7 @@ export class User extends BaseModel {
         this.nameFirst = '';
         this.nameLast = '';
         this.nick = '';
-        this.gender = 0;
+        this.gender = '';
         this.pwhash = '';
         this.role = '';
         this.headerUri = '';
@@ -45,7 +45,7 @@ export class User extends BaseModel {
     @Attribute()
     nick: string;
     @Attribute()
-    gender: number;
+    gender: string;
     @Attribute()
     dob: string;
     @Attribute()

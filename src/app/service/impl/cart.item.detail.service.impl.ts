@@ -49,6 +49,9 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
 
           for (let persona of ptResult[0].personas) {
             for (let content of persona.contents) {
+              if (ciResult[0].options == undefined) continue;
+              if (ciResult[0].options.persona == undefined) continue;
+
               if (content.sequence == ciResult[0].options.persona.type) {
                 content.selected == true;
               } else {

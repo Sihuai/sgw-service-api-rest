@@ -23,3 +23,15 @@ export const logInfo = (messages: string[]) => {
     })
     console.log(`----------`);
 }
+
+export const logPayment = (messages: string[]) => {
+    // function to console.log out a set of info messages
+    const now = moment().format('YYYY-MM-DD HH:mm:ss ZZ');
+    console.log(`[INFO] ${now}`);
+
+    // loop through the string array to console.log out the content.
+    messages.forEach((m) => {
+        console.log(m);
+    })
+    console.log(`----------`);
+}

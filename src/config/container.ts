@@ -14,6 +14,10 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/cart.trail.product.repo.impl');
   await require('../infra/repository/impl/media.repo.impl');
   await require('../infra/repository/impl/option.type.repo.impl');
+  await require('../infra/repository/impl/order.repo.impl');
+  await require('../infra/repository/impl/order.item.repo.impl');
+  await require('../infra/repository/impl/order.address.repo.impl');
+  await require('../infra/repository/impl/order.order.item.repo.impl');
   await require('../infra/repository/impl/section.repo.impl');
   await require('../infra/repository/impl/section.trail.repo.impl');
   await require('../infra/repository/impl/token.repo.impl');
@@ -35,6 +39,10 @@ export const createContainer = async () => {
   await require('../app/service/impl/home.service.impl');
   await require('../app/service/impl/media.service.impl');
   await require('../app/service/impl/option.type.service.impl');
+  await require('../app/service/impl/order.service.impl');
+  await require('../app/service/impl/order.item.service.impl');
+  await require('../app/service/impl/order.address.service.impl');
+  await require('../app/service/impl/order.order.item.service.impl');
   await require('../app/service/impl/section.service.impl');
   await require('../app/service/impl/section.trail.service.impl');
   await require('../app/service/impl/token.service.impl');

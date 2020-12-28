@@ -8,6 +8,11 @@ export const IOC_TYPE = {
   CartTrailProductRepoImpl: Symbol.for('CartTrailProductRepoImpl'),
   MediaRepoImpl: Symbol.for('MediaRepoImpl'),
   OptionTypeRepoImpl: Symbol.for('OptionTypeRepoImpl'),
+  OrderRepoImpl: Symbol.for('OrderRepoImpl'),
+  OrderItemRepoImpl: Symbol.for('OrderItemRepoImpl'),
+  OrderOrderItemRepoImpl: Symbol.for('OrderOrderItemRepoImpl'),
+  OrderAddressRepoImpl: Symbol.for('OrderAddressRepoImpl'),
+  PaymentAccountRepoImpl: Symbol.for('PaymentAccountRepoImpl'),
   SectionRepoImpl: Symbol.for('SectionRepoImpl'),
   SectionTrailRepoImpl: Symbol.for('SectionTrailRepoImpl'),
   TrailRepoImpl: Symbol.for('TrailRepoImpl'),
@@ -17,6 +22,7 @@ export const IOC_TYPE = {
   UserRepoImpl: Symbol.for('UserRepoImpl'),
   UserAddressRepoImpl: Symbol.for('UserAddressRepoImpl'),
   UserAnimationPlaybackRepoImpl: Symbol.for('UserAnimationPlaybackRepoImpl'),
+  UserPaymentAccountRepoImpl: Symbol.for('UserPaymentAccountRepoImpl'),
 
   // 2. Action
   // - User
@@ -63,6 +69,7 @@ export const IOC_TYPE = {
   GetCartAction : Symbol.for('GetCartAction'),
   DeleteCartAction : Symbol.for('DeleteCartAction'),
   CountCartAction : Symbol.for('CountCartAction'),
+  CheckoutCartAction : Symbol.for('CheckoutCartAction'),
   // - CartDetail
   CreateCartDetailAction : Symbol.for('CreateCartDetailAction'),
   EditCartDetailAction : Symbol.for('EditCartDetailAction'),
@@ -84,6 +91,19 @@ export const IOC_TYPE = {
   EditAnimationPlaybackAction : Symbol.for('EditAnimationPlaybackAction'),
   GetAnimationPlaybackAction : Symbol.for('GetAnimationPlaybackAction'),
   DeleteAnimationPlaybackAction : Symbol.for('DeleteAnimationPlaybackAction'),
+  // - Order
+  CreateOrderAction : Symbol.for('CreateOrderAction'),
+  EditOrderAction : Symbol.for('EditOrderAction'),
+  GetOrderAction : Symbol.for('GetOrderAction'),
+  DeleteOrderAction : Symbol.for('DeleteOrderAction'),
+  PagingOrderAction : Symbol.for('PagingOrderAction'),
+  // - Order Detail
+  GetOrderDetailAction : Symbol.for('GetOrderDetailAction'),
+  // - PaymentAccount
+  CreatePaymentAccountAction : Symbol.for('CreatePaymentAccountAction'),
+  GetPaymentAccountAction : Symbol.for('GetPaymentAccountAction'),
+  DeletePaymentAccountAction : Symbol.for('DeletePaymentAccountAction'),
+  RemovePaymentAccountAction : Symbol.for('RemovePaymentAccountAction'),
 
   // 3. Service
   AddressServiceImpl: Symbol.for('AddressServiceImpl'),
@@ -96,8 +116,14 @@ export const IOC_TYPE = {
   HomeServiceImpl: Symbol.for('HomeServiceImpl'),
   MediaServiceImpl: Symbol.for('MediaServiceImpl'),
   OptionTypeServiceImpl: Symbol.for('OptionTypeServiceImpl'),
+  OrderServiceImpl: Symbol.for('OrderServiceImpl'),
+  OrderItemServiceImpl: Symbol.for('OrderItemServiceImpl'),
+  OrderOrderItemServiceImpl: Symbol.for('OrderOrderItemServiceImpl'),
+  OrderAddressServiceImpl: Symbol.for('OrderAddressServiceImpl'),
+  PaymentAccountServiceImpl: Symbol.for('PaymentAccountServiceImpl'),
   SectionServiceImpl: Symbol.for('SectionServiceImpl'),
   SectionTrailServiceImpl: Symbol.for('SectionTrailServiceImpl'),
+  StripeServiceImpl: Symbol.for('StripeServiceImpl'),
   TrailServiceImpl: Symbol.for('TrailServiceImpl'),
   TrailDetailServiceImpl: Symbol.for('TrailDetailServiceImpl'),
   TrailTrailDetailServiceImpl: Symbol.for('TrailTrailDetailServiceImpl'),
@@ -105,4 +131,5 @@ export const IOC_TYPE = {
   UserServiceImpl: Symbol.for('UserServiceImpl'),
   UserAddressServiceImpl: Symbol.for('UserAddressServiceImpl'),
   UserAnimationPlaybackServiceImpl: Symbol.for('UserAnimationPlaybackServiceImpl'),
+  UserPaymentAccountServiceImpl: Symbol.for('UserPaymentAccountServiceImpl'),
 };

@@ -2,9 +2,9 @@ import { CartItem } from '../../domain/models/cart.item';
 import { BaseService } from './base.service';
 
 export interface CartItemService extends BaseService<CartItem> {
-    findAll() : Promise<any[]>;
-    findAllBy(filters) : Promise<CartItem>;
-    findAllByKey(filters) : Promise<any>;
+    findAll() : Promise<CartItem[]>;
+    findAllBy(filters) : Promise<CartItem[]>;
+    findAllByKey(filters) : Promise<CartItem[]>;
     findOneBy(filters) : Promise<any>;
     countBy(filters) : Promise<any>;
     addOne(typekey: string, cartItem: CartItem): Promise<any>;

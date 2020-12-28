@@ -27,6 +27,7 @@
     "moment": "^2.27.0",
     "nodemon": "^2.0.6",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^8.129.0",
     "swagger-jsdoc": "5.0.1",
     "swagger-ui-express": "^4.1.5",
     "ts-node": "^9.0.0"

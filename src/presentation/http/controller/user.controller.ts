@@ -70,7 +70,7 @@ export class UserController implements interfaces.Controller {
   *                     gender:
   *                       type: string
   *                       description: The user's gender.
-  *                       example: 25
+  *                       example: MALE
   *                     dob:
   *                       type: string
   *                       description: The user's dob.
@@ -235,7 +235,7 @@ export class UserController implements interfaces.Controller {
   *                 type: string
   *                 allowEmptyValue: true
   *                 description: The user's gender.
-  *                 example: 25
+  *                 example: MALE
   *               dob:
   *                 type: string
   *                 allowEmptyValue: true
@@ -392,7 +392,8 @@ export class UserController implements interfaces.Controller {
 
       const result = await this.editUserAction.execute(request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'User isnot existed!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Gender type is incorrect!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'User isnot existed!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

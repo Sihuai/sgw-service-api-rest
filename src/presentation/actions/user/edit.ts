@@ -14,7 +14,7 @@ interface IRequest extends INullable<IUserDTO> {
   nameFirst: string;
   nameLast: string;
   nick: string;
-  gender: number;
+  gender: string;
   dob: string;
   headerUri: string;
 }
@@ -30,6 +30,9 @@ export class EditUserAction implements IAction {
   async execute(request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request._key) == true) return -1; // Key is empty!
+    if (isEmptyObject(request.gender) == false) {
+      if (request.gender != 'MALE' && request.gender != 'FEMALE') return -2; // Gender type is incorrect!
+    }
 
     const model = new User();
     model._key = request._key;
@@ -37,13 +40,13 @@ export class EditUserAction implements IAction {
 
     const filters = {_key: model._key, isActive: model.isActive};
     const user = await this.userService.findOneBy(filters);
-    if (isEmptyObject(user) == true) return -2; // User isnot existed!;
+    if (isEmptyObject(user) == true) return -3; // User isnot existed!;
     
     if (isEmptyObject(request.nameFirst) == false) user.nameFirst = request.nameFirst;
     if (isEmptyObject(request.nameLast) == false) user.nameLast = request.nameLast;
     if (isEmptyObject(request.nick) == false) user.nick = request.nick;
     if (isEmptyObject(request.dob) == false) user.dob = request.dob;
-    if (request.gender > 0) user.gender = request.gender;
+    if (isEmptyObject(request.gender) == false) user.gender = request.gender;
     if (isEmptyObject(request.headerUri) == false) user.headerUri = request.headerUri;
     user.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     user.userLastUpdated = user.email;

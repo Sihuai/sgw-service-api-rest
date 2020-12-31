@@ -87,7 +87,7 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
       if (isEmptyObject(result) == true) return -10; // No user.
 
       const vcode = await createVerificationCode();
-      const datetimeNow = moment().format('YYYY-MM-DD HH:mm:ss');
+      const datetimeNow = moment().utc().format('YYYY-MM-DD HH:mm:ss');
 
       if (result.resetToken != undefined && result.resetToken.resolved == true) return -11; // Had reset.
       if (result.resetToken != undefined && result.resetToken.dateExpires <= datetimeNow) return -12; // expired.

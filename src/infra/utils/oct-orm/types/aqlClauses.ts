@@ -2,7 +2,7 @@ export type AQLClauses = {
   for: string;
   filter? : string;
   sort? : string;
-  limit ?: {
+  limit? : {
     pageIndex : number;
     pageSize : number;
   };

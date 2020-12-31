@@ -2,12 +2,9 @@ import { Request, Response } from 'express-serve-static-core';
 import { inject } from 'inversify';
 import {
   controller,
-  httpDelete,
-  httpGet,
   httpPost,
   interfaces,
   next,
-  queryParam,
   request,
   requestHeaders,
   response,
@@ -16,26 +13,22 @@ import { IOC_TYPE } from '../../../config/type';
 import { getResponseDataCode, ResponseDataCode } from '../constants/response.data.code';
 import { ResponseFailure, ResponseSuccess } from '../../utils/response.data';
 import { getUserFromToken } from '../../../infra/utils/security';
-import { GetAddressAction } from '../../actions/address/get';
-import { CreateAddressAction } from '../../actions/address/create';
-import { EditAddressAction } from '../../actions/address/edit';
-import { DeleteAddressAction } from '../../actions/address/delete';
+import { GetPaymentAction } from '../../actions/payment/get';
+import { CreatePaymentAction } from '../../actions/payment/create';
 
-@controller('/paymentmethod')
-export class PaymentMethodController implements interfaces.Controller {
+@controller('/payment')
+export class PaymentController implements interfaces.Controller {
   constructor(
-    @inject(IOC_TYPE.GetAddressAction) private getAddressAction: GetAddressAction,
-    @inject(IOC_TYPE.CreateAddressAction) private createAddressAction: CreateAddressAction,
-    @inject(IOC_TYPE.EditAddressAction) private editAddressAction: EditAddressAction,
-    @inject(IOC_TYPE.DeleteAddressAction) private deleteAddressAction: DeleteAddressAction,
+    @inject(IOC_TYPE.GetPaymentAction) private getPaymentAction: GetPaymentAction,
+    @inject(IOC_TYPE.CreatePaymentAction) private createPaymentAction: CreatePaymentAction,
   ) { }
 
   /**
 * @swagger
-  * /paymentmethod/pay:
+  * /payment/create:
   *   post:
-  *     summary: Pay by payment method.
-  *     description: Pay by payment method.
+  *     summary: Create a pay for order.
+  *     description: Create a pay for order.
   *     security:
   *       - apikey: []
   *     requestBody:
@@ -45,66 +38,16 @@ export class PaymentMethodController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               country:
+  *               orderkey:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The address's country.
-  *                 example: SINGAPORE
-  *               block:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's block.
-  *                 example: "40"
-  *               propertyName:
+  *                 description: The order key.
+  *                 example: "123456"
+  *               paymentaccountkey:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The address's property name.
-  *                 example: The Excell
-  *               street:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's street.
-  *                 example: East Coast Road
-  *               unit:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's unit.
-  *                 example: "03-80"
-  *               province:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's province.
-  *                 example: SINGAPORE
-  *               city:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's city.
-  *                 example: SINGAPORE
-  *               postal:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The address's postal.
-  *                 example: "090088"
-  *               isDefault:
-  *                 type: boolean
-  *                 allowEmptyValue: false
-  *                 description: The user's default address.
-  *                 example: false
-  *               recipient:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's recipient.
-  *                 example: "Mark Louise"
-  *               nameLast:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's name last.
-  *                 example: "Louise"
-  *               mobile:
-  *                 type: string
-  *                 allowEmptyValue: true
-  *                 description: The address's mobile.
-  *                 example: "+082 2568425"
+  *                 description: The Payment AccountKey's key.
+  *                 example: "654321"
   *     responses:
   *       200:
   *         description: Create Success.
@@ -268,22 +211,22 @@ export class PaymentMethodController implements interfaces.Controller {
   *                   description: Response data.
   *                   example: ""
   */
-  @httpPost('/pay')
-  private async pay(
+  @httpPost('/create')
+  private async create(
     @requestHeaders('authorization') authHeader: string,
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
       
-      const result = await this.createAddressAction.execute(token, request.body);
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Country is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Property name is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Street is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Unit is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Postal is empty!'));
-      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Existed default address!'));
-      if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to create!'));
+      const result = await this.createPaymentAction.execute(token, request.body);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Address key is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Payment Account key is empty!'));
+      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to get order information!'));
+      if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to get payment account information!'));
+      if (result == -13) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to pay!'));
+      if (result == -14) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to save transaction data!'));
+      if (result == -15) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to save order transaction edge!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

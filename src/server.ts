@@ -25,7 +25,7 @@ export const createApplicationServer = async () => {
   if( !config.default.http ){
       // http property is not defined.
       const messages: string[] = [];
-      messages.push(`[ERROR] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+      messages.push(`[ERROR] ${moment().utc().format('YYYY-MM-DD HH:mm:ss')}`);
       messages.push(`Required property, 'http' is not defined in the configuration file.`);
       messages.push(`HTTP Service cannot be started.`);
       logError(messages);
@@ -35,7 +35,7 @@ export const createApplicationServer = async () => {
   if( !config.default.http.port ){
       // http property is not defined.
       const messages: string[] = [];
-      messages.push(`[ERROR] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+      messages.push(`[ERROR] ${moment().utc().format('YYYY-MM-DD HH:mm:ss')}`);
       messages.push(`Required property, 'http.port' is not defined in the configuration file.`);
       messages.push('HTTP Service cannot be started.');
       logError(messages);
@@ -45,7 +45,7 @@ export const createApplicationServer = async () => {
   if( !config.default.https ){
       // http property is not defined.
       const messages: string[] = [];
-      messages.push(`[ERROR] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+      messages.push(`[ERROR] ${moment().utc().format('YYYY-MM-DD HH:mm:ss')}`);
       messages.push(`Required property, 'https' is not defined in the configuration file.`);
       messages.push('HTTPS Service cannot be started.');
       logError(messages);
@@ -55,7 +55,7 @@ export const createApplicationServer = async () => {
   if( !config.default.https.port ){
       // http property is not defined.
       const messages: string[] = [];
-      messages.push(`[ERROR] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+      messages.push(`[ERROR] ${moment().utc().format('YYYY-MM-DD HH:mm:ss')}`);
       messages.push(`Required property, 'https.port' is not defined in the configuration file.`);
       messages.push('HTTPS Service cannot be started.');
       logError(messages);
@@ -65,7 +65,7 @@ export const createApplicationServer = async () => {
   if( !process.env.HTTPS_CERTIFICATE ){
       // HTTPS_CERTIFICATE environment parameter defined.
       const messages: string[] = [];
-      messages.push(`[ERROR] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+      messages.push(`[ERROR] ${moment().utc().format('YYYY-MM-DD HH:mm:ss')}`);
       messages.push(`Required environment parameter, 'HTTPS_CERTIFICATE' is not defined.`);
       messages.push('HTTPS Service cannot be started.');
       logError(messages);
@@ -75,7 +75,7 @@ export const createApplicationServer = async () => {
   if( !process.env.HTTPS_KEY ){
       // HTTPS_KEY environment parameter defined.
       const messages: string[] = [];
-      messages.push(`[ERROR] ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+      messages.push(`[ERROR] ${moment().utc().format('YYYY-MM-DD HH:mm:ss')}`);
       messages.push(`Required environment parameter, 'HTTPS_KEY' is not defined.`);
       messages.push('HTTPS Service cannot be started.');
       logError(messages);

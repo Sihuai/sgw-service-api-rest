@@ -7,7 +7,7 @@ export interface TrailService extends BaseService<Trail> {
     page(filters) : Promise<any>;
     pageByKey(key) : Promise<PageResult>;
     findAllBy(filters) : Promise<Trail>;
-    findAllByKey(filters) : Promise<any>;
+    findAllByKey(key) : Promise<any>;
     findOneBy(filters) : Promise<any>;
     addOne(model: Trail): Promise<any>;
     editOne(model: Trail): Promise<any>;

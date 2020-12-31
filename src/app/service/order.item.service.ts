@@ -4,7 +4,7 @@ import { BaseService } from './base.service';
 export interface OrderItemService extends BaseService<OrderItem> {
     findAll() : Promise<OrderItem[]>;
     findAllBy(orderKey: string) : Promise<OrderItem[]>;
-    findAllByKey(filters) : Promise<OrderItem[]>;
+    findAllByKey(key) : Promise<OrderItem[]>;
     findOneBy(filters) : Promise<any>;
     countBy(filters) : Promise<any>;
     addOne(model: OrderItem): Promise<any>;

@@ -494,21 +494,21 @@ export class OrderController implements interfaces.Controller {
  @httpGet('/paging')
  private async paging(
    @requestHeaders('authorization') authHeader: string,
-   @queryParam('index') index: number,
+   @queryParam('index') index: string,
    @request() request: Request, @response() response: Response, @next() next: Function,
  ) {
-   try {
-    const token = getUserFromToken(authHeader, request.cookies['r-token']);
-
-     const result = await this.pagingOrderAction.execute(token, index);
+    try {
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
+      
+      const result = await this.pagingOrderAction.execute(token, parseInt(index));
      
-     response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
-   } catch (e) {
-     const code = getResponseDataCode(e.name);
-     response.status(code).json(ResponseFailure(code, e.stack));
-     next(e);
-   }
- }
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
+    } catch (e) {
+      const code = getResponseDataCode(e.name);
+      response.status(code).json(ResponseFailure(code, e.stack));
+      next(e);
+    }
+  }
 
   /**
 * @swagger

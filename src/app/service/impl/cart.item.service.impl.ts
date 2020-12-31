@@ -28,8 +28,8 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
     return await this.cartItemRepo.selectAllBy(filters);
   }
 
-  async findAllByKey(filters) : Promise<any> {
-    return await this.cartItemRepo.selectAllByKey(filters);
+  async findAllByKey(key) : Promise<any> {
+    return await this.cartItemRepo.selectAllByKey(key);
   }
 
   async findOneBy(filters) : Promise<CartItem> {

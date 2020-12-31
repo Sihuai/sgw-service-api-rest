@@ -32,8 +32,8 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
     return await this.trailRepo.selectAllBy(filters);
   }
 
-  async findAllByKey(filters) : Promise<any> {
-    return await this.trailRepo.selectAllByKey(filters);
+  async findAllByKey(key) : Promise<any> {
+    return await this.trailRepo.selectAllByKey(key);
   }
 
   async pageByKey(key) : Promise<PageResult> {

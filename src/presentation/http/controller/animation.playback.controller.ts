@@ -110,6 +110,39 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                             type: boolean
   *                             description: The animation playback buttons's isNext.
   *                             example: false
+  *                           style:
+  *                             type: object
+  *                             properties:
+  *                               normal:
+  *                                 type: object
+  *                                 properties:
+  *                                   top:
+  *                                     type: string
+  *                                     description: The animation playback buttons's top.
+  *                                     example: "50%"
+  *                                   left:
+  *                                     type: string
+  *                                     description: The animation playback buttons's left.
+  *                                     example: "50%"
+  *                                   width:
+  *                                     type: string
+  *                                     description: The animation playback buttons's width.
+  *                                     example: 10
+  *                                   height:
+  *                                     type: string
+  *                                     description: The animation playback buttons's height.
+  *                                     example: 10
+  *                           location:
+  *                             type: object
+  *                             properties:
+  *                               x:
+  *                                 type: number
+  *                                 description: The animation playback buttons's x axis.
+  *                                 example: 1.0215428
+  *                               y:
+  *                                 type: number
+  *                                 description: The animation playback buttons's y axis.
+  *                                 example: 5.5482162
   *                     icons:
   *                       type: array
   *                       items:
@@ -127,6 +160,28 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                             type: string
   *                             description: The animation playback icons's uri.
   *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                           style:
+  *                             type: object
+  *                             properties:
+  *                               normal:
+  *                                 type: object
+  *                                 properties:
+  *                                   top:
+  *                                     type: string
+  *                                     description: The animation playback buttons's top.
+  *                                     example: "50%"
+  *                                   left:
+  *                                     type: string
+  *                                     description: The animation playback buttons's left.
+  *                                     example: "50%"
+  *                                   width:
+  *                                     type: string
+  *                                     description: The animation playback buttons's width.
+  *                                     example: 10
+  *                                   height:
+  *                                     type: string
+  *                                     description: The animation playback buttons's height.
+  *                                     example: 10
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -320,6 +375,39 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback buttons's isNext.
   *                       example: false
+  *                     style:
+  *                       type: object
+  *                       properties:
+  *                         normal:
+  *                           type: object
+  *                           properties:
+  *                             top:
+  *                               type: string
+  *                               description: The animation playback buttons's top.
+  *                               example: "50%"
+  *                             left:
+  *                               type: string
+  *                               description: The animation playback buttons's left.
+  *                               example: "50%"
+  *                             width:
+  *                               type: string
+  *                               description: The animation playback buttons's width.
+  *                               example: 10
+  *                             height:
+  *                               type: string
+  *                               description: The animation playback buttons's height.
+  *                               example: 10
+  *                     location:
+  *                       type: object
+  *                       properties:
+  *                         x:
+  *                           type: number
+  *                           description: The animation playback buttons's x axis.
+  *                           example: 1.0215428
+  *                         y:
+  *                           type: number
+  *                           description: The animation playback buttons's y axis.
+  *                           example: 5.5482162
   *               icons:
   *                 type: array
   *                 allowEmptyValue: false
@@ -342,6 +430,28 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback icons's uri.
   *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                     style:
+  *                       type: object
+  *                       properties:
+  *                         normal:
+  *                           type: object
+  *                           properties:
+  *                             top:
+  *                               type: string
+  *                               description: The animation playback buttons's top.
+  *                               example: "50%"
+  *                             left:
+  *                               type: string
+  *                               description: The animation playback buttons's left.
+  *                               example: "50%"
+  *                             width:
+  *                               type: string
+  *                               description: The animation playback buttons's width.
+  *                               example: 10
+  *                             height:
+  *                               type: string
+  *                               description: The animation playback buttons's height.
+  *                               example: 10
   *     responses:
   *       200:
   *         description: Create Success.
@@ -414,6 +524,39 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                             type: boolean
   *                             description: The animation playback buttons's isNext.
   *                             example: false
+  *                           style:
+  *                             type: object
+  *                             properties:
+  *                               normal:
+  *                                 type: object
+  *                                 properties:
+  *                                   top:
+  *                                     type: string
+  *                                     description: The animation playback buttons's top.
+  *                                     example: "50%"
+  *                                   left:
+  *                                     type: string
+  *                                     description: The animation playback buttons's left.
+  *                                     example: "50%"
+  *                                   width:
+  *                                     type: string
+  *                                     description: The animation playback buttons's width.
+  *                                     example: 10
+  *                                   height:
+  *                                     type: string
+  *                                     description: The animation playback buttons's height.
+  *                                     example: 10
+  *                     location:
+  *                       type: object
+  *                       properties:
+  *                         x:
+  *                           type: number
+  *                           description: The animation playback buttons's x axis.
+  *                           example: 1.0215428
+  *                         y:
+  *                           type: number
+  *                           description: The animation playback buttons's y axis.
+  *                           example: 5.5482162
   *                     icons:
   *                       type: array
   *                       items:
@@ -431,6 +574,28 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                             type: string
   *                             description: The animation playback icons's uri.
   *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                           style:
+  *                             type: object
+  *                             properties:
+  *                               normal:
+  *                                 type: object
+  *                                 properties:
+  *                                   top:
+  *                                     type: string
+  *                                     description: The animation playback buttons's top.
+  *                                     example: "50%"
+  *                                   left:
+  *                                     type: string
+  *                                     description: The animation playback buttons's left.
+  *                                     example: "50%"
+  *                                   width:
+  *                                     type: string
+  *                                     description: The animation playback buttons's width.
+  *                                     example: 10
+  *                                   height:
+  *                                     type: string
+  *                                     description: The animation playback buttons's height.
+  *                                     example: 10
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -548,12 +713,29 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence less than zero!'));
       if (result == -101) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button tag is empty!'));
       if (result == -102) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button uri is empty!'));
-      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
-      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
-      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
-      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
-      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
-      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style is empty!'));
+      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal is empty!'));
+      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal top is empty!'));
+      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal left is empty!'));
+      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal width less than zero!'));
+      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal height less than zero!'));
+      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location is empty!'));
+      if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location x less than zero!'));
+      if (result == -111) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location y less than zero!'));
+      if (result == -112) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
+      if (result == -113) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+
+      if (result == -114) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
+      if (result == -115) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
+      if (result == -116) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
+      if (result == -117) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style is empty!'));
+      if (result == -118) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal is empty!'));
+      if (result == -119) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal top is empty!'));
+      if (result == -120) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal left is empty!'));
+      if (result == -121) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal width less than zero!'));
+      if (result == -122) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal height less than zero!'));
+      if (result == -123) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+
       if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to create!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -647,6 +829,39 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback buttons's isNext.
   *                       example: false
+  *                     style:
+  *                       type: object
+  *                       properties:
+  *                         normal:
+  *                           type: object
+  *                           properties:
+  *                             top:
+  *                               type: string
+  *                               description: The animation playback buttons's top.
+  *                               example: "50%"
+  *                             left:
+  *                               type: string
+  *                               description: The animation playback buttons's left.
+  *                               example: "50%"
+  *                             width:
+  *                               type: string
+  *                               description: The animation playback buttons's width.
+  *                               example: 10
+  *                             height:
+  *                               type: string
+  *                               description: The animation playback buttons's height.
+  *                               example: 10
+  *                     location:
+  *                       type: object
+  *                       properties:
+  *                         x:
+  *                           type: number
+  *                           description: The animation playback buttons's x axis.
+  *                           example: 1.0215428
+  *                         y:
+  *                           type: number
+  *                           description: The animation playback buttons's y axis.
+  *                           example: 5.5482162
   *               icons:
   *                 type: array
   *                 allowEmptyValue: false
@@ -669,6 +884,28 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback icons's uri.
   *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                     style:
+  *                       type: object
+  *                       properties:
+  *                         normal:
+  *                           type: object
+  *                           properties:
+  *                             top:
+  *                               type: string
+  *                               description: The animation playback buttons's top.
+  *                               example: "50%"
+  *                             left:
+  *                               type: string
+  *                               description: The animation playback buttons's left.
+  *                               example: "50%"
+  *                             width:
+  *                               type: string
+  *                               description: The animation playback buttons's width.
+  *                               example: 10
+  *                             height:
+  *                               type: string
+  *                               description: The animation playback buttons's height.
+  *                               example: 10
   *     responses:
   *       200:
   *         description: Success edit.
@@ -821,13 +1058,30 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence less than zero!'));
       if (result == -101) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button tag is empty!'));
       if (result == -102) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button uri is empty!'));
-      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
-      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
-      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
-      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
-      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
-      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
-      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback key is empty!'));
+      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style is empty!'));
+      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal is empty!'));
+      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal top is empty!'));
+      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal left is empty!'));
+      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal width less than zero!'));
+      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal height less than zero!'));
+      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location is empty!'));
+      if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location x less than zero!'));
+      if (result == -111) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location y less than zero!'));
+      if (result == -112) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
+      if (result == -113) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+
+      if (result == -114) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
+      if (result == -115) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
+      if (result == -116) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
+      if (result == -117) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style is empty!'));
+      if (result == -118) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal is empty!'));
+      if (result == -119) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal top is empty!'));
+      if (result == -120) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal left is empty!'));
+      if (result == -121) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal width less than zero!'));
+      if (result == -122) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal height less than zero!'));
+      if (result == -123) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+
+      if (result == -124) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback key is empty!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

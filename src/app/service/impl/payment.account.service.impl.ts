@@ -9,7 +9,7 @@ import { PaymentAccountRepo } from '../../../infra/repository/payment.account.re
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
 import { PaymentAccountService } from '../payment.account.service';
-import { StripeService } from '../third.party/stripe.service';
+import { StripeService } from '../../third.party/stripe.service';
 import { UserPaymentAccountService } from '../user.payment.account.service';
 import { UserService } from '../user.service';
 import { AbstractBaseService } from './base.service.impl';
@@ -37,6 +37,10 @@ export class PaymentAccountServiceImpl extends AbstractBaseService<PaymentAccoun
     return await this.paymentaccountRepo.selectAllByKey(keys);
   }
 
+  async findAllByKey(key) : Promise<PaymentAccount[]> {
+    return await this.paymentaccountRepo.selectAllByKey(key);
+  }
+
   async findOneBy(filters) : Promise<PaymentAccount> {
     return await this.paymentaccountRepo.selectOneBy(filters);
   }
@@ -48,7 +52,7 @@ export class PaymentAccountServiceImpl extends AbstractBaseService<PaymentAccoun
 
       // 1. Check payment account in PaymentAccount collection
       const upaFilters = {_from: 'Users/' + user._key, isActive:true};
-      const paymentAccountes = await this.userPaymentAccountService.findAllBy(upaFilters);
+      const paymentAccountes = await this.findAllBy(upaFilters);
 
       // 2.1 If have account, then, get the account details
       if (isEmptyObject(paymentAccountes) == false && paymentAccountes != -10) {
@@ -58,9 +62,11 @@ export class PaymentAccountServiceImpl extends AbstractBaseService<PaymentAccoun
         }
 
         // 2.2. Check account number existed or not
-        const cards = await this.stripeService.findAllByKey(customerIDs);
-        for (let card of cards) {
-          if (card.number == dto.number) return -10;
+        const accounts = await this.stripeService.findAllByKey(customerIDs);
+        for (let account of accounts) {
+          for (let data of account.data) {
+            if (data.card.last4 == dto.number.substr(dto.number.length - 4, 4)) return -10;
+          }
         }
       }
 
@@ -71,9 +77,9 @@ export class PaymentAccountServiceImpl extends AbstractBaseService<PaymentAccoun
       // 4. Insert into paymentaccount
       const model = new PaymentAccount();
       model.type = account.type;
-      model.gateway = account.gateway;
-      model.customerID = account.customerID;
-      model.paymentMethodID = account.paymentMethodID;
+      model.gateway = 'stripe';
+      model.customerID = account.customer;
+      model.paymentMethodID = account.id;
       model.tag = email;
       model.userCreated = email;
       model.userLastUpdated = email;

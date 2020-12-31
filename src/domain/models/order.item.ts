@@ -32,6 +32,7 @@ export class OrderItem extends BaseModel {
         this.tag = '';
         this.price = new Price();
         this.amount = new Price();
+        this.status = '';
     }
 
     @Attribute()
@@ -54,4 +55,6 @@ export class OrderItem extends BaseModel {
     options?: Option;
     @Attribute()
     amount: Price;
+    @Attribute()
+    status: string;
 }

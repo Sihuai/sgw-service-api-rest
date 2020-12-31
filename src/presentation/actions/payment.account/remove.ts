@@ -6,7 +6,7 @@ import { PaymentAccount } from '../../../domain/models/payment.account';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
-@provide(IOC_TYPE.DeletePaymentAccountAction, true)
+@provide(IOC_TYPE.RemovePaymentAccountAction, true)
 @provide('action', true)
 export class RemovePaymentAccountAction implements IAction {
   payloadExample = 'key: "verysecret"';

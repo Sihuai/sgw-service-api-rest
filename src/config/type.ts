@@ -12,7 +12,9 @@ export const IOC_TYPE = {
   OrderItemRepoImpl: Symbol.for('OrderItemRepoImpl'),
   OrderOrderItemRepoImpl: Symbol.for('OrderOrderItemRepoImpl'),
   OrderAddressRepoImpl: Symbol.for('OrderAddressRepoImpl'),
+  OrderPaymentTransactionRepoImpl: Symbol.for('OrderPaymentTransactionRepoImpl'),
   PaymentAccountRepoImpl: Symbol.for('PaymentAccountRepoImpl'),
+  PaymentTransactionRepoImpl: Symbol.for('PaymentTransactionRepoImpl'),
   SectionRepoImpl: Symbol.for('SectionRepoImpl'),
   SectionTrailRepoImpl: Symbol.for('SectionTrailRepoImpl'),
   TrailRepoImpl: Symbol.for('TrailRepoImpl'),
@@ -104,6 +106,9 @@ export const IOC_TYPE = {
   GetPaymentAccountAction : Symbol.for('GetPaymentAccountAction'),
   DeletePaymentAccountAction : Symbol.for('DeletePaymentAccountAction'),
   RemovePaymentAccountAction : Symbol.for('RemovePaymentAccountAction'),
+  // - Payment
+  CreatePaymentAction : Symbol.for('CreatePaymentAction'),
+  GetPaymentAction : Symbol.for('GetPaymentAction'),
 
   // 3. Service
   AddressServiceImpl: Symbol.for('AddressServiceImpl'),
@@ -120,7 +125,9 @@ export const IOC_TYPE = {
   OrderItemServiceImpl: Symbol.for('OrderItemServiceImpl'),
   OrderOrderItemServiceImpl: Symbol.for('OrderOrderItemServiceImpl'),
   OrderAddressServiceImpl: Symbol.for('OrderAddressServiceImpl'),
+  OrderPaymentTransactionServiceImpl: Symbol.for('OrderPaymentTransactionServiceImpl'),
   PaymentAccountServiceImpl: Symbol.for('PaymentAccountServiceImpl'),
+  PaymentTransactionServiceImpl: Symbol.for('PaymentTransactionServiceImpl'),
   SectionServiceImpl: Symbol.for('SectionServiceImpl'),
   SectionTrailServiceImpl: Symbol.for('SectionTrailServiceImpl'),
   StripeServiceImpl: Symbol.for('StripeServiceImpl'),

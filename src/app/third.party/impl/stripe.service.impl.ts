@@ -1,11 +1,12 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import Stripe from 'stripe';
-import { AbstractBaseService } from '../../impl/base.service.impl';
-import { IPaymentAccountDTO } from '../../../../domain/dtos/i.payment.account.dto';
-import { UserService } from '../../user.service';
-import { IOC_TYPE } from '../../../../config/type';
+import { AbstractBaseService } from '../../service/impl/base.service.impl';
+import { IPaymentAccountDTO } from '../../../domain/dtos/i.payment.account.dto';
+import { UserService } from '../../service/user.service';
+import { IOC_TYPE } from '../../../config/type';
 import { StripeService } from '../stripe.service';
+import { logPaymentTrade } from '../../../infra/utils/logger';
 
 @provide(IOC_TYPE.StripeServiceImpl)
 export class StripeServiceImpl extends AbstractBaseService<Stripe> implements StripeService {
@@ -22,11 +23,11 @@ export class StripeServiceImpl extends AbstractBaseService<Stripe> implements St
     return stripe;
   }
 
-  async findAllByKey(keys) : Promise<any> {
+  async findAllByKey(key) : Promise<any> {
     const stripe = this.newStripe();
 
     const promises : Array<any> = [];
-    keys.forEach((key) => {
+    key.forEach((key) => {
         promises.push(stripe.paymentMethods.list({customer: key, type: 'card'}));
     })
 
@@ -88,27 +89,32 @@ export class StripeServiceImpl extends AbstractBaseService<Stripe> implements St
     }
   }
 
-  async pay(model): Promise<any> {
-    // try{
-    //   const stripe = this.newStripe();
+  async pay(total: number, currency: string, customerID: string, paymentMethodID: string): Promise<any> {
+    try{
+      const stripe = this.newStripe();
   
-    //   const intent = await stripe.paymentIntents.create({
-    //       amount: params.amount.total*100,
-    //       currency: params.amount.currency,
-    //       payment_method_types: ['card'],
-    //       customer: params.gateway.customerID,
-    //   })
+      const intent = await stripe.paymentIntents.create({
+          amount: total*100,
+          currency: currency,
+          payment_method_types: ['card'],
+          customer: customerID,
+      })
       
-    //   const outcomeConfirmation = await stripe.paymentIntents.confirm(
-    //       intent.id,
-    //       {
-    //           payment_method: params.gateway.paymentMethodID
-    //       }
-    //   )
+      const outcomeConfirmation = await stripe.paymentIntents.confirm(
+          intent.id,
+          {
+              payment_method: paymentMethodID
+          }
+      )
 
-    //   return outcomeConfirmation;
-    // }catch(e){
-    //   throw e;
-    // }
+      var result = JSON.stringify(outcomeConfirmation);
+      
+      // Save log file to local disk for backup
+      logPaymentTrade(result);
+
+      return result;
+    }catch(e){
+      throw e;
+    }
   }
 }

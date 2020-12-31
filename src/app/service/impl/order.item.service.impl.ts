@@ -37,8 +37,8 @@ export class OrderItemServiceImpl extends AbstractBaseService<OrderItem> impleme
     return await this.orderItemRepo.selectAllByKey(oiKeys);
   }
 
-  async findAllByKey(filters) : Promise<OrderItem[]> {
-    return await this.orderItemRepo.selectAllByKey(filters);
+  async findAllByKey(key) : Promise<OrderItem[]> {
+    return await this.orderItemRepo.selectAllByKey(key);
   }
 
   async findOneBy(filters) : Promise<OrderItem> {
@@ -65,9 +65,9 @@ export class OrderItemServiceImpl extends AbstractBaseService<OrderItem> impleme
 
   async editOne(model: OrderItem): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const isExisted = await this.orderItemRepo.existsBy(filters);
-      if (isExisted == false) return -10;
+      // const filters = {_key: model._key};
+      // const isExisted = await this.orderItemRepo.existsBy(filters);
+      // if (isExisted == false) return -10;
 
       return await this.orderItemRepo.update(model);
     } catch (e) {

@@ -41,6 +41,10 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
     return orders;
   }
 
+  async findAllByKey(key) : Promise<Order[]> {
+    return await this.orderRepo.selectAllByKey(key);
+  }
+
   async findOneBy(filters) : Promise<Order> {
     const order = await this.orderRepo.selectOneBy(filters);
 
@@ -55,7 +59,7 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
       // 2. Map cart item to order item
       const orderItems: Array<OrderItem> = [];
       var orderAmount = 0;
-      var orderCurrency;
+      var orderCurrency = '';
       var orderQty = 0;
       for (let cartItem of cartItems) {
         const orderItem = new OrderItem();
@@ -69,6 +73,7 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
         orderItem.tag = cartItem.tag;
         orderItem.price = cartItem.price;
         orderItem.options = cartItem.options;
+        orderItem.status = 'NEW';
         orderItem.userCreated = email;
         orderItem.userLastUpdated = email;
 
@@ -98,7 +103,7 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
       const order = new Order();
       order.tag = email;
       order.quantity = orderQty;
-      order.status = 'OPEN';
+      order.status = 'NEW';
       order.amount = amount;
       order.userCreated = email;
       order.userLastUpdated = email;
@@ -146,9 +151,9 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
 
   async editOne(model: Order): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const isExisted = await this.orderRepo.existsBy(filters);
-      if (isExisted == false) return -11;
+      // const filters = {_key: model._key};
+      // const isExisted = await this.orderRepo.existsBy(filters);
+      // if (isExisted == false) return -11;
 
       return await this.orderRepo.update(model);
     } catch (e) {

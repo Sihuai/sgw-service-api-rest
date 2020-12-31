@@ -224,15 +224,15 @@ export class PaymentAccountController implements interfaces.Controller {
   *                 description: The payment method's cvc.
   *                 example: "0123"
   *               expMonth:
-  *                 type: string
+  *                 type: number
   *                 allowEmptyValue: false
   *                 description: The payment method's expMonth.
-  *                 example: "12"
+  *                 example: 12
   *               expYear:
-  *                 type: string
+  *                 type: number
   *                 allowEmptyValue: false
   *                 description: The payment method's expYear.
-  *                 example: "2025"
+  *                 example: 2025
   *     responses:
   *       200:
   *         description: Create Success.

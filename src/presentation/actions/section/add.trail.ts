@@ -9,7 +9,7 @@ import { IAction } from '../base.action';
 
 interface IRequest extends INullable<ISectionTrailDTO> {
   sectionkey: string;
-  trialkey: string;
+  trailkey: string;
 }
 
 @provide(IOC_TYPE.CreateSectionTrailAction, true)
@@ -18,7 +18,7 @@ export class CreateSectionTrailAction implements IAction {
   payloadExample = `
   {
     "sectionkey": "2589592",
-    "trialkey": "1758453"
+    "trailkey": "1758453"
   }
   `;
   description = '';
@@ -28,11 +28,11 @@ export class CreateSectionTrailAction implements IAction {
   async execute(token, request: IRequest) : Promise<any> {
 
     if (isEmptyObject(request.sectionkey) == true) return -1; // Section Key is empty!
-    if (isEmptyObject(request.trialkey) == true) return -2; // Trial Key is empty!
+    if (isEmptyObject(request.trailkey) == true) return -2; // Trail Key is empty!
 
     const model = new SectionTrail();
     model._from = 'Section/' + request.sectionkey;
-    model._to = 'Trail/' + request.trialkey;
+    model._to = 'Trail/' + request.trailkey;
     model.userCreated = token.email;
     model.userLastUpdated = token.email;
     

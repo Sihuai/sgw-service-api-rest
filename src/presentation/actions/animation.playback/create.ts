@@ -46,37 +46,48 @@ export class CreateAnimationPlaybackAction implements IAction {
       if (button.sequence < 0) return -100; // Button sequence less than zero!
       if (isEmptyObject(button.tag) == true) return -101; // Button tag is empty!
       if (isEmptyObject(button.uri) == true) return -102; // Button uri is empty!
-      if (isEmptyObject(button.style) == true) return -103; // Button style is empty!
-      if (isEmptyObject(button.style.normal) == true) return -104; // Button style normal is empty!
-      if (isEmptyObject(button.style.normal.top) == true) return -105; // Button style normal top is empty!
-      if (isEmptyObject(button.style.normal.left) == true) return -106; // Button style normal left is empty!
-      if (button.style.normal.width < 0) return -107; // Button style normal width less than zero!
-      if (button.style.normal.height < 0) return -108; // Button style normal height less than zero!
-      if (isEmptyObject(button.location) == true) return -109; // Button location is empty!
-      if (button.location.x < 0) return -110; // Button location x less than zero!
-      if (button.location.y < 0) return -111; // Button location y less than zero!
+      if (isEmptyObject(button.styles) == true) return -103; // Button styles is empty!
+
+      for (let style of button.styles) {
+        if (isEmptyObject(style.type) == true) return -104; // Button style type is empty!
+        if (isEmptyObject(style.parameters) == true) return -105; // Button style parameters is empty!
+        if (isEmptyObject(style.parameters.top) == true) return -106; // Button style parameters top is empty!
+        if (isEmptyObject(style.parameters.left) == true) return -107; // Button style parameters left is empty!
+        if (style.parameters.width < 0) return -108; // Button style parameters width less than zero!
+        if (style.parameters.height < 0) return -109; // Button style parameters height less than zero!
+        if (style.parameters.zIndex < 0) return -110; // Button style parameters zIndex less than zero!
+      }
+
+      if (isEmptyObject(button.location) == true) return -111; // Button location is empty!
+      if (button.location.x < 0) return -112; // Button location x less than zero!
+      if (button.location.y < 0) return -113; // Button location y less than zero!
 
       if (button.isNext == true) isNextTrueCount++;
 
-      if (tmpSequence.includes(button.sequence) == true) return -112; // Button sequence has repeat no.!
+      if (tmpSequence.includes(button.sequence) == true) return -114; // Button sequence has repeat no.!
       tmpSequence.push(button.sequence);
     }
 
-    if (isNextTrueCount > 1) return -113; // Button isNext have repeat True!
+    if (isNextTrueCount > 1) return -115; // Button isNext have repeat True!
 
     var tmpSequence: Array<number> = [];
     for (let icon of request.icons) {
-      if (icon.sequence < 0) return -114; // Icon sequence less than zero!
-      if (isEmptyObject(icon.tag) == true) return -115; // Icon tag is empty!
-      if (isEmptyObject(icon.uri) == true) return -116; // Icon uri is empty!
-      if (isEmptyObject(icon.style) == true) return -117; // Icon style is empty!
-      if (isEmptyObject(icon.style.normal) == true) return -118; // Icon style normal is empty!
-      if (isEmptyObject(icon.style.normal.top) == true) return -119; // Icon style normal top is empty!
-      if (isEmptyObject(icon.style.normal.left) == true) return -120; // Icon style normal left is empty!
-      if (icon.style.normal.width < 0) return -121; // Icon style normal width less than zero!
-      if (icon.style.normal.height < 0) return -122; // Icon style normal height less than zero!
+      if (icon.sequence < 0) return -116; // Icon sequence less than zero!
+      if (isEmptyObject(icon.tag) == true) return -117; // Icon tag is empty!
+      if (isEmptyObject(icon.uri) == true) return -118; // Icon uri is empty!
+      if (isEmptyObject(icon.styles) == true) return -119; // Icon styles is empty!
 
-      if (tmpSequence.includes(icon.sequence) == true) return -123; // Icon sequence has repeat no.!
+      for (let style of icon.styles) {
+        if (isEmptyObject(style.type) == true) return -120; // Icon style type is empty!
+        if (isEmptyObject(style.parameters) == true) return -121; // Icon style parameters is empty!
+        if (isEmptyObject(style.parameters.top) == true) return -122; // Icon style parameters top is empty!
+        if (isEmptyObject(style.parameters.left) == true) return -123; // Icon style parameters left is empty!
+        if (style.parameters.width < 0) return -124; // Icon style parameters width less than zero!
+        if (style.parameters.height < 0) return -125; // Icon style parameters height less than zero!
+        if (style.parameters.zIndex < 0) return -126; // Icon style parameters zIndex less than zero!
+      }
+
+      if (tmpSequence.includes(icon.sequence) == true) return -127; // Icon sequence has repeat no.!
       tmpSequence.push(icon.sequence);
     }
 

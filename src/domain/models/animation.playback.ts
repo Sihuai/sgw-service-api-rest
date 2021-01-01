@@ -13,12 +13,13 @@ export class Animation {
   uri: string;
 }
 
-export class Normal {
+export class StyleParameter {
   constructor() {
     this.top = '';
     this.left = '';
     this.width = 0;
     this.height = 0;
+    this.zIndex = 0;
   }
 
   @Attribute()
@@ -29,15 +30,20 @@ export class Normal {
   width: number;
   @Attribute()
   height: number;
+  @Attribute()
+  zIndex: number;
 }
 
 export class Style {
   constructor() {
-    this.normal = new Normal();
+    this.type = '';
+    this.parameters = new StyleParameter();
   }
 
   @Attribute()
-  normal: Normal;
+  type: string;
+  @Attribute()
+  parameters: StyleParameter;
 }
 
 export class PitStop {
@@ -57,7 +63,7 @@ export class Icon {
     this.sequence = -1;
     this.tag = '';
     this.uri = '';
-    this.style = new Style();
+    this.styles = [];
   }
 
   @Attribute()
@@ -67,7 +73,7 @@ export class Icon {
   @Attribute()
   uri: string;
   @Attribute()
-  style: Style;
+  styles: Style[];
 }
 
 export class Location {
@@ -86,14 +92,11 @@ export class Button extends Icon {
   constructor() {
     super();
     this.isNext = false;
-    this.style = new Style();
     this.location = new Location();
   }
 
   @Attribute()
   isNext: boolean;
-  @Attribute()
-  style: Style;
   @Attribute()
   location: Location;
 }

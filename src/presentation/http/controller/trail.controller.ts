@@ -20,6 +20,8 @@ import { GetTrailAction } from '../../actions/trail/get';
 import { CreateTrailAction } from '../../actions/trail/create';
 import { EditTrailAction } from '../../actions/trail/edit';
 import { DeleteTrailAction } from '../../actions/trail/delete';
+import { CreateTrailAnimationPlaybackAction } from '../../actions/trail/add.animation.playback';
+import { DeleteTrailAnimationPlaybackAction } from '../../actions/trail/remove.animation.playback';
 
 @controller('/trail')
 export class TrailController implements interfaces.Controller {
@@ -28,6 +30,8 @@ export class TrailController implements interfaces.Controller {
     @inject(IOC_TYPE.CreateTrailAction) private createTrailAction: CreateTrailAction,
     @inject(IOC_TYPE.EditTrailAction) private editTrailAction: EditTrailAction,
     @inject(IOC_TYPE.DeleteTrailAction) private deleteTrailAction: DeleteTrailAction,
+    @inject(IOC_TYPE.CreateTrailAnimationPlaybackAction) private createTrailAnimationPlaybackAction: CreateTrailAnimationPlaybackAction,
+    @inject(IOC_TYPE.DeleteTrailAnimationPlaybackAction) private deleteTrailAnimationPlaybackAction: DeleteTrailAnimationPlaybackAction,
   ) { }
 
    /**
@@ -745,4 +749,338 @@ export class TrailController implements interfaces.Controller {
       next(e);
     }
   }
+  
+  /**
+* @swagger
+  * /trail/addanimation:
+  *   post:
+  *     summary: Add animation to trail.
+  *     description: Add animation to trail.
+  *     security:
+  *       - apikey: []
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               animationplaybackkey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The animation playback key.
+  *                 example: "123456"
+  *               trailkey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The trail key.
+  *                 example: "654321"
+  *     responses:
+  *       200:
+  *         description: Create Success.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: object
+  *                   properties:
+  *                     _id:
+  *                       type: string
+  *                       description: trail animation play's id.
+  *                       example: "SectionTrail/123456"
+  *                     _key:
+  *                       type: string
+  *                       description: trail animation play's key.
+  *                       example: "123456"
+  *                     _rev:
+  *                       type: string
+  *                       description: trail animation play's revision.
+  *                       example: _blDWGNW---
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
+ @httpPost('/addanimation')
+ private async addAnimation(
+   @requestHeaders('authorization') authHeader: string,
+   @request() request: Request, @response() response: Response, @next() next: Function,
+ ) {
+   try {
+     const token = getUserFromToken(authHeader, request.cookies['r-token']);
+     
+     const result = await this.createTrailAnimationPlaybackAction.execute(token, request.body);
+     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback Key is empty!'));
+     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
+     
+     response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
+   } catch (e) {
+     const code = getResponseDataCode(e.name);
+     response.status(code).json(ResponseFailure(code, e.stack));
+     next(e);
+   }
+ }
+
+ /**
+* @swagger
+ * /trail/removeanimation:
+ *   delete:
+ *     summary: Remove animation from trail.
+ *     description: Remove animation from trail.
+ *     security:
+ *       - apikey: []
+ *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               animationplaybackkey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The animation playback key.
+  *                 example: "123456"
+  *               trailkey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The trail key.
+  *                 example: "654321"
+ *     responses:
+ *       200:
+ *         description: Delete Success.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   description: Response code.
+ *                   example: 200
+ *                 msg:
+ *                   type: string
+ *                   description: Response message.
+ *                   example: ""
+ *                 data:
+ *                   type: string
+ *                   description: Response data.
+ *                   example: ""
+ *       601:
+ *         description: Invalid Token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   description: Response code.
+ *                   example: 601
+ *                 msg:
+ *                   type: string
+ *                   description: Response message.
+ *                   example: "Invalid Token!"
+ *                 data:
+ *                   type: string
+ *                   description: Response data.
+ *                   example: ""
+ *       602:
+ *         description: Unexpected.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   description: Response code.
+ *                   example: 602
+ *                 msg:
+ *                   type: string
+ *                   description: Response message.
+ *                   example: "Unexpected!"
+ *                 data:
+ *                   type: string
+ *                   description: Response data.
+ *                   example: ""
+ *       603:
+ *         description: Validation Error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   description: Response code.
+ *                   example: 603
+ *                 msg:
+ *                   type: string
+ *                   description: Response message.
+ *                   example: "Email is empty!"
+ *                 data:
+ *                   type: string
+ *                   description: Response data.
+ *                   example: ""
+ *       604:
+ *         description: Not Authorized.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   description: Response code.
+ *                   example: 604
+ *                 msg:
+ *                   type: string
+ *                   description: Response message.
+ *                   example: "Not Authorized"
+ *                 data:
+ *                   type: string
+ *                   description: Response data.
+ *                   example: ""
+ *       606:
+ *         description: Token Time Out.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   description: Response code.
+ *                   example: 606
+ *                 msg:
+ *                   type: string
+ *                   description: Response message.
+ *                   example: "Token Time Out!"
+ *                 data:
+ *                   type: string
+ *                   description: Response data.
+ *                   example: ""
+ */
+ @httpDelete('/removeanimation')
+ private async removeAnimation(
+   @requestHeaders('authorization') authHeader: string,
+   @request() request: Request, @response() response: Response, @next() next: Function,
+ ) {
+   try {
+     const token = getUserFromToken(authHeader, request.cookies['r-token']);
+     
+     const result = await this.deleteTrailAnimationPlaybackAction.execute(token, request.body);
+     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback Key is empty!'));
+     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Trail AnimationPlayback is not exist!'));
+
+     response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
+   } catch (e) {
+     const code = getResponseDataCode(e.name);
+     response.status(code).json(ResponseFailure(code, e.stack));
+     next(e);
+   }
+ }
 }

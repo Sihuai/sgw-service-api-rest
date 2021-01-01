@@ -113,7 +113,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           style:
   *                             type: object
   *                             properties:
-  *                               normal:
+  *                               parameters:
   *                                 type: object
   *                                 properties:
   *                                   top:
@@ -163,7 +163,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           style:
   *                             type: object
   *                             properties:
-  *                               normal:
+  *                               parameters:
   *                                 type: object
   *                                 properties:
   *                                   top:
@@ -378,7 +378,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                     style:
   *                       type: object
   *                       properties:
-  *                         normal:
+  *                         parameters:
   *                           type: object
   *                           properties:
   *                             top:
@@ -433,7 +433,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                     style:
   *                       type: object
   *                       properties:
-  *                         normal:
+  *                         parameters:
   *                           type: object
   *                           properties:
   *                             top:
@@ -527,7 +527,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           style:
   *                             type: object
   *                             properties:
-  *                               normal:
+  *                               parameters:
   *                                 type: object
   *                                 properties:
   *                                   top:
@@ -577,7 +577,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           style:
   *                             type: object
   *                             properties:
-  *                               normal:
+  *                               parameters:
   *                                 type: object
   *                                 properties:
   *                                   top:
@@ -713,28 +713,37 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence less than zero!'));
       if (result == -101) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button tag is empty!'));
       if (result == -102) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button uri is empty!'));
-      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style is empty!'));
-      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal is empty!'));
-      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal top is empty!'));
-      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal left is empty!'));
-      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal width less than zero!'));
-      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal height less than zero!'));
-      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location is empty!'));
-      if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location x less than zero!'));
-      if (result == -111) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location y less than zero!'));
-      if (result == -112) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
-      if (result == -113) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button styles is empty!'));
+      
+      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style type is empty!'));
+      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters is empty!'));
+      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters top is empty!'));
+      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters left is empty!'));
+      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters width less than zero!'));
+      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters height less than zero!'));
+      if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters zIndex less than zero!'));
 
-      if (result == -114) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
-      if (result == -115) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
-      if (result == -116) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
-      if (result == -117) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style is empty!'));
-      if (result == -118) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal is empty!'));
-      if (result == -119) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal top is empty!'));
-      if (result == -120) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal left is empty!'));
-      if (result == -121) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal width less than zero!'));
-      if (result == -122) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal height less than zero!'));
-      if (result == -123) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+      if (result == -111) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location is empty!'));
+      if (result == -112) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location x less than zero!'));
+      if (result == -113) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location y less than zero!'));
+
+      if (result == -114) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
+      if (result == -115) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+
+      if (result == -116) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
+      if (result == -117) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
+      if (result == -118) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
+      if (result == -119) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon styles is empty!'));
+
+      if (result == -120) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style type is empty!'));
+      if (result == -121) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters is empty!'));
+      if (result == -122) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters top is empty!'));
+      if (result == -123) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters left is empty!'));
+      if (result == -124) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters width less than zero!'));
+      if (result == -125) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters height less than zero!'));
+      if (result == -126) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters zIndex less than zero!'));
+
+      if (result == -127) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
 
       if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to create!'));
 
@@ -832,7 +841,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                     style:
   *                       type: object
   *                       properties:
-  *                         normal:
+  *                         parameters:
   *                           type: object
   *                           properties:
   *                             top:
@@ -887,7 +896,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                     style:
   *                       type: object
   *                       properties:
-  *                         normal:
+  *                         parameters:
   *                           type: object
   *                           properties:
   *                             top:
@@ -1058,30 +1067,39 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence less than zero!'));
       if (result == -101) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button tag is empty!'));
       if (result == -102) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button uri is empty!'));
-      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style is empty!'));
-      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal is empty!'));
-      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal top is empty!'));
-      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal left is empty!'));
-      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal width less than zero!'));
-      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style normal height less than zero!'));
-      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location is empty!'));
-      if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location x less than zero!'));
-      if (result == -111) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location y less than zero!'));
-      if (result == -112) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
-      if (result == -113) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+      if (result == -103) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button styles is empty!'));
+      
+      if (result == -104) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style type is empty!'));
+      if (result == -105) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters is empty!'));
+      if (result == -106) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters top is empty!'));
+      if (result == -107) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters left is empty!'));
+      if (result == -108) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters width less than zero!'));
+      if (result == -109) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters height less than zero!'));
+      if (result == -110) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button style parameters zIndex less than zero!'));
 
-      if (result == -114) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
-      if (result == -115) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
-      if (result == -116) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
-      if (result == -117) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style is empty!'));
-      if (result == -118) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal is empty!'));
-      if (result == -119) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal top is empty!'));
-      if (result == -120) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal left is empty!'));
-      if (result == -121) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal width less than zero!'));
-      if (result == -122) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style normal height less than zero!'));
-      if (result == -123) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+      if (result == -111) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location is empty!'));
+      if (result == -112) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location x less than zero!'));
+      if (result == -113) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button location y less than zero!'));
 
-      if (result == -124) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback key is empty!'));
+      if (result == -114) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button sequence has repeat no.!'));
+      if (result == -115) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Button isNext have repeat True!'));
+
+      if (result == -116) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence less than zero!'));
+      if (result == -117) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon tag is empty!'));
+      if (result == -118) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon uri is empty!'));
+      if (result == -119) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon styles is empty!'));
+
+      if (result == -120) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style type is empty!'));
+      if (result == -121) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters is empty!'));
+      if (result == -122) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters top is empty!'));
+      if (result == -123) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters left is empty!'));
+      if (result == -124) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters width less than zero!'));
+      if (result == -125) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters height less than zero!'));
+      if (result == -126) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon style parameters zIndex less than zero!'));
+
+      if (result == -127) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icon sequence has repeat no.!'));
+
+      if (result == -128) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback key is empty!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

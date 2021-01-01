@@ -43,13 +43,13 @@ export const getUserFromToken = (headerToken, cookieToken): any => {
   const splitedToken = headerToken.split(' ');
   headerToken = splitedToken.length > 1 ? splitedToken[1] : headerToken;
 
-  if (isEmptyObject(cookieToken) === true)
-  {
-    newError.name = APP_ERRORS.InvalidToken;
-    newError.message = 'Invalid Token. Access Forbidden by API service.';
-    newError.stack = 'Invalid Token. Access Forbidden by API service.';
-    throw newError;
-  }
+  // if (isEmptyObject(cookieToken) === true)
+  // {
+  //   newError.name = APP_ERRORS.InvalidToken;
+  //   newError.message = 'Invalid Token. Access Forbidden by API service.';
+  //   newError.stack = 'Invalid Token. Access Forbidden by API service.';
+  //   throw newError;
+  // }
 
   var jwt = require('jsonwebtoken');
   const result = jwt.verify(headerToken, process.env.ACCESS_TOKEN_SECRET, (error, decoded) =>{

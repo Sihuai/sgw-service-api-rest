@@ -72,11 +72,11 @@ export class AnimationPlaybackServiceImpl extends AbstractBaseService<AnimationP
       const result = await this.animationPlaybackRepo.selectAllByKey(model._key);
       if (isEmptyObject(result) == true) return -10;
   
-      // 1. Remove user AnimationPlayback relation collection
-      const uaFilters = {_to: 'AnimationPlayback/' + result[0]._key, isActive:true};
-      const uaResult = await this.userAnimationPlaybackService.removeBy(model.userLastUpdated, uaFilters);
-      if (uaResult == -10) return -10;
-      if (uaResult == false) return -13;
+      // // 1. Remove user AnimationPlayback relation collection
+      // const uaFilters = {_to: 'AnimationPlayback/' + result[0]._key, isActive:true};
+      // const uaResult = await this.userAnimationPlaybackService.removeBy(model.userLastUpdated, uaFilters);
+      // if (uaResult == -10) return -10;
+      // if (uaResult == false) return -13;
       
       // 2. Remove AnimationPlayback collection
       result[0].isActive = false;

@@ -1023,10 +1023,10 @@ export class SectionController implements interfaces.Controller {
   *                 allowEmptyValue: false
   *                 description: The section key.
   *                 example: "123456"
-  *               trialkey:
+  *               trailkey:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The trial key.
+  *                 description: The trail key.
   *                 example: "654321"
   *     responses:
   *       200:
@@ -1165,7 +1165,7 @@ export class SectionController implements interfaces.Controller {
       
       const result = await this.createSectionTrailAction.execute(token, request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Section Key is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trial Key is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

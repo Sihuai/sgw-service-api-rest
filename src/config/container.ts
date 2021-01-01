@@ -27,6 +27,7 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/trail.repo.impl');
   await require('../infra/repository/impl/trail.detail.repo.impl');
   await require('../infra/repository/impl/trail.trail.detail.repo.impl');
+  await require('../infra/repository/impl/trail.animation.playback.repo.impl');
   await require('../infra/repository/impl/user.repo.impl');
   await require('../infra/repository/impl/user.address.repo.impl');
   await require('../infra/repository/impl/user.animation.playback.repo.impl');
@@ -56,6 +57,7 @@ export const createContainer = async () => {
   await require('../app/service/impl/trail.service.impl');
   await require('../app/service/impl/trail.detail.service.impl');
   await require('../app/service/impl/trail.trail.detail.service.impl');
+  await require('../app/service/impl/trail.animation.playback.service.impl');
   await require('../app/service/impl/user.service.impl');
   await require('../app/service/impl/user.address.service.impl');
   await require('../app/service/impl/user.animation.playback.service.impl');

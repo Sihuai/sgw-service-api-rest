@@ -81,7 +81,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           name:
   *                             type: string
   *                             description: The animation playback's next pit stop name.
-  *                             example: 1
+  *                             example: "01"
   *                           animations:
   *                             type: array
   *                             items:
@@ -355,7 +355,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                     type: string
   *                     allowEmptyValue: false
   *                     description: The animation playback's next pit stop name.
-  *                     example: 1
+  *                     example: "01"
   *                   animations:
   *                     type: array
   *                     allowEmptyValue: false
@@ -771,7 +771,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Buttons is empty!'));
       if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icons is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name less than zero!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name is empty!'));
       if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations is empty!'));
       if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations tag is empty!'));
       if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations uri is empty!'));
@@ -858,7 +858,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                     type: string
   *                     allowEmptyValue: false
   *                     description: The animation playback's next pit stop name.
-  *                     example: 1
+  *                     example: "01"
   *                   animations:
   *                     type: array
   *                     allowEmptyValue: false
@@ -1145,7 +1145,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Buttons is empty!'));
       if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icons is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name less than zero!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name is empty!'));
       if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations is empty!'));
       if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations tag is empty!'));
       if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations uri is empty!'));
@@ -1407,7 +1407,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           name:
   *                             type: string
   *                             description: The animation playback's next pit stop name.
-  *                             example: 1
+  *                             example: "01"
   *                           animations:
   *                             type: array
   *                             items:
@@ -1714,7 +1714,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                           name:
   *                             type: string
   *                             description: The animation playback's next pit stop name.
-  *                             example: 1
+  *                             example: "01"
   *                           animations:
   *                             type: array
   *                             items:

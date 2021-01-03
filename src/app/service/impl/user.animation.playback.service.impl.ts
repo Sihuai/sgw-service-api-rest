@@ -47,12 +47,15 @@ export class UserAnimationPlaybackServiceImpl extends AbstractBaseService<UserAn
       if (isEmptyObject(result) == true) return -10;
 
       const uap = await this.findAllByKey(result._from);
-      // 1. Update nextPitStop name
-      uap[0].nextPitStop.name = next;
-      // 2. Udpate button isNext
+      
+      // 1. Udpate button isNext
       for (let button of uap[0].buttons) {
         if (button.sequence == next) {
           button.isNext = true;
+
+          // 1.1 Update nextPitStop name
+          uap[0].nextPitStop.name = button.tag;
+          break;
         } else {
           button.isNext = false;
         }

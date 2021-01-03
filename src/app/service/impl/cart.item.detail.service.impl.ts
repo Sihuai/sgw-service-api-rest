@@ -1,7 +1,9 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { IOC_TYPE } from '../../../config/type';
+import { OrderTypes } from '../../../domain/enums/order.types';
 import { CartItemDetail } from '../../../domain/models/cart.item.detail';
+import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { normalizeSimpleDataForRead } from '../../../infra/utils/oct-orm/lib/util';
 import { CartItemDetailService } from '../cart.item.detail.service';
 import { CartItemService } from '../cart.item.service';
@@ -25,6 +27,7 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
     // 2. Get cart trail product edge
     const ctpFilters = {_to: 'CartItem/' + cartItemKey, isActive: true};
     const ctpResult = await this.cartTrailProductService.findOneBy(ctpFilters);
+    if (isEmptyObject(ctpResult) == true) return -10;
 
     // 3. Map
     const cartItemDetail = new CartItemDetail();
@@ -42,9 +45,9 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
     var ptResult;
     switch(ciResult[0].type)
       {
-        case 'PRODUCT':
+        case OrderTypes.PRODUCT:
           break;
-        case 'TRAIL':
+        case OrderTypes.TRAIL:
           ptResult = await this.trailDetailService.findAllByKey(ctpResult._from);
 
           for (let persona of ptResult[0].personas) {

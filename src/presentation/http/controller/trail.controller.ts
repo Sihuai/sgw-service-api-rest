@@ -22,6 +22,7 @@ import { EditTrailAction } from '../../actions/trail/edit';
 import { DeleteTrailAction } from '../../actions/trail/delete';
 import { CreateTrailAnimationPlaybackAction } from '../../actions/trail/add.animation.playback';
 import { DeleteTrailAnimationPlaybackAction } from '../../actions/trail/remove.animation.playback';
+import { MyTrailAction } from '../../actions/trail/my';
 
 @controller('/trail')
 export class TrailController implements interfaces.Controller {
@@ -30,6 +31,7 @@ export class TrailController implements interfaces.Controller {
     @inject(IOC_TYPE.CreateTrailAction) private createTrailAction: CreateTrailAction,
     @inject(IOC_TYPE.EditTrailAction) private editTrailAction: EditTrailAction,
     @inject(IOC_TYPE.DeleteTrailAction) private deleteTrailAction: DeleteTrailAction,
+    @inject(IOC_TYPE.MyTrailAction) private myTrailAction: MyTrailAction,
     @inject(IOC_TYPE.CreateTrailAnimationPlaybackAction) private createTrailAnimationPlaybackAction: CreateTrailAnimationPlaybackAction,
     @inject(IOC_TYPE.DeleteTrailAnimationPlaybackAction) private deleteTrailAnimationPlaybackAction: DeleteTrailAnimationPlaybackAction,
   ) { }
@@ -797,7 +799,7 @@ export class TrailController implements interfaces.Controller {
   *                     _id:
   *                       type: string
   *                       description: trail animation play's id.
-  *                       example: "SectionTrail/123456"
+  *                       example: "TrailAnimationPlayback/123456"
   *                     _key:
   *                       type: string
   *                       description: trail animation play's key.
@@ -1077,6 +1079,252 @@ export class TrailController implements interfaces.Controller {
      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Trail AnimationPlayback is not exist!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
+   } catch (e) {
+     const code = getResponseDataCode(e.name);
+     response.status(code).json(ResponseFailure(code, e.stack));
+     next(e);
+   }
+ }
+ 
+   /**
+* @swagger
+  * /trail/my:
+  *   get:
+  *     summary: Retrieve my trail information.
+  *     description: Retrieve my trail information.
+  *     security:
+  *       - apikey: []
+  *     responses:
+  *       200:
+  *         description: A list of my trail data.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: array
+  *                   items:
+  *                     type: object
+  *                     properties:
+  *                       _key:
+  *                         type: string
+  *                         description: The order detail's key.
+  *                         example: "123456"
+  *                       type:
+  *                         type: string
+  *                         description: The order detail's type (TRAIL).
+  *                         example: "TRAIL"
+  *                       name:
+  *                         type: string
+  *                         description: The order detail's name.
+  *                         example: "Bugis Trail"
+  *                       description:
+  *                         type: string
+  *                         description: The order detail's description.
+  *                         example: "Lorem ipsum dolor sit amet, consectetur..."
+  *                       uri:
+  *                         type: string
+  *                         description: The order detail's uri.
+  *                         example: "https://via.placeholder.com/450x315.png"
+  *                       qty:
+  *                         type: number
+  *                         description: The order detail's qty.
+  *                         example: 1
+  *                       uom:
+  *                         type: string
+  *                         description: The order detail's uom.
+  *                         example: "TICKET"
+  *                       price:
+  *                         type: object
+  *                         properties:
+  *                           value:
+  *                             type: number
+  *                             description: The order detail price's value.
+  *                             example: 10.0
+  *                           currency:
+  *                             type: string
+  *                             description: The order detail price's currency.
+  *                             example: "SGD"
+  *                           taxable:
+  *                             type: boolean
+  *                             description: Does order detail price taxable?
+  *                             example: false
+  *                           taxInPercentage:
+  *                             type: number
+  *                             description: The order detail price tax in percentage.
+  *                             example: 7
+  *                           taxIncluded:
+  *                             type: boolean
+  *                             description: Does order detail price included tax?
+  *                             example: false
+  *                       options:
+  *                         type: object
+  *                         properties:
+  *                           personas:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 type:
+  *                                   type: string
+  *                                   description: The order detail options personas's type.
+  *                                   example: 1
+  *                                 contents:
+  *                                   type: array
+  *                                   items:
+  *                                     type: object
+  *                                     properties:
+  *                                       sequence:
+  *                                         type: number
+  *                                         description: The order detail's sequence.
+  *                                         example: 1
+  *                                       type:
+  *                                         type: string
+  *                                         description: The order detail's type.
+  *                                         example: "PHOTO"
+  *                                       orientation:
+  *                                         type: string
+  *                                         description: The order detail's orientation.
+  *                                         example: "orientation"
+  *                                       format:
+  *                                         type: string
+  *                                         description: The order detail's format.
+  *                                         example: "3R"
+  *                                       uri:
+  *                                         type: string
+  *                                         description: The order detail's uri.
+  *                                         example: "https://fs.zulundatumsolutions.net:3001/images/personas/SGW_Png_Images_Main_Page_Mobile_App_201123_14@3x.png"
+  *                                       tag:
+  *                                         type: string
+  *                                         description: The order detail's tag.
+  *                                         example: "TOURIST-INDIVIDUAL"
+  *                                       data:
+  *                                         type: object
+  *                                         properties:
+  *                                           content:
+  *                                             type: string
+  *                                             description: The order detail's content.
+  *                                             example: "Tourist Individual participation information here...."
+  *                                           price:
+  *                                             type: object
+  *                                             properties:
+  *                                               value:
+  *                                                 type: number
+  *                                                 description: The order detail price's value.
+  *                                                 example: 10.0
+  *                                               currency:
+  *                                                 type: string
+  *                                                 description: The order detail price's currency.
+  *                                                 example: "SGD"
+  *                                               taxable:
+  *                                                 type: boolean
+  *                                                 description: Does order detail price taxable?
+  *                                                 example: false
+  *                                               taxInPercentage:
+  *                                                 type: number
+  *                                                 description: The order detail price tax in percentage.
+  *                                                 example: 7
+  *                                               taxIncluded:
+  *                                                 type: boolean
+  *                                                 description: Does order detail price included tax?
+  *                                                 example: false
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
+ @httpGet('/my')
+ private async my(
+   @requestHeaders('authorization') authHeader: string,
+   @request() request: Request, @response() response: Response, @next() next: Function,
+ ) {
+   try {
+    const token = getUserFromToken(authHeader, request.cookies['r-token']);
+
+     const result = await this.myTrailAction.execute(token);
+
+     response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
    } catch (e) {
      const code = getResponseDataCode(e.name);
      response.status(code).json(ResponseFailure(code, e.stack));

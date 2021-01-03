@@ -48,12 +48,12 @@ export class Style {
 
 export class PitStop {
     constructor() {
-      this.name = '';
+      this.name = 0;
       this.animations = [];
     }
 
     @Attribute()
-    name: string;
+    name: number;
     @Attribute()
     animations: Animation[];
 }

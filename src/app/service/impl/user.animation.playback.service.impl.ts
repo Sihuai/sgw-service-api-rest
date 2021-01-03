@@ -6,6 +6,7 @@ import { UserAnimationPlayback } from '../../../domain/models/user.animation.pla
 import { UserAnimationPlaybackRepo } from '../../../infra/repository/user.animation.playback.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { OrderItemUserAnimationPlaybackService } from '../order.item.user.animation.playback.service';
 import { UserAnimationPlaybackService } from '../user.animation.playback.service';
 import { AbstractBaseService } from './base.service.impl';
 
@@ -13,6 +14,7 @@ import { AbstractBaseService } from './base.service.impl';
 export class UserAnimationPlaybackServiceImpl extends AbstractBaseService<UserAnimationPlayback> implements UserAnimationPlaybackService {
   constructor(
     @inject(IOC_TYPE.UserAnimationPlaybackRepoImpl) private userAnimationPlaybackRepo: UserAnimationPlaybackRepo,
+    @inject(IOC_TYPE.OrderItemUserAnimationPlaybackServiceImpl) private orderItemUserAnimationPlaybackService: OrderItemUserAnimationPlaybackService,
   ) {
     super();
   }
@@ -21,8 +23,8 @@ export class UserAnimationPlaybackServiceImpl extends AbstractBaseService<UserAn
     return await this.userAnimationPlaybackRepo.selectAllBy(filters);
   }
 
-  async page(filters) : Promise<any> {
-    return await this.userAnimationPlaybackRepo.page(filters);
+  async findAllByKey(key) : Promise<UserAnimationPlayback[]> {
+    return await this.userAnimationPlaybackRepo.selectAllByKey(key);
   }
 
   async findOneBy(filters) : Promise<UserAnimationPlayback> {
@@ -38,39 +40,28 @@ export class UserAnimationPlaybackServiceImpl extends AbstractBaseService<UserAn
     }
   }
 
-  async removeOne(model: UserAnimationPlayback): Promise<any> {
+  async editOne(email: string, orderItemKey: string, next: number): Promise<any> {
     try {
-      const filters = {_key: model._key};
-      const result = await this.findOneBy(filters);
+      const filters = {_to: 'OrderItem/' + orderItemKey, isActive: true};
+      const result = await this.orderItemUserAnimationPlaybackService.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10;
-  
-      return await this.userAnimationPlaybackRepo.deleteByKey(result._key);
-    } catch (e) {
-      throw e;
-    }
-  }
 
-  async removeBy(user: string, filters): Promise<any> {
-    try {
-      const result = await this.findAllBy(filters);
-      if (isEmptyObject(result) == true) return -10;
-  
-      for (let data of result) {
-        data.isActive = false;
-        data.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-        data.userLastUpdated = user;
-
-        const updateResult = await this.userAnimationPlaybackRepo.update(data);
-        if (isEmptyObject(updateResult) == true) return false;
+      const uap = await this.findAllByKey(result._from);
+      // 1. Update nextPitStop name
+      uap[0].nextPitStop.name = next;
+      // 2. Udpate button isNext
+      for (let button of uap[0].buttons) {
+        if (button.sequence == next) {
+          button.isNext = true;
+        } else {
+          button.isNext = false;
+        }
       }
 
-      return true;
-      // const keys: Array<string> = [];
-      // for (let data of result) {
-      //   keys.push(data._key);
-      // }
-
-      // return await this.userAnimationPlaybackRepo.deleteByKey(keys);
+      uap[0].datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+      uap[0].userLastUpdated = email;
+      
+      return await this.userAnimationPlaybackRepo.update(uap[0]);
     } catch (e) {
       throw e;
     }

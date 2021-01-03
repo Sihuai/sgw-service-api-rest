@@ -36,7 +36,7 @@ export class TrailAnimationPlaybackServiceImpl extends AbstractBaseService<Trail
 
   async removeOne(model: TrailAnimationPlayback): Promise<any> {
     try {
-      const filters = {_from: model._from, _to:  model._to};
+      const filters = {_from: model._from, _to: model._to};
       const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == null) return -10;
 

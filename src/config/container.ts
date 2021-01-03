@@ -12,10 +12,12 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/category.repo.impl');
   await require('../infra/repository/impl/cart.item.repo.impl');
   await require('../infra/repository/impl/cart.trail.product.repo.impl');
+  await require('../infra/repository/impl/cart.item.order.item.repo.impl');
   await require('../infra/repository/impl/media.repo.impl');
   await require('../infra/repository/impl/option.type.repo.impl');
   await require('../infra/repository/impl/order.repo.impl');
   await require('../infra/repository/impl/order.item.repo.impl');
+  await require('../infra/repository/impl/order.item.user.animation.playback.repo.impl');
   await require('../infra/repository/impl/order.address.repo.impl');
   await require('../infra/repository/impl/order.order.item.repo.impl');
   await require('../infra/repository/impl/order.payment.transaction.repo.impl');
@@ -41,11 +43,13 @@ export const createContainer = async () => {
   await require('../app/service/impl/cart.item.service.impl');
   await require('../app/service/impl/cart.item.detail.service.impl');
   await require('../app/service/impl/cart.trail.product.service.impl');
+  await require('../app/service/impl/cart.item.order.item.service.impl');
   await require('../app/service/impl/home.service.impl');
   await require('../app/service/impl/media.service.impl');
   await require('../app/service/impl/option.type.service.impl');
   await require('../app/service/impl/order.service.impl');
   await require('../app/service/impl/order.item.service.impl');
+  await require('../app/service/impl/order.item.user.animation.playback.service.impl');
   await require('../app/service/impl/order.address.service.impl');
   await require('../app/service/impl/order.order.item.service.impl');
   await require('../app/service/impl/order.payment.transaction.service.impl');

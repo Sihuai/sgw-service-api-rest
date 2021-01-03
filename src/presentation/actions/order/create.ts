@@ -15,7 +15,7 @@ export class CreateOrderAction implements IAction {
   ) {}
   async execute(token, addressKey: string) : Promise<any> {
 
-    if (isEmptyObject(addressKey) == true) return -1;          // Address key is empty!
+    // if (isEmptyObject(addressKey) == true) return -1;          // Address key is empty!
     
     const filters = {tag: token.email, isActive: true};
     return await this.orderService.addOne(token.email, addressKey, filters);

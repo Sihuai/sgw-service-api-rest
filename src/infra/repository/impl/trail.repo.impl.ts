@@ -81,6 +81,7 @@ export class TrailRepoImpl implements TrailRepo {
       const aql = {
         for: 'doc',
         filter: parseFilter(filters),
+        sort: `doc.sequence`,
         return: 'doc'
       };
 

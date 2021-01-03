@@ -1,6 +1,5 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { boolean } from 'joi';
 import { AnimationPlaybackService } from '../../../app/service/animation.playback.service';
 import { IOC_TYPE } from '../../../config/type';
 import { IAnimationPlaybackDTO } from '../../../domain/dtos/i.animation.playback.dto';
@@ -32,7 +31,7 @@ export class CreateAnimationPlaybackAction implements IAction {
     if (isEmptyObject(request.buttons) == true) return -4; // Buttons is empty!
     if (isEmptyObject(request.icons) == true) return -5; // Icons is empty!
 
-    if (isEmptyObject(request.nextPitStop.name) == true) return -6; // Next Pit Stop name is empty!
+    if (request.nextPitStop.name < 0) return -6; // Next Pit Stop name less than zero!
     if (isEmptyObject(request.nextPitStop.animations) == true) return -7; // Next Pit Stop animations is empty!
 
     for (let animation of request.nextPitStop.animations) {

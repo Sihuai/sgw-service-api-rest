@@ -19,8 +19,8 @@ export class OrderItemServiceImpl extends AbstractBaseService<OrderItem> impleme
     super();
   }
 
-  async findAll() : Promise<OrderItem[]> {
-    return await this.orderItemRepo.selectAll();
+  async findAll(filters) : Promise<OrderItem[]> {
+    return await this.orderItemRepo.selectAllBy(filters);
   }
 
   async findAllBy(orderKey: string) : Promise<OrderItem[]> {

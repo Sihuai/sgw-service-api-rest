@@ -20,6 +20,8 @@ import { GetAnimationPlaybackAction } from '../../actions/animation.playback/get
 import { CreateAnimationPlaybackAction } from '../../actions/animation.playback/create';
 import { DeleteAnimationPlaybackAction } from '../../actions/animation.playback/delete';
 import { EditAnimationPlaybackAction } from '../../actions/animation.playback/edit';
+import { MyAnimationPlaybackAction } from '../../actions/animation.playback/my';
+import { NextAnimationPlaybackAction } from '../../actions/animation.playback/next';
 
 @controller('/animationplayback')
 export class AnimationPlaybackController implements interfaces.Controller {
@@ -28,14 +30,16 @@ export class AnimationPlaybackController implements interfaces.Controller {
     @inject(IOC_TYPE.CreateAnimationPlaybackAction) private createAnimationPlaybackAction: CreateAnimationPlaybackAction,
     @inject(IOC_TYPE.EditAnimationPlaybackAction) private editAnimationPlaybackAction: EditAnimationPlaybackAction,
     @inject(IOC_TYPE.DeleteAnimationPlaybackAction) private deleteAnimationPlaybackAction: DeleteAnimationPlaybackAction,
+    @inject(IOC_TYPE.MyAnimationPlaybackAction) private myAnimationPlaybackAction: MyAnimationPlaybackAction,
+    @inject(IOC_TYPE.NextAnimationPlaybackAction) private nextAnimationPlaybackAction: NextAnimationPlaybackAction,
   ) { }
 
   /**
 * @swagger
   * /animationplayback/get:
   *   get:
-  *     summary: Retrieve animation playback.
-  *     description: Retrieve animation playback.
+  *     summary: Retrieve a list of animation playback.
+  *     description: Retrieve a list of animation playback.
   *     security:
   *       - apikey: []
   *     responses:
@@ -55,133 +59,155 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                   description: Response message.
   *                   example: ""
   *                 data:
-  *                   type: object
-  *                   properties:
-  *                     _key:
-  *                       type: string
-  *                       description: The animation playback's key.
-  *                       example: "123456"
-  *                     type:
-  *                       type: string
-  *                       description: The animation playback's type.
-  *                       example: "SINGLE"
-  *                     orientation:
-  *                       type: string
-  *                       description: The animation playback's orientation.
-  *                       example: "LANDSCAPE"
-  *                     nextPitStop:
-  *                       type: object
-  *                       properties:
-  *                         name:
-  *                           type: string
-  *                           description: The animation playback's name.
-  *                           example: "01"
-  *                         animations:
-  *                           type: array
-  *                           items:
-  *                             type: object
-  *                             properties:
-  *                               tag:
-  *                                 type: string
-  *                                 description: The animation playback animations's tag.
-  *                                 example: "BASE"
-  *                               uri:
-  *                                 type: string
-  *                                 description: The animation playback animations's uri.
-  *                                 example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
-  *                     buttons:
-  *                       type: array
-  *                       items:
+  *                   type: array
+  *                   items:
+  *                     type: object
+  *                     properties:
+  *                       _key:
+  *                         type: string
+  *                         description: The animation playback's key.
+  *                         example: "123456"
+  *                       type:
+  *                         type: string
+  *                         description: The animation playback's type.
+  *                         example: "SINGLE"
+  *                       orientation:
+  *                         type: string
+  *                         description: The animation playback's orientation.
+  *                         example: "LANDSCAPE"
+  *                       nextPitStop:
   *                         type: object
   *                         properties:
-  *                           sequence:
-  *                             type: number
-  *                             description: The animation playback buttons's sequence.
+  *                           name:
+  *                             type: string
+  *                             description: The animation playback's next pit stop name.
   *                             example: 1
-  *                           tag:
-  *                             type: string
-  *                             description: The animation playback buttons's tag.
-  *                             example: "01"
-  *                           uri:
-  *                             type: string
-  *                             description: The animation playback buttons's uri.
-  *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
-  *                           isNext:
-  *                             type: boolean
-  *                             description: The animation playback buttons's isNext.
-  *                             example: false
-  *                           style:
-  *                             type: object
-  *                             properties:
-  *                               parameters:
+  *                           animations:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 tag:
+  *                                   type: string
+  *                                   description: The animation playback animations's tag.
+  *                                   example: "BASE"
+  *                                 uri:
+  *                                   type: string
+  *                                   description: The animation playback animations's uri.
+  *                                   example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *                       buttons:
+  *                         type: array
+  *                         items:
+  *                           type: object
+  *                           properties:
+  *                             sequence:
+  *                               type: number
+  *                               description: The animation playback buttons's sequence.
+  *                               example: 1
+  *                             tag:
+  *                               type: string
+  *                               description: The animation playback buttons's tag.
+  *                               example: "01"
+  *                             uri:
+  *                               type: string
+  *                               description: The animation playback buttons's uri.
+  *                               example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                             isNext:
+  *                               type: boolean
+  *                               description: The animation playback buttons's isNext.
+  *                               example: false
+  *                             styles:
+  *                               type: array
+  *                               items:
   *                                 type: object
   *                                 properties:
-  *                                   top:
+  *                                   type:
   *                                     type: string
-  *                                     description: The animation playback buttons's top.
-  *                                     example: "50%"
-  *                                   left:
-  *                                     type: string
-  *                                     description: The animation playback buttons's left.
-  *                                     example: "50%"
-  *                                   width:
-  *                                     type: string
-  *                                     description: The animation playback buttons's width.
-  *                                     example: 10
-  *                                   height:
-  *                                     type: string
-  *                                     description: The animation playback buttons's height.
-  *                                     example: 10
-  *                           location:
-  *                             type: object
-  *                             properties:
-  *                               x:
-  *                                 type: number
-  *                                 description: The animation playback buttons's x axis.
-  *                                 example: 1.0215428
-  *                               y:
-  *                                 type: number
-  *                                 description: The animation playback buttons's y axis.
-  *                                 example: 5.5482162
-  *                     icons:
-  *                       type: array
-  *                       items:
-  *                         type: object
-  *                         properties:
-  *                           sequence:
-  *                             type: number
-  *                             description: The animation playback icons's sequence.
-  *                             example: 1
-  *                           tag:
-  *                             type: string
-  *                             description: The animation playback icons's tag.
-  *                             example: "01"
-  *                           uri:
-  *                             type: string
-  *                             description: The animation playback icons's uri.
-  *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
-  *                           style:
-  *                             type: object
-  *                             properties:
-  *                               parameters:
+  *                                     description: The animation playback buttons's type.
+  *                                     example: "800x650"
+  *                                   parameters:
+  *                                     type: object
+  *                                     properties:
+  *                                       top:
+  *                                         type: string
+  *                                         description: The animation playback buttons's top.
+  *                                         example: "50%"
+  *                                       left:
+  *                                         type: string
+  *                                         description: The animation playback buttons's left.
+  *                                         example: "50%"
+  *                                       width:
+  *                                         type: number
+  *                                         description: The animation playback buttons's width.
+  *                                         example: 10
+  *                                       height:
+  *                                         type: number
+  *                                         description: The animation playback buttons's height.
+  *                                         example: 10
+  *                                       zIndex:
+  *                                         type: number
+  *                                         description: The animation playback buttons's zIndex.
+  *                                         example: 1000
+  *                             location:
+  *                               type: object
+  *                               properties:
+  *                                 x:
+  *                                   type: number
+  *                                   description: The animation playback buttons's x axis.
+  *                                   example: 1.0215428
+  *                                 y:
+  *                                   type: number
+  *                                   description: The animation playback buttons's y axis.
+  *                                   example: 5.5482162
+  *                       icons:
+  *                         type: array
+  *                         items:
+  *                           type: object
+  *                           properties:
+  *                             sequence:
+  *                               type: number
+  *                               description: The animation playback icons's sequence.
+  *                               example: 1
+  *                             tag:
+  *                               type: string
+  *                               description: The animation playback icons's tag.
+  *                               example: "01"
+  *                             uri:
+  *                               type: string
+  *                               description: The animation playback icons's uri.
+  *                               example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                             styles:
+  *                               type: array
+  *                               items:
   *                                 type: object
   *                                 properties:
-  *                                   top:
+  *                                   type:
   *                                     type: string
-  *                                     description: The animation playback buttons's top.
-  *                                     example: "50%"
-  *                                   left:
-  *                                     type: string
-  *                                     description: The animation playback buttons's left.
-  *                                     example: "50%"
-  *                                   width:
-  *                                     type: string
-  *                                     description: The animation playback buttons's width.
-  *                                     example: 10
-  *                                   height:
-  *                                     type: string
-  *                                     description: The animation playback buttons's height.
-  *                                     example: 10
+  *                                     description: The animation playback icons's type.
+  *                                     example: "800x650"
+  *                                   parameters:
+  *                                     type: object
+  *                                     properties:
+  *                                       top:
+  *                                         type: string
+  *                                         description: The animation playback icons's top.
+  *                                         example: "50%"
+  *                                       left:
+  *                                         type: string
+  *                                         description: The animation playback icons's left.
+  *                                         example: "50%"
+  *                                       width:
+  *                                         type: number
+  *                                         description: The animation playback icons's width.
+  *                                         example: 10
+  *                                       height:
+  *                                         type: number
+  *                                         description: The animation playback icons's height.
+  *                                         example: 10
+  *                                       zIndex:
+  *                                         type: number
+  *                                         description: The animation playback icons's zIndex.
+  *                                         example: 1000
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -284,12 +310,11 @@ export class AnimationPlaybackController implements interfaces.Controller {
     @request() request: Request, @response() response: Response, @next() next: Function,
   ) {
     try {
-      const token = getUserFromToken(authHeader, request.cookies['r-token']);
+      getUserFromToken(authHeader, request.cookies['r-token']);
 
-      const result = await this.getAnimationPlaybackAction.execute(token);
-      if (result == -10) return response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
+      const result = await this.getAnimationPlaybackAction.execute();
 
-      response.status(ResponseDataCode.OK).json(ResponseSuccess(result[0]));
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
       const code = getResponseDataCode(e.name);
       response.status(code).json(ResponseFailure(code, e.stack));
@@ -329,8 +354,8 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                   name:
   *                     type: string
   *                     allowEmptyValue: false
-  *                     description: The animation playback's name.
-  *                     example: "01"
+  *                     description: The animation playback's next pit stop name.
+  *                     example: 1
   *                   animations:
   *                     type: array
   *                     allowEmptyValue: false
@@ -375,28 +400,38 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback buttons's isNext.
   *                       example: false
-  *                     style:
-  *                       type: object
-  *                       properties:
-  *                         parameters:
-  *                           type: object
-  *                           properties:
-  *                             top:
-  *                               type: string
-  *                               description: The animation playback buttons's top.
-  *                               example: "50%"
-  *                             left:
-  *                               type: string
-  *                               description: The animation playback buttons's left.
-  *                               example: "50%"
-  *                             width:
-  *                               type: string
-  *                               description: The animation playback buttons's width.
-  *                               example: 10
-  *                             height:
-  *                               type: string
-  *                               description: The animation playback buttons's height.
-  *                               example: 10
+  *                     styles:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           type:
+  *                             type: string
+  *                             description: The animation playback buttons's type.
+  *                             example: "800x650"
+  *                           parameters:
+  *                             type: object
+  *                             properties:
+  *                               top:
+  *                                 type: string
+  *                                 description: The animation playback buttons's top.
+  *                                 example: "50%"
+  *                               left:
+  *                                 type: string
+  *                                 description: The animation playback buttons's left.
+  *                                 example: "50%"
+  *                               width:
+  *                                 type: number
+  *                                 description: The animation playback buttons's width.
+  *                                 example: 10
+  *                               height:
+  *                                 type: number
+  *                                 description: The animation playback buttons's height.
+  *                                 example: 10
+  *                               zIndex:
+  *                                 type: number
+  *                                 description: The animation playback buttons's zIndex.
+  *                                 example: 1000
   *                     location:
   *                       type: object
   *                       properties:
@@ -430,28 +465,38 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback icons's uri.
   *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
-  *                     style:
-  *                       type: object
-  *                       properties:
-  *                         parameters:
-  *                           type: object
-  *                           properties:
-  *                             top:
-  *                               type: string
-  *                               description: The animation playback buttons's top.
-  *                               example: "50%"
-  *                             left:
-  *                               type: string
-  *                               description: The animation playback buttons's left.
-  *                               example: "50%"
-  *                             width:
-  *                               type: string
-  *                               description: The animation playback buttons's width.
-  *                               example: 10
-  *                             height:
-  *                               type: string
-  *                               description: The animation playback buttons's height.
-  *                               example: 10
+  *                     styles:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           type:
+  *                             type: string
+  *                             description: The animation playback icons's type.
+  *                             example: "800x650"
+  *                           parameters:
+  *                             type: object
+  *                             properties:
+  *                               top:
+  *                                 type: string
+  *                                 description: The animation playback icons's top.
+  *                                 example: "50%"
+  *                               left:
+  *                                 type: string
+  *                                 description: The animation playback icons's left.
+  *                                 example: "50%"
+  *                               width:
+  *                                 type: number
+  *                                 description: The animation playback icons's width.
+  *                                 example: 10
+  *                               height:
+  *                                 type: number
+  *                                 description: The animation playback icons's height.
+  *                                 example: 10
+  *                               zIndex:
+  *                                 type: number
+  *                                 description: The animation playback icons's zIndex.
+  *                                 example: 1000
   *     responses:
   *       200:
   *         description: Create Success.
@@ -524,28 +569,38 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                             type: boolean
   *                             description: The animation playback buttons's isNext.
   *                             example: false
-  *                           style:
-  *                             type: object
-  *                             properties:
-  *                               parameters:
-  *                                 type: object
-  *                                 properties:
-  *                                   top:
-  *                                     type: string
-  *                                     description: The animation playback buttons's top.
-  *                                     example: "50%"
-  *                                   left:
-  *                                     type: string
-  *                                     description: The animation playback buttons's left.
-  *                                     example: "50%"
-  *                                   width:
-  *                                     type: string
-  *                                     description: The animation playback buttons's width.
-  *                                     example: 10
-  *                                   height:
-  *                                     type: string
-  *                                     description: The animation playback buttons's height.
-  *                                     example: 10
+  *                           styles:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 type:
+  *                                   type: string
+  *                                   description: The animation playback buttons's type.
+  *                                   example: "800x650"
+  *                                 parameters:
+  *                                   type: object
+  *                                   properties:
+  *                                     top:
+  *                                       type: string
+  *                                       description: The animation playback buttons's top.
+  *                                       example: "50%"
+  *                                     left:
+  *                                       type: string
+  *                                       description: The animation playback buttons's left.
+  *                                       example: "50%"
+  *                                     width:
+  *                                       type: number
+  *                                       description: The animation playback buttons's width.
+  *                                       example: 10
+  *                                     height:
+  *                                       type: number
+  *                                       description: The animation playback buttons's height.
+  *                                       example: 10
+  *                                     zIndex:
+  *                                       type: number
+  *                                       description: The animation playback buttons's zIndex.
+  *                                       example: 1000
   *                     location:
   *                       type: object
   *                       properties:
@@ -574,28 +629,38 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                             type: string
   *                             description: The animation playback icons's uri.
   *                             example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
-  *                           style:
-  *                             type: object
-  *                             properties:
-  *                               parameters:
-  *                                 type: object
-  *                                 properties:
-  *                                   top:
-  *                                     type: string
-  *                                     description: The animation playback buttons's top.
-  *                                     example: "50%"
-  *                                   left:
-  *                                     type: string
-  *                                     description: The animation playback buttons's left.
-  *                                     example: "50%"
-  *                                   width:
-  *                                     type: string
-  *                                     description: The animation playback buttons's width.
-  *                                     example: 10
-  *                                   height:
-  *                                     type: string
-  *                                     description: The animation playback buttons's height.
-  *                                     example: 10
+  *                           styles:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 type:
+  *                                   type: string
+  *                                   description: The animation playback icons's type.
+  *                                   example: "800x650"
+  *                                 parameters:
+  *                                   type: object
+  *                                   properties:
+  *                                     top:
+  *                                       type: string
+  *                                       description: The animation playback icons's top.
+  *                                       example: "50%"
+  *                                     left:
+  *                                       type: string
+  *                                       description: The animation playback icons's left.
+  *                                       example: "50%"
+  *                                     width:
+  *                                       type: number
+  *                                       description: The animation playback icons's width.
+  *                                       example: 10
+  *                                     height:
+  *                                       type: number
+  *                                       description: The animation playback icons's height.
+  *                                       example: 10
+  *                                     zIndex:
+  *                                       type: number
+  *                                       description: The animation playback icons's zIndex.
+  *                                       example: 1000
   *       601:
   *         description: Invalid Token.
   *         content:
@@ -706,7 +771,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Buttons is empty!'));
       if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icons is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name less than zero!'));
       if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations is empty!'));
       if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations tag is empty!'));
       if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations uri is empty!'));
@@ -792,8 +857,8 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                   name:
   *                     type: string
   *                     allowEmptyValue: false
-  *                     description: The animation playback's name.
-  *                     example: "01"
+  *                     description: The animation playback's next pit stop name.
+  *                     example: 1
   *                   animations:
   *                     type: array
   *                     allowEmptyValue: false
@@ -838,28 +903,38 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback buttons's isNext.
   *                       example: false
-  *                     style:
-  *                       type: object
-  *                       properties:
-  *                         parameters:
-  *                           type: object
-  *                           properties:
-  *                             top:
-  *                               type: string
-  *                               description: The animation playback buttons's top.
-  *                               example: "50%"
-  *                             left:
-  *                               type: string
-  *                               description: The animation playback buttons's left.
-  *                               example: "50%"
-  *                             width:
-  *                               type: string
-  *                               description: The animation playback buttons's width.
-  *                               example: 10
-  *                             height:
-  *                               type: string
-  *                               description: The animation playback buttons's height.
-  *                               example: 10
+  *                     styles:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           type:
+  *                             type: string
+  *                             description: The animation playback buttons's type.
+  *                             example: "800x650"
+  *                           parameters:
+  *                             type: object
+  *                             properties:
+  *                               top:
+  *                                 type: string
+  *                                 description: The animation playback buttons's top.
+  *                                 example: "50%"
+  *                               left:
+  *                                 type: string
+  *                                 description: The animation playback buttons's left.
+  *                                 example: "50%"
+  *                               width:
+  *                                 type: number
+  *                                 description: The animation playback buttons's width.
+  *                                 example: 10
+  *                               height:
+  *                                 type: number
+  *                                 description: The animation playback buttons's height.
+  *                                 example: 10
+  *                               zIndex:
+  *                                 type: number
+  *                                 description: The animation playback buttons's zIndex.
+  *                                 example: 1000
   *                     location:
   *                       type: object
   *                       properties:
@@ -893,28 +968,38 @@ export class AnimationPlaybackController implements interfaces.Controller {
   *                       allowEmptyValue: false
   *                       description: The animation playback icons's uri.
   *                       example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
-  *                     style:
-  *                       type: object
-  *                       properties:
-  *                         parameters:
-  *                           type: object
-  *                           properties:
-  *                             top:
-  *                               type: string
-  *                               description: The animation playback buttons's top.
-  *                               example: "50%"
-  *                             left:
-  *                               type: string
-  *                               description: The animation playback buttons's left.
-  *                               example: "50%"
-  *                             width:
-  *                               type: string
-  *                               description: The animation playback buttons's width.
-  *                               example: 10
-  *                             height:
-  *                               type: string
-  *                               description: The animation playback buttons's height.
-  *                               example: 10
+  *                     styles:
+  *                       type: array
+  *                       items:
+  *                         type: object
+  *                         properties:
+  *                           type:
+  *                             type: string
+  *                             description: The animation playback icons's type.
+  *                             example: "800x650"
+  *                           parameters:
+  *                             type: object
+  *                             properties:
+  *                               top:
+  *                                 type: string
+  *                                 description: The animation playback icons's top.
+  *                                 example: "50%"
+  *                               left:
+  *                                 type: string
+  *                                 description: The animation playback icons's left.
+  *                                 example: "50%"
+  *                               width:
+  *                                 type: number
+  *                                 description: The animation playback icons's width.
+  *                                 example: 10
+  *                               height:
+  *                                 type: number
+  *                                 description: The animation playback icons's height.
+  *                                 example: 10
+  *                               zIndex:
+  *                                 type: number
+  *                                 description: The animation playback icons's zIndex.
+  *                                 example: 1000
   *     responses:
   *       200:
   *         description: Success edit.
@@ -1060,7 +1145,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
       if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop is empty!'));
       if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Buttons is empty!'));
       if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Icons is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop name less than zero!'));
       if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations is empty!'));
       if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations tag is empty!'));
       if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next Pit Stop animations uri is empty!'));
@@ -1255,7 +1340,7 @@ export class AnimationPlaybackController implements interfaces.Controller {
       const result = await this.deleteAnimationPlaybackAction.execute(token, key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist animation playback!'));
-      if (result == -13) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove AnimationPlayback User-AnimationPlayback data!'));
+      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This animation playback using in the trail, please remove first!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
     } catch (e) {
@@ -1264,4 +1349,612 @@ export class AnimationPlaybackController implements interfaces.Controller {
       next(e);
     }
   }
+
+  /**
+* @swagger
+  * /animationplayback/my:
+  *   get:
+  *     summary: Retrieve my animation playback.
+  *     description: Retrieve my animation playback.
+  *     security:
+  *       - apikey: []
+  *     parameters:
+  *       - in: query
+  *         name: key
+  *         required: true
+  *         allowEmptyValue: false
+  *         description: Key of the order item.
+  *         schema:
+  *           type: string
+  *         style: simple
+  *         example: "123456"
+  *     responses:
+  *       200:
+  *         description: Animation playback.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: array
+  *                   items:
+  *                     type: object
+  *                     properties:
+  *                       _key:
+  *                         type: string
+  *                         description: The animation playback's key.
+  *                         example: "123456"
+  *                       type:
+  *                         type: string
+  *                         description: The animation playback's type.
+  *                         example: "SINGLE"
+  *                       orientation:
+  *                         type: string
+  *                         description: The animation playback's orientation.
+  *                         example: "LANDSCAPE"
+  *                       nextPitStop:
+  *                         type: object
+  *                         properties:
+  *                           name:
+  *                             type: string
+  *                             description: The animation playback's next pit stop name.
+  *                             example: 1
+  *                           animations:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 tag:
+  *                                   type: string
+  *                                   description: The animation playback animations's tag.
+  *                                   example: "BASE"
+  *                                 uri:
+  *                                   type: string
+  *                                   description: The animation playback animations's uri.
+  *                                   example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *                       buttons:
+  *                         type: array
+  *                         items:
+  *                           type: object
+  *                           properties:
+  *                             sequence:
+  *                               type: number
+  *                               description: The animation playback buttons's sequence.
+  *                               example: 1
+  *                             tag:
+  *                               type: string
+  *                               description: The animation playback buttons's tag.
+  *                               example: "01"
+  *                             uri:
+  *                               type: string
+  *                               description: The animation playback buttons's uri.
+  *                               example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                             isNext:
+  *                               type: boolean
+  *                               description: The animation playback buttons's isNext.
+  *                               example: false
+  *                             styles:
+  *                               type: array
+  *                               items:
+  *                                 type: object
+  *                                 properties:
+  *                                   type:
+  *                                     type: string
+  *                                     description: The animation playback buttons's type.
+  *                                     example: "800x650"
+  *                                   parameters:
+  *                                     type: object
+  *                                     properties:
+  *                                       top:
+  *                                         type: string
+  *                                         description: The animation playback buttons's top.
+  *                                         example: "50%"
+  *                                       left:
+  *                                         type: string
+  *                                         description: The animation playback buttons's left.
+  *                                         example: "50%"
+  *                                       width:
+  *                                         type: number
+  *                                         description: The animation playback buttons's width.
+  *                                         example: 10
+  *                                       height:
+  *                                         type: number
+  *                                         description: The animation playback buttons's height.
+  *                                         example: 10
+  *                                       zIndex:
+  *                                         type: number
+  *                                         description: The animation playback buttons's zIndex.
+  *                                         example: 1000
+  *                             location:
+  *                               type: object
+  *                               properties:
+  *                                 x:
+  *                                   type: number
+  *                                   description: The animation playback buttons's x axis.
+  *                                   example: 1.0215428
+  *                                 y:
+  *                                   type: number
+  *                                   description: The animation playback buttons's y axis.
+  *                                   example: 5.5482162
+  *                       icons:
+  *                         type: array
+  *                         items:
+  *                           type: object
+  *                           properties:
+  *                             sequence:
+  *                               type: number
+  *                               description: The animation playback icons's sequence.
+  *                               example: 1
+  *                             tag:
+  *                               type: string
+  *                               description: The animation playback icons's tag.
+  *                               example: "01"
+  *                             uri:
+  *                               type: string
+  *                               description: The animation playback icons's uri.
+  *                               example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                             styles:
+  *                               type: array
+  *                               items:
+  *                                 type: object
+  *                                 properties:
+  *                                   type:
+  *                                     type: string
+  *                                     description: The animation playback icons's type.
+  *                                     example: "800x650"
+  *                                   parameters:
+  *                                     type: object
+  *                                     properties:
+  *                                       top:
+  *                                         type: string
+  *                                         description: The animation playback icons's top.
+  *                                         example: "50%"
+  *                                       left:
+  *                                         type: string
+  *                                         description: The animation playback icons's left.
+  *                                         example: "50%"
+  *                                       width:
+  *                                         type: number
+  *                                         description: The animation playback icons's width.
+  *                                         example: 10
+  *                                       height:
+  *                                         type: number
+  *                                         description: The animation playback icons's height.
+  *                                         example: 10
+  *                                       zIndex:
+  *                                         type: number
+  *                                         description: The animation playback icons's zIndex.
+  *                                         example: 1000
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
+ @httpGet('/my')
+ private async my(
+   @requestHeaders('authorization') authHeader: string,
+   @queryParam('key') key: string,
+   @request() request: Request, @response() response: Response, @next() next: Function,
+ ) {
+   try {
+     getUserFromToken(authHeader, request.cookies['r-token']);
+
+     const result = await this.myAnimationPlaybackAction.execute(key);
+     if (result == -1) return response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
+
+     response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
+   } catch (e) {
+     const code = getResponseDataCode(e.name);
+     response.status(code).json(ResponseFailure(code, e.stack));
+     next(e);
+   }
+ }
+
+  /**
+* @swagger
+  * /animationplayback/next:
+  *   post:
+  *     summary: Update next pit stop in animation playback.
+  *     description: Update next pit stop in animation playback.
+  *     security:
+  *       - apikey: []
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               orderitemkey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The order item key.
+  *                 example: "123456"
+  *               next:
+  *                 type: number
+  *                 allowEmptyValue: false
+  *                 description: Animation Playback next pit stop value. (100 is END)
+  *                 example: 1
+  *     responses:
+  *       200:
+  *         description: Animation playback.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: array
+  *                   items:
+  *                     type: object
+  *                     properties:
+  *                       _key:
+  *                         type: string
+  *                         description: The animation playback's key.
+  *                         example: "123456"
+  *                       type:
+  *                         type: string
+  *                         description: The animation playback's type.
+  *                         example: "SINGLE"
+  *                       orientation:
+  *                         type: string
+  *                         description: The animation playback's orientation.
+  *                         example: "LANDSCAPE"
+  *                       nextPitStop:
+  *                         type: object
+  *                         properties:
+  *                           name:
+  *                             type: string
+  *                             description: The animation playback's next pit stop name.
+  *                             example: 1
+  *                           animations:
+  *                             type: array
+  *                             items:
+  *                               type: object
+  *                               properties:
+  *                                 tag:
+  *                                   type: string
+  *                                   description: The animation playback animations's tag.
+  *                                   example: "BASE"
+  *                                 uri:
+  *                                   type: string
+  *                                   description: The animation playback animations's uri.
+  *                                   example: "https://fs.zulundatumsolutions.net:3001/animations/JSON_SGW_Bugis_Trail_Map.json"
+  *                       buttons:
+  *                         type: array
+  *                         items:
+  *                           type: object
+  *                           properties:
+  *                             sequence:
+  *                               type: number
+  *                               description: The animation playback buttons's sequence.
+  *                               example: 1
+  *                             tag:
+  *                               type: string
+  *                               description: The animation playback buttons's tag.
+  *                               example: "01"
+  *                             uri:
+  *                               type: string
+  *                               description: The animation playback buttons's uri.
+  *                               example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                             isNext:
+  *                               type: boolean
+  *                               description: The animation playback buttons's isNext.
+  *                               example: false
+  *                             styles:
+  *                               type: array
+  *                               items:
+  *                                 type: object
+  *                                 properties:
+  *                                   type:
+  *                                     type: string
+  *                                     description: The animation playback buttons's type.
+  *                                     example: "800x650"
+  *                                   parameters:
+  *                                     type: object
+  *                                     properties:
+  *                                       top:
+  *                                         type: string
+  *                                         description: The animation playback buttons's top.
+  *                                         example: "50%"
+  *                                       left:
+  *                                         type: string
+  *                                         description: The animation playback buttons's left.
+  *                                         example: "50%"
+  *                                       width:
+  *                                         type: number
+  *                                         description: The animation playback buttons's width.
+  *                                         example: 10
+  *                                       height:
+  *                                         type: number
+  *                                         description: The animation playback buttons's height.
+  *                                         example: 10
+  *                                       zIndex:
+  *                                         type: number
+  *                                         description: The animation playback buttons's zIndex.
+  *                                         example: 1000
+  *                             location:
+  *                               type: object
+  *                               properties:
+  *                                 x:
+  *                                   type: number
+  *                                   description: The animation playback buttons's x axis.
+  *                                   example: 1.0215428
+  *                                 y:
+  *                                   type: number
+  *                                   description: The animation playback buttons's y axis.
+  *                                   example: 5.5482162
+  *                       icons:
+  *                         type: array
+  *                         items:
+  *                           type: object
+  *                           properties:
+  *                             sequence:
+  *                               type: number
+  *                               description: The animation playback icons's sequence.
+  *                               example: 1
+  *                             tag:
+  *                               type: string
+  *                               description: The animation playback icons's tag.
+  *                               example: "01"
+  *                             uri:
+  *                               type: string
+  *                               description: The animation playback icons's uri.
+  *                               example: "https://fs.zulundatumsolutions.net:3001/images/pit_stops/SGW_Map_Button_01.png"
+  *                             styles:
+  *                               type: array
+  *                               items:
+  *                                 type: object
+  *                                 properties:
+  *                                   type:
+  *                                     type: string
+  *                                     description: The animation playback icons's type.
+  *                                     example: "800x650"
+  *                                   parameters:
+  *                                     type: object
+  *                                     properties:
+  *                                       top:
+  *                                         type: string
+  *                                         description: The animation playback icons's top.
+  *                                         example: "50%"
+  *                                       left:
+  *                                         type: string
+  *                                         description: The animation playback icons's left.
+  *                                         example: "50%"
+  *                                       width:
+  *                                         type: number
+  *                                         description: The animation playback icons's width.
+  *                                         example: 10
+  *                                       height:
+  *                                         type: number
+  *                                         description: The animation playback icons's height.
+  *                                         example: 10
+  *                                       zIndex:
+  *                                         type: number
+  *                                         description: The animation playback icons's zIndex.
+  *                                         example: 1000
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
+ @httpPost('/next')
+ private async next(
+   @requestHeaders('authorization') authHeader: string,
+   @request() request: Request, @response() response: Response, @next() next: Function,
+ ) {
+   try {
+    const token = getUserFromToken(authHeader, request.cookies['r-token']);
+
+    const result = await this.nextAnimationPlaybackAction.execute(token, request.body);
+    if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Order Item Key is empty!'));
+    if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next less than zero!'));
+    if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'OrderItem & UserAnimationPlayback relation isnot exist!'));
+
+     response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
+   } catch (e) {
+     const code = getResponseDataCode(e.name);
+     response.status(code).json(ResponseFailure(code, e.stack));
+     next(e);
+   }
+ }
 }

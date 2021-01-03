@@ -156,7 +156,7 @@ export class Repository<T extends object> {
     const index = (aql.limit != undefined && aql.limit.pageIndex >= 0 && pageSize > 0) ? Math.ceil(aql.limit.pageIndex / pageSize) : -1;
 
     const totalRecord = await this.countBy(aql);
-    const totalPage = (pageSize > 0 && index > 0) ? Math.ceil(totalRecord / pageSize) : -1
+    const totalPage = (pageSize > 0 && index >= 0) ? Math.ceil(totalRecord / pageSize) : -1
 
     const record = new Records();
     record.pageIndex = (aql.limit != undefined && aql.limit.pageIndex >= 0) ? aql.limit.pageIndex : -1;

@@ -3,9 +3,8 @@ import { BaseService } from './base.service';
 
 export interface UserAnimationPlaybackService extends BaseService<UserAnimationPlayback> {
     findAllBy(filters) : Promise<UserAnimationPlayback[]>;
-    page(filters) : Promise<any>;
-    findOneBy(filters) : Promise<any>;
+    findAllByKey(key) : Promise<UserAnimationPlayback[]>;
+    findOneBy(filters) : Promise<UserAnimationPlayback>;
     addOne(model: UserAnimationPlayback): Promise<any>;
-    removeOne(model: UserAnimationPlayback): Promise<any>;
-    removeBy(user: string, filters): Promise<any>;
+    editOne(email: string, orderItemKey: string, next: number): Promise<any>;
 }

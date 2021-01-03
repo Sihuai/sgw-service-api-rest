@@ -366,6 +366,7 @@ export class CartDetailController implements interfaces.Controller {
 
       const result = await this.getCartDetailAction.execute(cartItemKey);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Cart Item key is empty!'));
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Cart Item Detail is empty!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {

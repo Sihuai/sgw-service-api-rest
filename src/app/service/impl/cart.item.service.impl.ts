@@ -2,6 +2,7 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
+import { OrderTypes } from '../../../domain/enums/order.types';
 import { CartItem } from '../../../domain/models/cart.item';
 import { CartTrailProduct } from '../../../domain/models/cart.trail.product';
 import { CartItemRepo } from '../../../infra/repository/cart.item.repo';
@@ -53,10 +54,10 @@ export class CartItemServiceImpl extends AbstractBaseService<CartItem> implement
       ctp._to = 'CartItem/' + cResult._key;
       switch(cartItem.type)
       {
-        case 'PRODUCT':
+        case OrderTypes.PRODUCT:
           ctp._from = 'Product/' + typekey;
           break;
-        case 'TRAIL':
+        case OrderTypes.TRAIL:
           ctp._from = 'TrailDetail/' + typekey;
           break;
       }

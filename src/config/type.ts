@@ -17,6 +17,7 @@ export const IOC_TYPE = {
   OrderItemUserAnimationPlaybackRepoImpl: Symbol.for('OrderItemUserAnimationPlaybackRepoImpl'),
   PaymentAccountRepoImpl: Symbol.for('PaymentAccountRepoImpl'),
   PaymentTransactionRepoImpl: Symbol.for('PaymentTransactionRepoImpl'),
+  ProductRepoImpl: Symbol.for('ProductRepoImpl'),
   SectionRepoImpl: Symbol.for('SectionRepoImpl'),
   SectionTrailRepoImpl: Symbol.for('SectionTrailRepoImpl'),
   TrailRepoImpl: Symbol.for('TrailRepoImpl'),
@@ -117,6 +118,11 @@ export const IOC_TYPE = {
   // - Payment
   CreatePaymentAction : Symbol.for('CreatePaymentAction'),
   GetPaymentAction : Symbol.for('GetPaymentAction'),
+  // - Product
+  CreateProductAction : Symbol.for('CreateProductAction'),
+  EditProductAction : Symbol.for('EditProductAction'),
+  GetProductAction : Symbol.for('GetProductAction'),
+  DeleteProductAction : Symbol.for('DeleteProductAction'),
 
   // 3. Service
   AddressServiceImpl: Symbol.for('AddressServiceImpl'),
@@ -138,6 +144,7 @@ export const IOC_TYPE = {
   OrderItemUserAnimationPlaybackServiceImpl: Symbol.for('OrderItemUserAnimationPlaybackServiceImpl'),
   PaymentAccountServiceImpl: Symbol.for('PaymentAccountServiceImpl'),
   PaymentTransactionServiceImpl: Symbol.for('PaymentTransactionServiceImpl'),
+  ProductServiceImpl: Symbol.for('ProductServiceImpl'),
   SectionServiceImpl: Symbol.for('SectionServiceImpl'),
   SectionTrailServiceImpl: Symbol.for('SectionTrailServiceImpl'),
   StripeServiceImpl: Symbol.for('StripeServiceImpl'),

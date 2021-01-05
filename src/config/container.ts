@@ -23,6 +23,7 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/order.payment.transaction.repo.impl');
   await require('../infra/repository/impl/payment.account.repo.impl');
   await require('../infra/repository/impl/payment.transaction.repo.impl');
+  await require('../infra/repository/impl/product.repo.impl');
   await require('../infra/repository/impl/section.repo.impl');
   await require('../infra/repository/impl/section.trail.repo.impl');
   await require('../infra/repository/impl/token.repo.impl');
@@ -55,6 +56,7 @@ export const createContainer = async () => {
   await require('../app/service/impl/order.payment.transaction.service.impl');
   await require('../app/service/impl/payment.account.service.impl');
   await require('../app/service/impl/payment.transaction.service.impl');
+  await require('../app/service/impl/product.service.impl');
   await require('../app/service/impl/section.service.impl');
   await require('../app/service/impl/section.trail.service.impl');
   await require('../app/service/impl/token.service.impl');

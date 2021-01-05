@@ -48,6 +48,11 @@ export class ProductServiceImpl extends AbstractBaseService<Product> implements 
 
   async editOne(model: Product): Promise<any> {
     try {
+      const result = await this.productRepo.selectAllByKey(model._key);
+      if (isEmptyObject(result) == true) return -10;
+
+      if (result[0].sku != model.sku) return -11;
+
       return await this.productRepo.update(model);
     } catch (e) {
       throw e;

@@ -63,6 +63,10 @@ export class OrderController implements interfaces.Controller {
   *                         type: string
   *                         description: The order's key.
   *                         example: "123456"
+  *                       sn:
+  *                         type: string
+  *                         description: The order's sn (YYMMDD-HHmmss-SSS).
+  *                         example: "210101-144129-526"
   *                       tag:
   *                         type: string
   *                         description: The order's tag (user email/key).
@@ -303,6 +307,10 @@ export class OrderController implements interfaces.Controller {
   *                       type: string
   *                       description: The order's key.
   *                       example: "123456"
+  *                     sn:
+  *                       type: string
+  *                       description: The order's sn (YYMMDD-HHmmss-SSS).
+  *                       example: "210101-144129-526"
   *                     tag:
   *                       type: string
   *                       description: The order's tag (user email/key).

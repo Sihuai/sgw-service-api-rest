@@ -12,7 +12,7 @@ export class ProductCategory extends BaseModel {
 
     @Attribute()
     sequence: number;
-    @HashIndex({ unique: true, name: 'ix_product_name' })
+    @HashIndex({ unique: true, name: 'ix_product_category_name' })
     @Attribute()
     name: string;
     @Attribute()

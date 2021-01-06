@@ -20,8 +20,8 @@ import { GetShopAction } from '../../actions/shop/get';
 import { CreateShopAction } from '../../actions/shop/create';
 import { EditShopAction } from '../../actions/shop/edit';
 import { DeleteShopAction } from '../../actions/shop/delete';
-import { AddProductAction } from '../../actions/shop/add.product';
-import { RemoveProductAction } from '../../actions/shop/remove.product';
+import { AddProductToShopAction } from '../../actions/shop/add.product';
+import { RemoveProductFromShopAction } from '../../actions/shop/remove.product';
 
 @controller('/shop')
 export class ShopController implements interfaces.Controller {
@@ -30,8 +30,8 @@ export class ShopController implements interfaces.Controller {
     @inject(IOC_TYPE.CreateShopAction) private createShopAction: CreateShopAction,
     @inject(IOC_TYPE.EditShopAction) private editShopAction: EditShopAction,
     @inject(IOC_TYPE.DeleteShopAction) private deleteShopAction: DeleteShopAction,
-    @inject(IOC_TYPE.AddProductAction) private addProductAction: AddProductAction,
-    @inject(IOC_TYPE.RemoveProductAction) private removeProductAction: RemoveProductAction,
+    @inject(IOC_TYPE.AddProductToShopAction) private addProductAction: AddProductToShopAction,
+    @inject(IOC_TYPE.RemoveProductFromShopAction) private removeProductAction: RemoveProductFromShopAction,
   ) { }
 
    /**
@@ -75,6 +75,10 @@ export class ShopController implements interfaces.Controller {
   *                         type: string
   *                         description: The shop's name.
   *                         example: "Product A-1"
+  *                       type:
+  *                         type: string
+  *                         description: The shop's type(G-MALL/TRAILS-SHOPS).
+  *                         example: "TRAILS-SHOPS"
   *                       isLocked:
   *                         type: boolean
   *                         description: The shop's isLocked.
@@ -218,6 +222,10 @@ export class ShopController implements interfaces.Controller {
   *                 type: string
   *                 description: The shop's name.
   *                 example: "Product A-1"
+  *               type:
+  *                 type: string
+  *                 description: The shop's type(G-MALL/TRAILS-SHOPS).
+  *                 example: "TRAILS-SHOPS"
   *               isLocked:
   *                 type: boolean
   *                 description: The shop's isLocked.
@@ -274,6 +282,10 @@ export class ShopController implements interfaces.Controller {
   *                       type: string
   *                       description: The shop's name.
   *                       example: "Product A-1"
+  *                     type:
+  *                       type: string
+  *                       description: The shop's type(G-MALL/TRAILS-SHOPS).
+  *                       example: "TRAILS-SHOPS"
   *                     isLocked:
   *                       type: boolean
   *                       description: The shop's isLocked.
@@ -409,13 +421,14 @@ export class ShopController implements interfaces.Controller {
       
       const result = await this.createShopAction.execute(token, request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Name is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Is locked is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters type is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters tag is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters orientation is empty!'));
-      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters format is empty!'));
-      if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters uri is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Is locked is empty!'));
+      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters is empty!'));
+      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters type is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters tag is empty!'));
+      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters orientation is empty!'));
+      if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters format is empty!'));
+      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters uri is empty!'));
 
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Shop name existed!'));
 
@@ -451,6 +464,10 @@ export class ShopController implements interfaces.Controller {
   *                 type: string
   *                 description: The shop's name.
   *                 example: "Product A-1"
+  *               type:
+  *                 type: string
+  *                 description: The shop's type(G-MALL/TRAILS-SHOPS).
+  *                 example: "TRAILS-SHOPS"
   *               isLocked:
   *                 type: boolean
   *                 description: The shop's isLocked.
@@ -621,14 +638,15 @@ export class ShopController implements interfaces.Controller {
 
       const result = await this.editShopAction.execute(token, request.body);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Name is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Is locked is empty!'));
-      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters is empty!'));
-      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters type is empty!'));
-      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters tag is empty!'));
-      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters orientation is empty!'));
-      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters format is empty!'));
-      if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters uri is empty!'));
-      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Type is empty!'));
+      if (result == -3) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Is locked is empty!'));
+      if (result == -4) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters is empty!'));
+      if (result == -5) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters type is empty!'));
+      if (result == -6) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters tag is empty!'));
+      if (result == -7) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters orientation is empty!'));
+      if (result == -8) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters format is empty!'));
+      if (result == -9) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Posters uri is empty!'));
+      if (result == -100) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
 
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Shop is not exist!'));
       if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Cannot change shop name!'));

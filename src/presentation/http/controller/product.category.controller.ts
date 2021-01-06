@@ -20,9 +20,9 @@ import { GetProductCategoryAction } from '../../actions/product.category/get';
 import { CreateProductCategoryAction } from '../../actions/product.category/create';
 import { EditProductCategoryAction } from '../../actions/product.category/edit';
 import { DeleteProductCategoryAction } from '../../actions/product.category/delete';
-import { AddProductAction } from '../../actions/product.category/add.product';
-import { RemoveProductAction } from '../../actions/product.category/remove.product';
-import { GetProductAction } from '../../actions/product.category/get.product';
+import { AddProductToCategoryAction } from '../../actions/product.category/add.product';
+import { RemoveProductFromCategoryAction } from '../../actions/product.category/remove.product';
+import { GetProductFromCategoryAction } from '../../actions/product.category/get.product';
 
 @controller('/productcategory')
 export class ProductCategoryController implements interfaces.Controller {
@@ -31,9 +31,9 @@ export class ProductCategoryController implements interfaces.Controller {
     @inject(IOC_TYPE.CreateProductCategoryAction) private createProductCategoryAction: CreateProductCategoryAction,
     @inject(IOC_TYPE.EditProductCategoryAction) private editProductCategoryAction: EditProductCategoryAction,
     @inject(IOC_TYPE.DeleteProductCategoryAction) private deleteProductCategoryAction: DeleteProductCategoryAction,
-    @inject(IOC_TYPE.GetProductAction) private getProductAction: GetProductAction,
-    @inject(IOC_TYPE.AddProductAction) private addProductAction: AddProductAction,
-    @inject(IOC_TYPE.RemoveProductAction) private removeProductAction: RemoveProductAction,
+    @inject(IOC_TYPE.GetProductFromCategoryAction) private getProductAction: GetProductFromCategoryAction,
+    @inject(IOC_TYPE.AddProductToCategoryAction) private addProductAction: AddProductToCategoryAction,
+    @inject(IOC_TYPE.RemoveProductFromCategoryAction) private removeProductAction: RemoveProductFromCategoryAction,
   ) { }
 
   /**

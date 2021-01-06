@@ -7,9 +7,9 @@ import { ProductProductCategory } from '../../../domain/models/product.product.c
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
-@provide(IOC_TYPE.RemoveProductAction, true)
+@provide(IOC_TYPE.RemoveProductFromCategoryAction, true)
 @provide('action', true)
-export class RemoveProductAction implements IAction {
+export class RemoveProductFromCategoryAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(

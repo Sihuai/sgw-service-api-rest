@@ -24,9 +24,12 @@ export const bindings = new AsyncContainerModule(
     await require('../presentation/http/controller/payment.account.controller');
     await require('../presentation/http/controller/payment.controller');
     await require('../presentation/http/controller/product.controller');
+    await require('../presentation/http/controller/product.brand.controller');
+    await require('../presentation/http/controller/product.category.controller');
     await require('../presentation/http/controller/security.controller');
     await require('../presentation/http/controller/section.controller');
     await require('../presentation/http/controller/shop.controller');
+    await require('../presentation/http/controller/shop.category.controller');
     await require('../presentation/http/controller/trail.controller');
     await require('../presentation/http/controller/trail.detail.controller');
     await require('../presentation/http/controller/user.controller');

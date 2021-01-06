@@ -195,14 +195,14 @@ export class Repository<T extends object> {
     const data = isFullDataReturn === true ? normalizeDataForRead(this.entity, result) : normalizeSimpleDataForRead(this.entity, result);
     
     const pageSize = limit?.count ? limit.pageSize : -1;
-    const index = (limit != undefined && limit.pageIndex >= 0 && pageSize > 0) ? (limit.pageIndex / pageSize) + 1 : -1;
+    const index = (limit != undefined && limit.pageIndex >= 0 && pageSize > 0) ? Math.ceil(limit.pageIndex / pageSize) + 1 : -1;
 
     const aql = {
       for: 'doc',
       return: 'doc'
     };
     const totalRecord = await this.countBy(aql);
-    const totalPage = (pageSize > 0 && index > 0) ? Math.ceil(totalRecord / pageSize) : -1
+    const totalPage = (pageSize > 0 && index >= 0) ? Math.ceil(totalRecord / pageSize) : -1
 
     const record = new Records();
     record.pageIndex = (limit != undefined && limit.pageIndex >= 0) ? limit.pageIndex : -1;

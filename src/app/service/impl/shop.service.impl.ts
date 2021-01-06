@@ -64,7 +64,12 @@ export class ShopServiceImpl extends AbstractBaseService<Shop> implements ShopSe
 
       if (result[0].name != model.name) return -11;
 
-      return await this.shopRepo.update(model);
+      result[0].isLocked = model.isLocked;
+      result[0].posters = model.posters;
+      result[0].datetimeLastEdited = model.datetimeLastEdited;
+      result[0].userLastUpdated = model.userLastUpdated;
+
+      return await this.shopRepo.update(result[0]);
     } catch (e) {
       throw e;
     }

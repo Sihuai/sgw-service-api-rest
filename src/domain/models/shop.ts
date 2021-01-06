@@ -16,19 +16,19 @@ export class Poster extends Media {
 export class Shop extends BaseModel {
     constructor() {
         super();
-        this.type = ShopTypes.TRAILSSHOPS;
         this.name = '';
+        this.type = ShopTypes.TRAILSSHOPS;
         this.isLocked = false;
         this.posters = [];
     }
 
     @Attribute()
     sequence?: number;
-    @Attribute()
-    type: ShopTypes;
     @HashIndex({ unique: true, name: 'ix_shop_name' })
     @Attribute()
     name: string;
+    @Attribute()
+    type: ShopTypes;
     @Attribute()
     isLocked: boolean;
     @Attribute()

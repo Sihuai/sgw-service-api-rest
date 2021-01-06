@@ -2,7 +2,6 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import { ProductService } from '../../../app/service/product.service';
 import { IOC_TYPE } from '../../../config/type';
-import { Product } from '../../../domain/models/product';
 import { IAction } from '../base.action';
 
 @provide(IOC_TYPE.GetProductAction, true)

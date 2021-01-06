@@ -6,9 +6,9 @@ import { IOC_TYPE } from '../../../config/type';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
-@provide(IOC_TYPE.GetProductCategoryAction, true)
+@provide(IOC_TYPE.GetProductCategoryFromProductAction, true)
 @provide('action', true)
-export class GetProductCategoryAction implements IAction {
+export class GetProductCategoryFromProductAction implements IAction {
   payloadExample = ``;
   description = '';
   constructor(

@@ -18,19 +18,21 @@ export class CreateShopAction implements IAction {
   async execute(token, request: IShopDTO) : Promise<any> {
 
     if (isEmptyObject(request.name) == true) return -1; // Name is empty!
-    if (isEmptyObject(request.isLocked) == true) return -2; // Is locked is empty!
-    if (isEmptyObject(request.posters) == true) return -3; // Posters is empty!
+    if (isEmptyObject(request.type) == true) return -2; // Type is empty!
+    if (isEmptyObject(request.isLocked) == true) return -3; // Is locked is empty!
+    if (isEmptyObject(request.posters) == true) return -4; // Posters is empty!
 
     for (const poster of request.posters) {
-      if (isEmptyObject(poster.type) == true) return -4; // Posters type is empty!
-      if (isEmptyObject(poster.tag) == true) return -5; // Posters tag is empty!
-      if (isEmptyObject(poster.orientation) == true) return -6; // Posters orientation is empty!
-      if (isEmptyObject(poster.format) == true) return -7; // Posters format is empty!
-      if (isEmptyObject(poster.uri) == true) return -8; // Posters uri is empty!
+      if (isEmptyObject(poster.type) == true) return -5; // Posters type is empty!
+      if (isEmptyObject(poster.tag) == true) return -6; // Posters tag is empty!
+      if (isEmptyObject(poster.orientation) == true) return -7; // Posters orientation is empty!
+      if (isEmptyObject(poster.format) == true) return -8; // Posters format is empty!
+      if (isEmptyObject(poster.uri) == true) return -9; // Posters uri is empty!
     }
     
     const model = new Shop();
     model.name = request.name;
+    model.type = request.type;
     model.isLocked = request.isLocked;
     model.posters = request.posters;
     model.userCreated = token.email;

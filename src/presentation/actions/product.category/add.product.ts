@@ -7,9 +7,9 @@ import { ProductProductCategory } from '../../../domain/models/product.product.c
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
-@provide(IOC_TYPE.AddProductAction, true)
+@provide(IOC_TYPE.AddProductToCategoryAction, true)
 @provide('action', true)
-export class AddProductAction implements IAction {
+export class AddProductToCategoryAction implements IAction {
   payloadExample = `
   {
     "productkey": "123456",

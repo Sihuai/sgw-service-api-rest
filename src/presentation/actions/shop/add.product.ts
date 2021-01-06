@@ -7,9 +7,9 @@ import { ShopProduct } from '../../../domain/models/shop.product';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
-@provide(IOC_TYPE.AddProductAction, true)
+@provide(IOC_TYPE.AddProductToShopAction, true)
 @provide('action', true)
-export class AddProductAction implements IAction {
+export class AddProductToShopAction implements IAction {
   payloadExample = `
   {
     "animationplaybackkey": "2589592",

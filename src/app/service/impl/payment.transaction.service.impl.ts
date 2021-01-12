@@ -14,16 +14,16 @@ import { PaymentAccountService } from '../payment.account.service';
 import { PaymentTransactionService } from '../payment.transaction.service';
 import { StripeService } from '../../third.party/stripe.service';
 import { AbstractBaseService } from './base.service.impl';
-import { UserAnimationPlayback } from '../../../domain/models/user.animation.playback';
+import { UserAnimation } from '../../../domain/models/user.animation.playback';
 import { CartItemOrderItemService } from '../cart.item.order.item.service';
 import { CartTrailProductService } from '../cart.trail.product.service';
-import { TrailAnimationPlaybackService } from '../trail.animation.playback.service';
-import { AnimationPlaybackService } from '../animation.playback.service';
+import { AnimationService } from '../animation.service';
 import { TrailTrailDetailService } from '../trail.trail.detail.service';
-import { UserAnimationPlaybackService } from '../user.animation.playback.service';
-import { OrderItemUserAnimationPlaybackService } from '../order.item.user.animation.playback.service';
-import { OrderItemUserAnimationPlayback } from '../../../domain/models/order.item.user.animation.playback';
+import { UserAnimationService } from '../user.animation.playback.service';
+import { OrderItemUserAnimationService } from '../order.item.user.animation.playback.service';
+import { OrderItemUserAnimation } from '../../../domain/models/order.item.user.animation.playback';
 import { OrderTypes } from '../../../domain/enums/order.types';
+import { GenericEdgeService } from '../generic.edge.service';
 
 @provide(IOC_TYPE.PaymentTransactionServiceImpl)
 export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTransaction> implements PaymentTransactionService {
@@ -37,10 +37,10 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
     @inject(IOC_TYPE.CartItemOrderItemServiceImpl) private cartItemOrderItemService: CartItemOrderItemService,
     @inject(IOC_TYPE.CartTrailProductServiceImpl) private cartTrailProductService: CartTrailProductService,
     @inject(IOC_TYPE.TrailTrailDetailServiceImpl) private trailTrailDetailService: TrailTrailDetailService,
-    @inject(IOC_TYPE.TrailAnimationPlaybackServiceImpl) private trailAnimationPlaybackService: TrailAnimationPlaybackService,
-    @inject(IOC_TYPE.AnimationPlaybackServiceImpl) private animationPlaybackService: AnimationPlaybackService,
-    @inject(IOC_TYPE.UserAnimationPlaybackServiceImpl) private userAnimationPlaybackService: UserAnimationPlaybackService,
-    @inject(IOC_TYPE.OrderItemUserAnimationPlaybackServiceImpl) private orderItemUserAnimationPlaybackService: OrderItemUserAnimationPlaybackService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
+    @inject(IOC_TYPE.AnimationServiceImpl) private animationService: AnimationService,
+    @inject(IOC_TYPE.UserAnimationServiceImpl) private userAnimationService: UserAnimationService,
+    @inject(IOC_TYPE.OrderItemUserAnimationServiceImpl) private orderItemUserAnimationService: OrderItemUserAnimationService,
   ) {
     super();
   }
@@ -61,7 +61,7 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
       if (isEmptyObject(oiResults) == true) return -12;
 
       // 2.2 Map order item status
-      const userAnimationPlaybacks: Array<UserAnimationPlayback> = [];
+      const userAnimations: Array<UserAnimation> = [];
       for (let orderItem of oiResults) {
         orderItem.status = 'PAID';
         orderItem.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
@@ -83,21 +83,21 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
             const ttd = await this.trailTrailDetailService.findOneBy(filters);
 
             filters = {_to: ttd._from, isActive:true};  // Trail key
-            const tap = await this.trailAnimationPlaybackService.findOneBy(filters);
+            const tap = await this.genericEdgeService.findOneBy(filters);
 
-            const ap = await this.animationPlaybackService.findAllByKey(tap._from); // AnimationPlayback key
+            const ap = await this.animationService.findAllByKey(tap._from); // Animation key
 
-            const userAnimationPlayback = new UserAnimationPlayback();
-            userAnimationPlayback.type = ap[0].type;
-            userAnimationPlayback.orientation = ap[0].orientation;
-            userAnimationPlayback.nextPitStop = ap[0].nextPitStop;
-            userAnimationPlayback.buttons = ap[0].buttons;
-            userAnimationPlayback.icons = ap[0].icons;
-            userAnimationPlayback.userCreated = email;
-            userAnimationPlayback.userLastUpdated = email;
-            userAnimationPlayback._key = orderItem._key; // Note: This is temp key value only provide for OrderItemUserAnimationPlaybackService edge map.
+            const userAnimation = new UserAnimation();
+            userAnimation.type = ap[0].type;
+            userAnimation.orientation = ap[0].orientation;
+            userAnimation.nextPitStop = ap[0].nextPitStop;
+            userAnimation.buttons = ap[0].buttons;
+            userAnimation.icons = ap[0].icons;
+            userAnimation.userCreated = email;
+            userAnimation.userLastUpdated = email;
+            userAnimation._key = orderItem._key; // Note: This is temp key value only provide for OrderItemUserAnimationService edge map.
 
-            userAnimationPlaybacks.push(userAnimationPlayback);
+            userAnimations.push(userAnimation);
             break;
         }
       }
@@ -144,18 +144,18 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
         if (isEmptyObject(oiEditResult) == true) return -18;
       }
 
-      // 9. Insert into UserAnimationPlayback collection & UserUserAnimationPlaybackService edge
-      for (let userAnimationPlayback of userAnimationPlaybacks) {
-        const uapResult = await this.userAnimationPlaybackService.addOne(userAnimationPlayback);
+      // 9. Insert into UserAnimation collection & UserUserAnimationService edge
+      for (let userAnimation of userAnimations) {
+        const uapResult = await this.userAnimationService.addOne(userAnimation);
         if (isEmptyObject(uapResult) == true) return -19;
 
-        const oiuap = new OrderItemUserAnimationPlayback();
-        oiuap._from = 'UserAnimationPlayback/' + uapResult._key;
-        oiuap._to = 'OrderItem/' + userAnimationPlayback._key;
+        const oiuap = new OrderItemUserAnimation();
+        oiuap._from = 'UserAnimation/' + uapResult._key;
+        oiuap._to = 'OrderItem/' + userAnimation._key;
         oiuap.userCreated = email;
         oiuap.userLastUpdated = email;
 
-        const oiuapResult = await this.orderItemUserAnimationPlaybackService.addOne(oiuap);
+        const oiuapResult = await this.orderItemUserAnimationService.addOne(oiuap);
         if (isEmptyObject(oiuapResult) == true) return -20;
       }
       

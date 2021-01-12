@@ -6,13 +6,17 @@ import { Product } from '../../../domain/models/product';
 import { ProductRepo } from '../../../infra/repository/product.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { GenericEdgeService } from '../generic.edge.service';
 import { ProductService } from '../product.service';
+import { ShopProductService } from '../shop.product.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.ProductServiceImpl)
 export class ProductServiceImpl extends AbstractBaseService<Product> implements ProductService {
   constructor(
     @inject(IOC_TYPE.ProductRepoImpl) private productRepo: ProductRepo,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
+    @inject(IOC_TYPE.ShopProductServiceImpl) private shopProductService: ShopProductService,
   ) {
     super();
   }
@@ -63,6 +67,14 @@ export class ProductServiceImpl extends AbstractBaseService<Product> implements 
     try {
       const result = await this.productRepo.selectAllByKey(model._key);
       if (isEmptyObject(result) == true) return -10;
+
+      const geFilters = {_from: 'Product/' + model._key, isActive: true};
+      const geResult = await this.genericEdgeService.findAllBy(geFilters);
+      if (isEmptyObject(geResult) == false) return -11; // Exist GenericEdge data!
+
+      const spFilters = {_from: 'Product/' + model._key, isActive: true};
+      const spResult = await this.shopProductService.findOneBy(spFilters);
+      if (isEmptyObject(spResult) == false) return -12; // Exist ShopProduct data!
   
       result[0].isActive = false;
       result[0].datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');

@@ -1040,12 +1040,12 @@ export class ProductCategoryController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productcategorykey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product category key.
@@ -1071,15 +1071,15 @@ export class ProductCategoryController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: ProductProductCategory's id.
-  *                       example: "ProductProductCategory/123456"
+  *                       description: GenericEdge's id.
+  *                       example: "GenericEdge/123456"
   *                     _key:
   *                       type: string
-  *                       description: ProductProductCategory's key.
+  *                       description: GenericEdge's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: ProductProductCategory's revision.
+  *                       description: GenericEdge's revision.
   *                       example: _blDWGNW---
   *       601:
   *         description: Invalid Token.
@@ -1212,12 +1212,12 @@ export class ProductCategoryController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productcategorykey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product category key.
@@ -1350,7 +1350,7 @@ export class ProductCategoryController implements interfaces.Controller {
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Key is empty!'));
      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Category Key is empty!'));
 
-     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This ProductProductCategory is not exist!'));
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This GenericEdge is not exist!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
    } catch (e) {

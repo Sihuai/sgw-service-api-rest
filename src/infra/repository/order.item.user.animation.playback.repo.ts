@@ -1,4 +1,4 @@
-export interface OrderItemUserAnimationPlaybackRepo {
+export interface OrderItemUserAnimationRepo {
     selectAllBy(filters) : Promise<any>;
     page(filters) : Promise<any>;
     selectOneBy(filters) : Promise<any>;

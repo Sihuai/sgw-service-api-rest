@@ -1,11 +1,11 @@
-import { OrderItemUserAnimationPlayback } from '../../domain/models/order.item.user.animation.playback';
+import { OrderItemUserAnimation } from '../../domain/models/order.item.user.animation.playback';
 import { BaseService } from './base.service';
 
-export interface OrderItemUserAnimationPlaybackService extends BaseService<OrderItemUserAnimationPlayback> {
-    findAllBy(filters) : Promise<OrderItemUserAnimationPlayback[]>;
+export interface OrderItemUserAnimationService extends BaseService<OrderItemUserAnimation> {
+    findAllBy(filters) : Promise<OrderItemUserAnimation[]>;
     page(filters) : Promise<any>;
     findOneBy(filters) : Promise<any>;
-    addOne(model: OrderItemUserAnimationPlayback): Promise<any>;
-    removeOne(model: OrderItemUserAnimationPlayback): Promise<any>;
+    addOne(model: OrderItemUserAnimation): Promise<any>;
+    removeOne(model: OrderItemUserAnimation): Promise<any>;
     removeBy(user: string, filters): Promise<any>;
 }

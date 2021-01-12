@@ -6,15 +6,15 @@ import { ProductCategory } from '../../../domain/models/product.category';
 import { ProductCategoryRepo } from '../../../infra/repository/product.category.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { GenericEdgeService } from '../generic.edge.service';
 import { ProductCategoryService } from '../product.category.service';
-import { ProductProductCategoryService } from '../product.product.category.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.ProductCategoryServiceImpl)
 export class ProductCategoryServiceImpl extends AbstractBaseService<ProductCategory> implements ProductCategoryService {
   constructor(
     @inject(IOC_TYPE.ProductCategoryRepoImpl) private productcategoryRepo: ProductCategoryRepo,
-    @inject(IOC_TYPE.ProductProductCategoryServiceImpl) private productProductCategoryService: ProductProductCategoryService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
   ) {
     super();
   }
@@ -67,7 +67,7 @@ export class ProductCategoryServiceImpl extends AbstractBaseService<ProductCateg
       if (isEmptyObject(pcResult) == true) return -10;
 
       const ppcFilters = {_to: 'ProductCategory/' + model._key, isActive: true};
-      const ppcResult = await this.productProductCategoryService.findOneBy(ppcFilters);
+      const ppcResult = await this.genericEdgeService.findOneBy(ppcFilters);
       if (isEmptyObject(ppcResult) == false) return -11;
   
       pcResult[0].isActive = false;

@@ -12,7 +12,7 @@ import { IAction } from '../base.action';
 export class AddProductToShopAction implements IAction {
   payloadExample = `
   {
-    "animationplaybackkey": "2589592",
+    "animationkey": "2589592",
     "shopkey": "1758453"
   }
   `;

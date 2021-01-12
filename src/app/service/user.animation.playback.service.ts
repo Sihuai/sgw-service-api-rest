@@ -1,10 +1,10 @@
-import { UserAnimationPlayback } from '../../domain/models/user.animation.playback';
+import { UserAnimation } from '../../domain/models/user.animation.playback';
 import { BaseService } from './base.service';
 
-export interface UserAnimationPlaybackService extends BaseService<UserAnimationPlayback> {
-    findAllBy(filters) : Promise<UserAnimationPlayback[]>;
-    findAllByKey(key) : Promise<UserAnimationPlayback[]>;
-    findOneBy(filters) : Promise<UserAnimationPlayback>;
-    addOne(model: UserAnimationPlayback): Promise<any>;
+export interface UserAnimationService extends BaseService<UserAnimation> {
+    findAllBy(filters) : Promise<UserAnimation[]>;
+    findAllByKey(key) : Promise<UserAnimation[]>;
+    findOneBy(filters) : Promise<UserAnimation>;
+    addOne(model: UserAnimation): Promise<any>;
     editOne(email: string, orderItemKey: string, next: number): Promise<any>;
 }

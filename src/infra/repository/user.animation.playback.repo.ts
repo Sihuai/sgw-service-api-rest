@@ -1,6 +1,6 @@
 import { ArrayOr } from "../utils/oct-orm/types/array.or.type";
 
-export interface UserAnimationPlaybackRepo {
+export interface UserAnimationRepo {
     selectAllBy(filters) : Promise<any>;
     selectAllByKey(key: string);
     selectAllByKey(keys: string[]);

@@ -2,49 +2,49 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
-import { OrderItemUserAnimationPlayback } from '../../../domain/models/order.item.user.animation.playback';
-import { OrderItemUserAnimationPlaybackRepo } from '../../../infra/repository/order.item.user.animation.playback.repo';
+import { OrderItemUserAnimation } from '../../../domain/models/order.item.user.animation.playback';
+import { OrderItemUserAnimationRepo } from '../../../infra/repository/order.item.user.animation.playback.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
-import { OrderItemUserAnimationPlaybackService } from '../order.item.user.animation.playback.service';
+import { OrderItemUserAnimationService } from '../order.item.user.animation.playback.service';
 import { AbstractBaseService } from './base.service.impl';
 
-@provide(IOC_TYPE.OrderItemUserAnimationPlaybackServiceImpl)
-export class OrderItemUserAnimationPlaybackServiceImpl extends AbstractBaseService<OrderItemUserAnimationPlayback> implements OrderItemUserAnimationPlaybackService {
+@provide(IOC_TYPE.OrderItemUserAnimationServiceImpl)
+export class OrderItemUserAnimationServiceImpl extends AbstractBaseService<OrderItemUserAnimation> implements OrderItemUserAnimationService {
   constructor(
-    @inject(IOC_TYPE.OrderItemUserAnimationPlaybackRepoImpl) private orderItemUserAnimationPlaybackRepo: OrderItemUserAnimationPlaybackRepo,
+    @inject(IOC_TYPE.OrderItemUserAnimationRepoImpl) private orderItemUserAnimationRepo: OrderItemUserAnimationRepo,
   ) {
     super();
   }
 
-  async findAllBy(filters) : Promise<OrderItemUserAnimationPlayback[]> {
-    return await this.orderItemUserAnimationPlaybackRepo.selectAllBy(filters);
+  async findAllBy(filters) : Promise<OrderItemUserAnimation[]> {
+    return await this.orderItemUserAnimationRepo.selectAllBy(filters);
   }
 
   async page(filters) : Promise<any> {
-    return await this.orderItemUserAnimationPlaybackRepo.page(filters);
+    return await this.orderItemUserAnimationRepo.page(filters);
   }
 
-  async findOneBy(filters) : Promise<OrderItemUserAnimationPlayback> {
-    return await this.orderItemUserAnimationPlaybackRepo.selectOneBy(filters);
+  async findOneBy(filters) : Promise<OrderItemUserAnimation> {
+    return await this.orderItemUserAnimationRepo.selectOneBy(filters);
   }
 
-  async addOne(model: OrderItemUserAnimationPlayback): Promise<any> {
+  async addOne(model: OrderItemUserAnimation): Promise<any> {
     try {
-      return await this.orderItemUserAnimationPlaybackRepo.insert(model);
+      return await this.orderItemUserAnimationRepo.insert(model);
     } catch (e) {
       if (e.message.match('duplicate key value violates unique constraint')) throw new AppErrorAlreadyExist(e);
       throw e;
     }
   }
 
-  async removeOne(model: OrderItemUserAnimationPlayback): Promise<any> {
+  async removeOne(model: OrderItemUserAnimation): Promise<any> {
     try {
       const filters = {_key: model._key};
       const result = await this.findOneBy(filters);
       if (isEmptyObject(result) == true) return -10;
   
-      return await this.orderItemUserAnimationPlaybackRepo.deleteByKey(result._key);
+      return await this.orderItemUserAnimationRepo.deleteByKey(result._key);
     } catch (e) {
       throw e;
     }
@@ -60,7 +60,7 @@ export class OrderItemUserAnimationPlaybackServiceImpl extends AbstractBaseServi
         data.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
         data.userLastUpdated = user;
 
-        const updateResult = await this.orderItemUserAnimationPlaybackRepo.update(data);
+        const updateResult = await this.orderItemUserAnimationRepo.update(data);
         if (isEmptyObject(updateResult) == true) return false;
       }
 
@@ -70,7 +70,7 @@ export class OrderItemUserAnimationPlaybackServiceImpl extends AbstractBaseServi
       //   keys.push(data._key);
       // }
 
-      // return await this.orderItemUserAnimationPlaybackRepo.deleteByKey(keys);
+      // return await this.orderItemUserAnimationRepo.deleteByKey(keys);
     } catch (e) {
       throw e;
     }

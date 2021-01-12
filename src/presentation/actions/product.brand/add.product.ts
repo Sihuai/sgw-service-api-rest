@@ -1,9 +1,9 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { ProductProductBrandService } from '../../../app/service/product.product.brand.service';
+import { GenericEdgeService } from '../../../app/service/generic.edge.service';
 import { IOC_TYPE } from '../../../config/type';
-import { IProductProductBrandDTO } from '../../../domain/dtos/i.product.product.brand.dto';
-import { ProductProductBrand } from '../../../domain/models/product.product.brand';
+import { IGenericEdgeDTO } from '../../../domain/dtos/i.generic.edge.dto';
+import { GenericEdge } from '../../../domain/models/generic.edge';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
@@ -18,19 +18,19 @@ export class AddProductToBrandAction implements IAction {
   `;
   description = '';
   constructor(
-    @inject(IOC_TYPE.ProductProductBrandServiceImpl) private productProductBrandService: ProductProductBrandService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
   ) {}
-  async execute(token, request: IProductProductBrandDTO) : Promise<any> {
+  async execute(token, request: IGenericEdgeDTO) : Promise<any> {
 
-    if (isEmptyObject(request.productkey) == true) return -1; // Product Key is empty!
-    if (isEmptyObject(request.productbrandkey) == true) return -2; // Product Brand Key is empty!
+    if (isEmptyObject(request.fromkey) == true) return -1; // Product Key is empty!
+    if (isEmptyObject(request.tokey) == true) return -2; // Product Brand Key is empty!
 
-    const model = new ProductProductBrand();
-    model._from = 'Product/' + request.productkey;
-    model._to = 'ProductBrand/' + request.productbrandkey;
+    const model = new GenericEdge();
+    model._from = 'Product/' + request.fromkey;
+    model._to = 'ProductBrand/' + request.tokey;
     model.userCreated = token.email;
     model.userLastUpdated = token.email;
     
-    return await this.productProductBrandService.addOne(model);
+    return await this.genericEdgeService.addOne(model);
   }
 }

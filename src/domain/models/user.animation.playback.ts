@@ -101,8 +101,8 @@ export class Animation {
     location: Location;
   }
   
-  @Entity('UserAnimationPlayback')
-  export class UserAnimationPlayback extends BaseModel {
+  @Entity('UserAnimation')
+  export class UserAnimation extends BaseModel {
       constructor() {
           super();
           this.type = '';

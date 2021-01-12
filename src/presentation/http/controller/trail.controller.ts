@@ -20,8 +20,8 @@ import { GetTrailAction } from '../../actions/trail/get';
 import { CreateTrailAction } from '../../actions/trail/create';
 import { EditTrailAction } from '../../actions/trail/edit';
 import { DeleteTrailAction } from '../../actions/trail/delete';
-import { CreateTrailAnimationPlaybackAction } from '../../actions/trail/add.animation.playback';
-import { DeleteTrailAnimationPlaybackAction } from '../../actions/trail/remove.animation.playback';
+import { CreateTrailAnimationAction } from '../../actions/trail/add.animation';
+import { DeleteTrailAnimationAction } from '../../actions/trail/remove.animation';
 import { MyTrailAction } from '../../actions/trail/my';
 
 @controller('/trail')
@@ -32,8 +32,8 @@ export class TrailController implements interfaces.Controller {
     @inject(IOC_TYPE.EditTrailAction) private editTrailAction: EditTrailAction,
     @inject(IOC_TYPE.DeleteTrailAction) private deleteTrailAction: DeleteTrailAction,
     @inject(IOC_TYPE.MyTrailAction) private myTrailAction: MyTrailAction,
-    @inject(IOC_TYPE.CreateTrailAnimationPlaybackAction) private createTrailAnimationPlaybackAction: CreateTrailAnimationPlaybackAction,
-    @inject(IOC_TYPE.DeleteTrailAnimationPlaybackAction) private deleteTrailAnimationPlaybackAction: DeleteTrailAnimationPlaybackAction,
+    @inject(IOC_TYPE.CreateTrailAnimationAction) private createTrailAnimationAction: CreateTrailAnimationAction,
+    @inject(IOC_TYPE.DeleteTrailAnimationAction) private deleteTrailAnimationAction: DeleteTrailAnimationAction,
   ) { }
 
    /**
@@ -767,12 +767,12 @@ export class TrailController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               animationplaybackkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The animation playback key.
+  *                 description: The animation key.
   *                 example: "123456"
-  *               trailkey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The trail key.
@@ -798,15 +798,15 @@ export class TrailController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: trail animation play's id.
-  *                       example: "TrailAnimationPlayback/123456"
+  *                       description: GenericEdge's id.
+  *                       example: "GenericEdge/123456"
   *                     _key:
   *                       type: string
-  *                       description: trail animation play's key.
+  *                       description: GenericEdge's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: trail animation play's revision.
+  *                       description: GenericEdge's revision.
   *                       example: _blDWGNW---
   *       601:
   *         description: Invalid Token.
@@ -912,8 +912,8 @@ export class TrailController implements interfaces.Controller {
    try {
      const token = getUserFromToken(authHeader, request.cookies['r-token']);
      
-     const result = await this.createTrailAnimationPlaybackAction.execute(token, request.body);
-     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback Key is empty!'));
+     const result = await this.createTrailAnimationAction.execute(token, request.body);
+     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Animation Key is empty!'));
      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
      
      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
@@ -939,12 +939,12 @@ export class TrailController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               animationplaybackkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
-  *                 description: The animation playback key.
+  *                 description: The animation key.
   *                 example: "123456"
-  *               trailkey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The trail key.
@@ -1073,10 +1073,10 @@ export class TrailController implements interfaces.Controller {
    try {
      const token = getUserFromToken(authHeader, request.cookies['r-token']);
      
-     const result = await this.deleteTrailAnimationPlaybackAction.execute(token, request.body);
-     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'AnimationPlayback Key is empty!'));
+     const result = await this.deleteTrailAnimationAction.execute(token, request.body);
+     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Animation Key is empty!'));
      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
-     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This Trail AnimationPlayback is not exist!'));
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This GenericEdge is not exist!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
    } catch (e) {

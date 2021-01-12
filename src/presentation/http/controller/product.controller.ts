@@ -1304,6 +1304,8 @@ export class ProductController implements interfaces.Controller {
       const result = await this.deleteProductAction.execute(token, key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Not exist product!'));
+      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Please remove product in brand and category first!'));
+      if (result == -12) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Please remove product in shop first!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
     } catch (e) {
@@ -1473,7 +1475,7 @@ export class ProductController implements interfaces.Controller {
 
      const result = await this.getProductCategoryAction.execute(key);
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Key is empty!'));
-     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'No product category data!'));
+     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'No GenericEdge data!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(result[0]));
    } catch (e) {
@@ -1498,12 +1500,12 @@ export class ProductController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productcategorykey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product category key.
@@ -1529,15 +1531,15 @@ export class ProductController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: ProductProductCategory's id.
-  *                       example: "ProductProductCategory/123456"
+  *                       description: GenericEdge's id.
+  *                       example: "GenericEdge/123456"
   *                     _key:
   *                       type: string
-  *                       description: ProductProductCategory's key.
+  *                       description: GenericEdge's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: ProductProductCategory's revision.
+  *                       description: GenericEdge's revision.
   *                       example: _blDWGNW---
   *       601:
   *         description: Invalid Token.
@@ -1670,12 +1672,12 @@ export class ProductController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productcategorykey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product category key.
@@ -1808,7 +1810,7 @@ export class ProductController implements interfaces.Controller {
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Key is empty!'));
      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Category Key is empty!'));
 
-     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This ProductProductCategory is not exist!'));
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This GenericEdge is not exist!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
    } catch (e) {
@@ -1978,7 +1980,7 @@ export class ProductController implements interfaces.Controller {
 
      const result = await this.getProductBrandAction.execute(key);
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Key is empty!'));
-     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'No product brand data!'));
+     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'No GenericEdge data!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(result[0]));
    } catch (e) {
@@ -2003,12 +2005,12 @@ export class ProductController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productbrandkey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product brand key.
@@ -2034,15 +2036,15 @@ export class ProductController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: ProductProductBrand's id.
+  *                       description: GenericEdge's id.
   *                       example: "ProductProductBrand/123456"
   *                     _key:
   *                       type: string
-  *                       description: ProductProductBrand's key.
+  *                       description: GenericEdge's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: ProductProductBrand's revision.
+  *                       description: GenericEdge's revision.
   *                       example: _blDWGNW---
   *       601:
   *         description: Invalid Token.
@@ -2175,12 +2177,12 @@ export class ProductController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productbrandkey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product brand key.
@@ -2313,7 +2315,7 @@ export class ProductController implements interfaces.Controller {
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Key is empty!'));
      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Brand Key is empty!'));
 
-     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This ProductProductBrand is not exist!'));
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This GenericEdge is not exist!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
    } catch (e) {

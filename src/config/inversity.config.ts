@@ -12,11 +12,12 @@ export const bindings = new AsyncContainerModule(
   async (bind: interfaces.Bind, unbind: interfaces.Unbind) => {
 
     await require('../presentation/http/controller/address.controller');
-    await require('../presentation/http/controller/animation.playback.controller');
+    await require('../presentation/http/controller/animation.controller');
     await require('../presentation/http/controller/auth.controller');
     await require('../presentation/http/controller/bill.board.controller');
     await require('../presentation/http/controller/cart.controller');
     await require('../presentation/http/controller/cart.detail.controller');
+    await require('../presentation/http/controller/coupon.controller');
     await require('../presentation/http/controller/home.controller');
     await require('../presentation/http/controller/option.type.controller');
     await require('../presentation/http/controller/order.controller');
@@ -33,6 +34,7 @@ export const bindings = new AsyncContainerModule(
     await require('../presentation/http/controller/trail.controller');
     await require('../presentation/http/controller/trail.detail.controller');
     await require('../presentation/http/controller/user.controller');
+    await require('../presentation/http/controller/wallet.controller');
     
     // bind<any>(IOC_TYPE.AppConfigService).toDynamicValue(() => {
     //   return new AppConfigService({

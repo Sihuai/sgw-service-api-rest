@@ -1,15 +1,15 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { OrderItemUserAnimationPlayback } from "../../../domain/models/order.item.user.animation.playback";
+import { OrderItemUserAnimation } from "../../../domain/models/order.item.user.animation.playback";
 import { createConnection } from "../../utils/oct-orm";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { OrderItemUserAnimationPlaybackRepo } from "../order.item.user.animation.playback.repo";
+import { OrderItemUserAnimationRepo } from "../order.item.user.animation.playback.repo";
 
-@provide(IOC_TYPE.OrderItemUserAnimationPlaybackRepoImpl)
-export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnimationPlaybackRepo {
+@provide(IOC_TYPE.OrderItemUserAnimationRepoImpl)
+export class OrderItemUserAnimationRepoImpl implements OrderItemUserAnimationRepo {
   async selectAllBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimationPlayback]});
+    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimation]});
 
     try {
       const aql = {
@@ -18,7 +18,7 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
         return: 'doc'
       };
       
-      const repo = con.repositoryFor<OrderItemUserAnimationPlayback>("OrderItemUserAnimationPlayback");
+      const repo = con.repositoryFor<OrderItemUserAnimation>("OrderItemUserAnimation");
       const result = await repo.edgeFindAllBy(aql, false);
 
       if(!result) return null;
@@ -31,7 +31,7 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
   }
 
   async page(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimationPlayback]});
+    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimation]});
 
     try {
       const aql = {
@@ -44,7 +44,7 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
         return: 'doc'
       };
       
-      const repo = con.repositoryFor<OrderItemUserAnimationPlayback>("OrderItemUserAnimationPlayback");
+      const repo = con.repositoryFor<OrderItemUserAnimation>("OrderItemUserAnimation");
       const result = await repo.paginationBy(aql, false);
 
       if(!result) return null;
@@ -57,10 +57,10 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
   }
 
   async selectOneBy(filters) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimationPlayback]});
+    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimation]});
 
     try {
-      const repo = con.repositoryFor<OrderItemUserAnimationPlayback>("OrderItemUserAnimationPlayback");
+      const repo = con.repositoryFor<OrderItemUserAnimation>("OrderItemUserAnimation");
       const result = await repo.edgeFindOneBy(filters, false);
 
       if(!result) return null;
@@ -73,10 +73,10 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
   }
 
   async insert(model) : Promise<any> {
-    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimationPlayback]});
+    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimation]});
 
     try {
-      const repo = con.repositoryFor<OrderItemUserAnimationPlayback>("OrderItemUserAnimationPlayback");
+      const repo = con.repositoryFor<OrderItemUserAnimation>("OrderItemUserAnimation");
       const result = await repo.edgeCreate(model);
 
       return result;
@@ -88,10 +88,10 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
   }
 
   async update(model) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimationPlayback]});
+    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimation]});
 
     try {
-      const repo = con.repositoryFor<OrderItemUserAnimationPlayback>("OrderItemUserAnimationPlayback");
+      const repo = con.repositoryFor<OrderItemUserAnimation>("OrderItemUserAnimation");
       const result = await repo.edgeUpdate(model);
 
       return result;
@@ -103,10 +103,10 @@ export class OrderItemUserAnimationPlaybackRepoImpl implements OrderItemUserAnim
   }
   
   async deleteByKey(key: any) : Promise<any>  {
-    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimationPlayback]});
+    const con = await createConnection({...ormSGWConnParam, entities: [OrderItemUserAnimation]});
 
     try {
-      const repo = con.repositoryFor<OrderItemUserAnimationPlayback>("OrderItemUserAnimationPlayback");
+      const repo = con.repositoryFor<OrderItemUserAnimation>("OrderItemUserAnimation");
       const result = await repo.edgeDeleteByKey(key);
 
       return result;

@@ -1029,12 +1029,12 @@ export class ProductBrandController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productbrandkey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product brand key.
@@ -1060,15 +1060,15 @@ export class ProductBrandController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: ProductProductBrand's id.
-  *                       example: "ProductProductBrand/123456"
+  *                       description: GenericEdge's id.
+  *                       example: "GenericEdge/123456"
   *                     _key:
   *                       type: string
-  *                       description: ProductProductBrand's key.
+  *                       description: GenericEdge's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: ProductProductBrand's revision.
+  *                       description: GenericEdge's revision.
   *                       example: _blDWGNW---
   *       601:
   *         description: Invalid Token.
@@ -1201,12 +1201,12 @@ export class ProductBrandController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               productkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product key.
   *                 example: "123456"
-  *               productbrandkey:
+  *               tokey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The product brand key.
@@ -1339,7 +1339,7 @@ export class ProductBrandController implements interfaces.Controller {
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Key is empty!'));
      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Product Brand Key is empty!'));
 
-     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This ProductProductBrand is not exist!'));
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This GenericEdge is not exist!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
    } catch (e) {

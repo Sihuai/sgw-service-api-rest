@@ -6,15 +6,15 @@ import { ProductBrand } from '../../../domain/models/product.brand';
 import { ProductBrandRepo } from '../../../infra/repository/product.brand.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { GenericEdgeService } from '../generic.edge.service';
 import { ProductBrandService } from '../product.brand.service';
-import { ProductProductBrandService } from '../product.product.brand.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.ProductBrandServiceImpl)
 export class ProductBrandServiceImpl extends AbstractBaseService<ProductBrand> implements ProductBrandService {
   constructor(
     @inject(IOC_TYPE.ProductBrandRepoImpl) private productbrandRepo: ProductBrandRepo,
-    @inject(IOC_TYPE.ProductProductBrandServiceImpl) private productProductBrandService: ProductProductBrandService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
   ) {
     super();
   }
@@ -75,7 +75,7 @@ export class ProductBrandServiceImpl extends AbstractBaseService<ProductBrand> i
       if (isEmptyObject(pcResult) == true) return -10;
 
       const ppcFilters = {_to: 'ProductBrand/' + model._key, isActive: true};
-      const ppcResult = await this.productProductBrandService.findOneBy(ppcFilters);
+      const ppcResult = await this.genericEdgeService.findOneBy(ppcFilters);
       if (isEmptyObject(ppcResult) == false) return -11;
   
       pcResult[0].isActive = false;

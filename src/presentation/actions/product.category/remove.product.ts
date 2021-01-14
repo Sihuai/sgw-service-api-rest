@@ -23,6 +23,7 @@ export class RemoveProductFromCategoryAction implements IAction {
     const model = new GenericEdge();
     model._from = 'Product/' + request.fromkey;
     model._to = 'ProductCategory/' + request.tokey;
+    model.tag = 'ProductCategory';
     model.userLastUpdated = token.email;
     
     return this.genericEdgeService.removeOne(model);

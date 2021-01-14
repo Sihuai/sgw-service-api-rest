@@ -23,6 +23,7 @@ export class RemoveFromBrandAction implements IAction {
     const model = new GenericEdge();
     model._from = 'Product/' + request.fromkey;
     model._to = 'ProductBrand/' + request.tokey;
+    model.tag = 'ProductBrand';
     model.userLastUpdated = token.email;
     
     return this.genericEdgeService.removeOne(model);

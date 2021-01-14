@@ -1,8 +1,9 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { SectionTrailService } from '../../../app/service/section.trail.service';
+import { GenericEdgeService } from '../../../app/service/generic.edge.service';
 import { IOC_TYPE } from '../../../config/type';
-import { SectionTrail } from '../../../domain/models/section.trail';
+import { IGenericEdgeDTO } from '../../../domain/dtos/i.generic.edge.dto';
+import { GenericEdge } from '../../../domain/models/generic.edge';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';
 
@@ -12,15 +13,17 @@ export class DeleteSectionTrailAction implements IAction {
   payloadExample = 'key: "verysecret"';
   description = '';
   constructor(
-    @inject(IOC_TYPE.SectionTrailServiceImpl) private sectionTrailService: SectionTrailService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
   ) {}
-  execute(token, key: string) {
-    if (isEmptyObject(key) == true) return -1; // Key is empty!
-    
-    const model = new SectionTrail();
-    model._key = key;
+  execute(token, request: IGenericEdgeDTO) {
+    if (isEmptyObject(request.fromkey) == true) return -1; // Trail Key is empty!
+    if (isEmptyObject(request.tokey) == true) return -2; // Section Key is empty!
+
+    const model = new GenericEdge();
+    model._from = 'Trail/' + request.fromkey;
+    model._to = 'Section/' + request.tokey;
     model.userLastUpdated = token.email;
     
-    return this.sectionTrailService.removeOne(model);
+    return this.genericEdgeService.removeOne(model);
   }
 }

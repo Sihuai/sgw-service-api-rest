@@ -43,7 +43,7 @@ export class ProductBrandServiceImpl extends AbstractBaseService<ProductBrand> i
 
       const maxResult = await this.productbrandRepo.selectMax();
       if (isEmptyObject(maxResult) == false) {
-        model.sequence = maxResult.sequence + 1;
+        model.sequence = maxResult[0].sequence + 1;
       }
 
       return await this.productbrandRepo.insert(model);

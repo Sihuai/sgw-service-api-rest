@@ -99,7 +99,7 @@ export class CouponController implements interfaces.Controller {
   *                         type: string
   *                         description: The coupon's expire.
   *                         example: "2021-05-01"
-  *                       options:
+  *                       option:
   *                         type: object
   *                         properties:
   *                           discount:
@@ -295,7 +295,7 @@ export class CouponController implements interfaces.Controller {
   *                 type: string
   *                 description: The coupon's expire.
   *                 example: "2021-05-01"
-  *               options:
+  *               option:
   *                 type: object
   *                 properties:
   *                   discount:
@@ -385,7 +385,7 @@ export class CouponController implements interfaces.Controller {
   *                       type: string
   *                       description: The coupon's expire.
   *                       example: "2021-05-01"
-  *                     options:
+  *                     option:
   *                       type: object
   *                       properties:
   *                         discount:
@@ -589,7 +589,7 @@ export class CouponController implements interfaces.Controller {
   *                 type: string
   *                 description: The coupon's expire.
   *                 example: "2021-05-01"
-  *               options:
+  *               option:
   *                 type: object
   *                 properties:
   *                   discount:
@@ -954,10 +954,10 @@ export class CouponController implements interfaces.Controller {
   
  /**
 * @swagger
-  * /coupon/getcouponproduct:
+  * /coupon/getproduct:
   *   get:
-  *     summary: Retrieve a list of coupon products.
-  *     description: Retrieve a list of coupon products.
+  *     summary: Retrieve a list of products.
+  *     description: Retrieve a list of products.
   *     security:
   *       - apikey: []
   *     parameters:
@@ -972,7 +972,7 @@ export class CouponController implements interfaces.Controller {
   *         example: "123456"
   *     responses:
   *       200:
-  *         description: A list of coupon products.
+  *         description: A list of products.
   *         content:
   *           application/json:
   *             schema:
@@ -1103,8 +1103,8 @@ export class CouponController implements interfaces.Controller {
   *                   description: Response data.
   *                   example: ""
   */
- @httpGet('/getcouponproduct')
- private async getCouponProduct(
+ @httpGet('/getproduct')
+ private async getProduct(
    @requestHeaders('authorization') authHeader: string,
    @queryParam('key') key: string,
    @request() request: Request, @response() response: Response, @next() next: Function,
@@ -1461,10 +1461,10 @@ export class CouponController implements interfaces.Controller {
 
  /**
 * @swagger
-  * /coupon/getcouponshop:
+  * /coupon/getshop:
   *   get:
-  *     summary: Retrieve a list of coupon shops.
-  *     description: Retrieve a list of coupon shops.
+  *     summary: Retrieve a list of shops.
+  *     description: Retrieve a list of shops.
   *     security:
   *       - apikey: []
   *     parameters:
@@ -1479,7 +1479,7 @@ export class CouponController implements interfaces.Controller {
   *         example: "123456"
   *     responses:
   *       200:
-  *         description: A list of coupon shops.
+  *         description: A list of shops.
   *         content:
   *           application/json:
   *             schema:
@@ -1610,8 +1610,8 @@ export class CouponController implements interfaces.Controller {
   *                   description: Response data.
   *                   example: ""
   */
- @httpGet('/getcouponshop')
- private async getCouponShop(
+ @httpGet('/getshop')
+ private async getShop(
    @requestHeaders('authorization') authHeader: string,
    @queryParam('key') key: string,
    @request() request: Request, @response() response: Response, @next() next: Function,

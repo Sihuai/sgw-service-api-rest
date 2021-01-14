@@ -30,6 +30,32 @@ export class GenericEdgeRepoImpl implements GenericEdgeRepo {
     }
   }
 
+  async page(filters, pageIndex: number, pageSize: number) : Promise<any> {
+    const con = await createConnection({...ormSGWConnParam, entities: [GenericEdge]});
+
+    try {
+      const aql = {
+        for: 'doc',
+        filter: parseFilter(filters),
+        limit: {
+          pageIndex: pageIndex,
+          pageSize: pageSize
+        },
+        return: 'doc'
+      };
+      
+      const repo = con.repositoryFor<GenericEdge>("GenericEdge");
+      const result = await repo.paginationBy(aql, false);
+
+      if(!result) return null;
+      return result;
+    } catch (e) {
+      throw e;
+    } finally {
+      con.db.close();
+    }
+  }
+
   async selectOneBy(filters) : Promise<any> {
     const con = await createConnection({...ormSGWConnParam, entities: [GenericEdge]});
 

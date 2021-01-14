@@ -7,15 +7,15 @@ import { TrailRepo } from '../../../infra/repository/trail.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { PageResult } from '../../../infra/utils/oct-orm/types/pageResult';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { GenericEdgeService } from '../generic.edge.service';
 import { TrailService } from '../trail.service';
-import { TrailTrailDetailService } from '../trail.trail.detail.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.TrailServiceImpl)
 export class TrailServiceImpl extends AbstractBaseService<Trail> implements TrailService {
   constructor(
     @inject(IOC_TYPE.TrailRepoImpl) private trailRepo: TrailRepo,
-    @inject(IOC_TYPE.TrailTrailDetailServiceImpl) private trailTrailDetailService: TrailTrailDetailService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
   ) {
     super();
   }
@@ -70,8 +70,8 @@ export class TrailServiceImpl extends AbstractBaseService<Trail> implements Trai
       if (isEmptyObject(result[0]) == true) return -10;
 
       // 1. Check Trail Trail-Detail relation edge have record or not
-      const filters = {_from: 'Trail/' + result[0]._key, isActive: true};
-      const ttdResult = await this.trailTrailDetailService.findAllBy(filters);
+      const filters = {_to: 'Trail/' + result[0]._key, isActive: true};
+      const ttdResult = await this.genericEdgeService.findAllBy(filters);
       if (isEmptyObject(ttdResult) == false) return -11;
       
       // 2. Remove trail collection

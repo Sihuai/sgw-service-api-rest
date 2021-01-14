@@ -20,7 +20,6 @@ export class EditShopAction implements IAction {
 
     if (isEmptyObject(request.name) == true) return -1; // Name is empty!
     if (isEmptyObject(request.type) == true) return -2; // Type is empty!
-    if (isEmptyObject(request.isLocked) == true) return -3; // Is locked is empty!
     if (isEmptyObject(request.posters) == true) return -4; // Posters is empty!
 
     for (const poster of request.posters) {

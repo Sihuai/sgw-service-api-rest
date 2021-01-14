@@ -9,4 +9,6 @@ export class GenericEdge extends BaseModel {
 
   @Attribute()
   sequence?: number;
+  @Attribute()
+  tag?: string;
 }

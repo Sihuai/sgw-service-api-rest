@@ -3,69 +3,19 @@ import { provide } from 'inversify-binding-decorators';
 import { TrailDetailService } from '../../../app/service/trail.detail.service';
 import { IOC_TYPE } from '../../../config/type';
 import { ITrailDetailDTO } from '../../../domain/dtos/i.trail.detail.dto';
-import { BillBoard } from '../../../domain/models/bill.board';
-import { TrailDetail, TrailDetailSection } from '../../../domain/models/trail.detail';
+import { TrailDetail } from '../../../domain/models/trail.detail';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
-import { INullable } from '../../../infra/utils/types';
 import { IAction } from '../base.action';
-
-interface IRequest extends INullable<ITrailDetailDTO> {
-  trailkey: string;
-  name: string;
-  personas: BillBoard[];
-  sections: TrailDetailSection[];
-}
 
 @provide(IOC_TYPE.CreateTrailDetailAction, true)
 @provide('action', true)
 export class CreateTrailDetailAction implements IAction {
-  payloadExample = `
-  {
-    "name": "Bugis Trail",
-    "billboard": [
-      {
-        "type": "CAROURSEL",
-        "contents": [
-          {
-            "type": "PHOTO",
-            "tag": "TOURIST-INDIVIDUAL",
-            "orientation": "LANDSCAPE",
-            "format": "3R",
-            "uri": "https://fs.zulundatumsolutions.net:3001/images/personas/SGW_Png_Images_Main_Page_Mobile_App_201123_14@3x.png",
-            "data": {
-              "price": 12.0,
-              "currency": "SGD",
-              "content": "Tourist Individual participation information here...."
-            },
-            "sequence": 0
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "type": "PRICE",
-        "contents": [
-          {
-            "price": "T.B.A",
-            "includeAddToCart": {
-              "icon": true,
-              "text": true,
-              "button": true,
-              "caption": "Add to CartItem"
-            }
-          }
-        ],
-        "sequence": 0
-      }
-    ]
-  }
-  `;
+  payloadExample = ``;
   description = '';
   constructor(
     @inject(IOC_TYPE.TrailDetailServiceImpl) private trailDetailService: TrailDetailService,
   ) {}
-  async execute(token, request: IRequest) : Promise<any> {
+  async execute(token, request: ITrailDetailDTO) : Promise<any> {
 
     if (isEmptyObject(request.name) == true) return -1; // Name is empty!
     if (isEmptyObject(request.personas) == true) return -2; // Personas is empty!

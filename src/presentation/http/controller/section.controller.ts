@@ -450,6 +450,7 @@ export class SectionController implements interfaces.Controller {
      getUserFromToken(authHeader, request.cookies['r-token']);
 
      const result = await this.pagingSectionAction.execute(key, index);
+     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This section is not exist!'));
      
      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
    } catch (e) {
@@ -993,7 +994,7 @@ export class SectionController implements interfaces.Controller {
       const result = await this.deleteSectionAction.execute(token, key);
       if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
       if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This section is not exist!'));
-      if (result == -13) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove Section Trail data!'));
+      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Please remove trail first!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
     } catch (e) {
@@ -1018,15 +1019,15 @@ export class SectionController implements interfaces.Controller {
   *           schema:
   *             type: object
   *             properties:
-  *               sectionkey:
-  *                 type: string
-  *                 allowEmptyValue: false
-  *                 description: The section key.
-  *                 example: "123456"
-  *               trailkey:
+  *               fromkey:
   *                 type: string
   *                 allowEmptyValue: false
   *                 description: The trail key.
+  *                 example: "123456"
+  *               tokey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The section key.
   *                 example: "654321"
   *     responses:
   *       200:
@@ -1049,15 +1050,15 @@ export class SectionController implements interfaces.Controller {
   *                   properties:
   *                     _id:
   *                       type: string
-  *                       description: section's id.
-  *                       example: "SectionTrail/123456"
+  *                       description: GenericEdge's id.
+  *                       example: "GenericEdge/123456"
   *                     _key:
   *                       type: string
-  *                       description: section's key.
+  *                       description: GenericEdge's key.
   *                       example: "123456"
   *                     _rev:
   *                       type: string
-  *                       description: section's revision.
+  *                       description: GenericEdge's revision.
   *                       example: _blDWGNW---
   *       601:
   *         description: Invalid Token.
@@ -1164,8 +1165,8 @@ export class SectionController implements interfaces.Controller {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
       
       const result = await this.createSectionTrailAction.execute(token, request.body);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Section Key is empty!'));
-      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Section Key is empty!'));
       
       response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
     } catch (e) {
@@ -1183,16 +1184,23 @@ export class SectionController implements interfaces.Controller {
   *     description: Remove trail from section.
   *     security:
   *       - apikey: []
-  *     parameters:
-  *       - in: query
-  *         name: key
-  *         required: true
-  *         allowEmptyValue: false
-  *         description: Key of the TrailSection.
-  *         schema:
-  *           type: string
-  *         style: simple
-  *         example: "123456"
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               fromkey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The Trail key.
+  *                 example: "123456"
+  *               tokey:
+  *                 type: string
+  *                 allowEmptyValue: false
+  *                 description: The Section key.
+  *                 example: "654321"
   *     responses:
   *       200:
   *         description: Delete Success.
@@ -1318,9 +1326,11 @@ export class SectionController implements interfaces.Controller {
     try {
       const token = getUserFromToken(authHeader, request.cookies['r-token']);
       
-      const result = await this.deleteSectionTrailAction.execute(token, key);
-      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Key is empty!'));
-      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This section is not exist!'));
+      const result = await this.deleteSectionTrailAction.execute(token, request.body);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Trail Key is empty!'));
+      if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Section Key is empty!'));
+
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'This GenericEdge is not exist!'));
 
       response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
     } catch (e) {

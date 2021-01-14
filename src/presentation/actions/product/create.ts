@@ -21,7 +21,6 @@ export class CreateProductAction implements IAction {
     if (isEmptyObject(request.uom) == true) return -2; // UOM is empty!
     if (isEmptyObject(request.name) == true) return -3; // Name is empty!
     if (isEmptyObject(request.description) == true) return -4; // Description is empty!
-    if (isEmptyObject(request.isLocked) == true) return -5; // Is locked is empty!
     if (isEmptyObject(request.options) == true) return -6; // Options is empty!
     if (isEmptyObject(request.delivery) == true) return -7; // Delivery is empty!
 

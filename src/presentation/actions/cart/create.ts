@@ -32,7 +32,7 @@ export class CreateCartAction implements IAction {
   ) {}
   async execute(token, request: IRequest) : Promise<any> {
 
-    if (isEmptyObject(request.typekey) == true) return -1;          // Product/Trail key is empty!
+    if (isEmptyObject(request.typekey) == true) return -1;          // Product/Trail Detail key is empty!
     if (isEmptyObject(request.type) == true) return -2;     // Type is empty!
     if (isEmptyObject(request.name) == true) return -3;     // Name is empty!
     if (isEmptyObject(request.description) == true) return -4;     // Description is empty!

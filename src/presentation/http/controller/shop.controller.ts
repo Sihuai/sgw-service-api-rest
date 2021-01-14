@@ -229,7 +229,7 @@ export class ShopController implements interfaces.Controller {
   *               name:
   *                 type: string
   *                 description: The shop's name.
-  *                 example: "Product A-1"
+  *                 example: "Shop  A-1"
   *               type:
   *                 type: string
   *                 description: The shop's type(G-MALL/TRAILS-SHOPS).
@@ -471,7 +471,7 @@ export class ShopController implements interfaces.Controller {
   *               name:
   *                 type: string
   *                 description: The shop's name.
-  *                 example: "Product A-1"
+  *                 example: "Shop  A-1"
   *               type:
   *                 type: string
   *                 description: The shop's type(G-MALL/TRAILS-SHOPS).

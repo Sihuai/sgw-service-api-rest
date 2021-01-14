@@ -18,13 +18,13 @@ export class GetProductFromShopAction implements IAction {
   async execute(key: string) : Promise<any>  {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
 
-    const filters = {_from: 'Shop/' + key, isActive: true};
+    const filters = {_to: 'Shop/' + key, isActive: true};
     const result = await this.shopProductService.findAllBy(filters);
     if (isEmptyObject(result) == true) return -2; // No ShopProduct data!
     
     const keys: Array<string> = [];
     for (let sp of result) {
-      keys.push(sp._to);
+      keys.push(sp._from);
     }
 
     return await this.productService.findAllByKey(keys);

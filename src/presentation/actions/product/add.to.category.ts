@@ -28,6 +28,7 @@ export class AddToCategoryAction implements IAction {
     const model = new GenericEdge();
     model._from = 'Product/' + request.fromkey;
     model._to = 'ProductCategory/' + request.tokey;
+    model.tag = 'ProductCategory';
     model.userCreated = token.email;
     model.userLastUpdated = token.email;
     

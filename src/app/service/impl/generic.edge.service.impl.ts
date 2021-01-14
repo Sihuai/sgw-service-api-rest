@@ -21,6 +21,10 @@ export class GenericEdgeServiceImpl extends AbstractBaseService<GenericEdge> imp
     return await this.genericEdgeRepo.selectAllBy(filters);
   }
 
+  async page(filters, pageIndex: number, pageSize: number) : Promise<any> {
+    return await this.genericEdgeRepo.page(filters, pageIndex, pageSize);
+  }
+
   async findOneBy(filters) : Promise<GenericEdge> {
     return await this.genericEdgeRepo.selectOneBy(filters);
   }

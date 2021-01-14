@@ -1,4 +1,4 @@
-import { OrderItemUserAnimation } from '../../domain/models/order.item.user.animation.playback';
+import { OrderItemUserAnimation } from '../../domain/models/order.item.user.animation';
 import { BaseService } from './base.service';
 
 export interface OrderItemUserAnimationService extends BaseService<OrderItemUserAnimation> {

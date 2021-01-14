@@ -2,12 +2,12 @@ import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import moment from 'moment';
 import { IOC_TYPE } from '../../../config/type';
-import { UserAnimation } from '../../../domain/models/user.animation.playback';
-import { UserAnimationRepo } from '../../../infra/repository/user.animation.playback.repo';
+import { UserAnimation } from '../../../domain/models/user.animation';
+import { UserAnimationRepo } from '../../../infra/repository/user.animation.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
-import { OrderItemUserAnimationService } from '../order.item.user.animation.playback.service';
-import { UserAnimationService } from '../user.animation.playback.service';
+import { OrderItemUserAnimationService } from '../order.item.user.animation.service';
+import { UserAnimationService } from '../user.animation.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.UserAnimationServiceImpl)

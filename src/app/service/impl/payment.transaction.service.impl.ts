@@ -14,14 +14,13 @@ import { PaymentAccountService } from '../payment.account.service';
 import { PaymentTransactionService } from '../payment.transaction.service';
 import { StripeService } from '../../third.party/stripe.service';
 import { AbstractBaseService } from './base.service.impl';
-import { UserAnimation } from '../../../domain/models/user.animation.playback';
+import { UserAnimation } from '../../../domain/models/user.animation';
 import { CartItemOrderItemService } from '../cart.item.order.item.service';
 import { CartTrailProductService } from '../cart.trail.product.service';
 import { AnimationService } from '../animation.service';
-import { TrailTrailDetailService } from '../trail.trail.detail.service';
-import { UserAnimationService } from '../user.animation.playback.service';
-import { OrderItemUserAnimationService } from '../order.item.user.animation.playback.service';
-import { OrderItemUserAnimation } from '../../../domain/models/order.item.user.animation.playback';
+import { UserAnimationService } from '../user.animation.service';
+import { OrderItemUserAnimationService } from '../order.item.user.animation.service';
+import { OrderItemUserAnimation } from '../../../domain/models/order.item.user.animation';
 import { OrderTypes } from '../../../domain/enums/order.types';
 import { GenericEdgeService } from '../generic.edge.service';
 
@@ -36,7 +35,6 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
     @inject(IOC_TYPE.StripeServiceImpl) private stripeService: StripeService,
     @inject(IOC_TYPE.CartItemOrderItemServiceImpl) private cartItemOrderItemService: CartItemOrderItemService,
     @inject(IOC_TYPE.CartTrailProductServiceImpl) private cartTrailProductService: CartTrailProductService,
-    @inject(IOC_TYPE.TrailTrailDetailServiceImpl) private trailTrailDetailService: TrailTrailDetailService,
     @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
     @inject(IOC_TYPE.AnimationServiceImpl) private animationService: AnimationService,
     @inject(IOC_TYPE.UserAnimationServiceImpl) private userAnimationService: UserAnimationService,
@@ -80,7 +78,7 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
             const ctp = await this.cartTrailProductService.findOneBy(filters);
  
             filters = {_to: ctp._from, isActive:true};  // TrailDetail key
-            const ttd = await this.trailTrailDetailService.findOneBy(filters);
+            const ttd = await this.genericEdgeService.findOneBy(filters);
 
             filters = {_to: ttd._from, isActive:true};  // Trail key
             const tap = await this.genericEdgeService.findOneBy(filters);

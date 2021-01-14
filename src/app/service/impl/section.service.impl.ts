@@ -6,8 +6,8 @@ import { Section } from '../../../domain/models/section';
 import { SectionRepo } from '../../../infra/repository/section.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { GenericEdgeService } from '../generic.edge.service';
 import { SectionService } from '../section.service';
-import { SectionTrailService } from '../section.trail.service';
 import { TrailService } from '../trail.service';
 import { AbstractBaseService } from './base.service.impl';
 
@@ -15,7 +15,7 @@ import { AbstractBaseService } from './base.service.impl';
 export class SectionServiceImpl extends AbstractBaseService<Section> implements SectionService {
   constructor(
     @inject(IOC_TYPE.SectionRepoImpl) private sectionRepo: SectionRepo,
-    @inject(IOC_TYPE.SectionTrailServiceImpl) private sectionTrailService: SectionTrailService,
+    @inject(IOC_TYPE.GenericEdgeServiceImpl) private genericEdgeService: GenericEdgeService,
     @inject(IOC_TYPE.TrailServiceImpl) private trailService: TrailService,
   ) {
     super();
@@ -26,13 +26,13 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
     const sections = await this.sectionRepo.selectAllBy(sectionFilters);
 
     for (let section of sections) {
-      const stFilters = {_from: 'Section/' + section._key, isActive: true};
-      const sectionTrail = await this.sectionTrailService.page(stFilters, 0, 10);
+      const stFilters = {_to: 'Section/' + section._key, isActive: true};
+      const sectionTrail = await this.genericEdgeService.page(stFilters, 0, 10);
       if (isEmptyObject(sectionTrail) == true) break;
       
       const keys: Array<string> = [];
       for (let data of sectionTrail.data) {
-        keys.push(data._to);
+        keys.push(data._from);
       }
       const trail = await this.trailService.findAllByKey(keys);
 
@@ -44,22 +44,24 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
   }
 
   async page(sectionKey: string, pageIndex: number, pageSize: number) : Promise<any> {
-    const section = await this.sectionRepo.selectAllByKey(sectionKey);
+    const sFilters = {_key: sectionKey, isActive: true};
+    const section = await this.sectionRepo.selectOneBy(sFilters);
+    if (isEmptyObject(section) == true) return -10;
 
-    const stFilters = {_from: 'Section/' + sectionKey, isActive: true};
-    const sectionTrail = await this.sectionTrailService.page(stFilters, pageIndex, pageSize);
-    if (isEmptyObject(sectionTrail) == true) return -12;
+    const geFilters = {_to: 'Section/' + sectionKey, isActive: true};
+    const geResult = await this.genericEdgeService.page(geFilters, pageIndex, pageSize);
+    if (isEmptyObject(geResult) == true) return -12;
     
     const keys: Array<string> = [];
-    for (let data of sectionTrail.data) {
-      keys.push(data._to);
+    for (let data of geResult.data) {
+      keys.push(data._from);
     }
     const trail = await this.trailService.findAllByKey(keys);
 
-    section[0].trails = trail;
-    section[0].pagination = sectionTrail.pagination;
+    section.trails = trail;
+    section.pagination = geResult.pagination;
 
-    return section[0];
+    return section;
   }
 
   async findAllBy(filters) : Promise<Section> {
@@ -101,13 +103,10 @@ export class SectionServiceImpl extends AbstractBaseService<Section> implements 
       const result = await this.findOneBy(sectionFilters);
       if (isEmptyObject(result) == true) return -10;
   
-      // 1. Remove section trail relation collection
-      const stFilters = {_from: 'Section/' + result._key, isActive: true};
-      const stResult = await this.sectionTrailService.removeBy(model.userLastUpdated, stFilters);
-      // if (stResult == -10) return -10;
-      // if (stResult == false) return -13;
+      const geFilters = {_to: 'Section/' + model._key, isActive: true};
+      const geResult = await this.genericEdgeService.findAllBy(geFilters);
+      if (isEmptyObject(geResult) == false) return -11; // Exist GenericEdge data!
 
-      // 2. Remove section collection
       result.isActive = false;
       result.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
       result.userLastUpdated = model.userLastUpdated;

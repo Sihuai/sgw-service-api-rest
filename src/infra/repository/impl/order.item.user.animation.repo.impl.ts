@@ -1,10 +1,10 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { OrderItemUserAnimation } from "../../../domain/models/order.item.user.animation.playback";
+import { OrderItemUserAnimation } from "../../../domain/models/order.item.user.animation";
 import { createConnection } from "../../utils/oct-orm";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { OrderItemUserAnimationRepo } from "../order.item.user.animation.playback.repo";
+import { OrderItemUserAnimationRepo } from "../order.item.user.animation.repo";
 
 @provide(IOC_TYPE.OrderItemUserAnimationRepoImpl)
 export class OrderItemUserAnimationRepoImpl implements OrderItemUserAnimationRepo {

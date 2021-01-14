@@ -18,7 +18,7 @@ export class GetProductCategoryFromProductAction implements IAction {
   async execute(key: string) : Promise<any>  {
     if (isEmptyObject(key) == true) return -1; // Key is empty!
 
-    const filters = {_from: 'Product/' + key, isActive: true};
+    const filters = {_from: 'Product/' + key, tag: 'ProductCategory', isActive: true};
     const result = await this.genericEdgeService.findOneBy(filters);
     if (isEmptyObject(result) == true) return -2; // No GenericEdge data!
     

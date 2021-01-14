@@ -1,4 +1,4 @@
-import { UserAnimation } from '../../domain/models/user.animation.playback';
+import { UserAnimation } from '../../domain/models/user.animation';
 import { BaseService } from './base.service';
 
 export interface UserAnimationService extends BaseService<UserAnimation> {

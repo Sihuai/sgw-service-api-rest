@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { OrderItemUserAnimationService } from '../../../app/service/order.item.user.animation.playback.service';
-import { UserAnimationService } from '../../../app/service/user.animation.playback.service';
+import { OrderItemUserAnimationService } from '../../../app/service/order.item.user.animation.service';
+import { UserAnimationService } from '../../../app/service/user.animation.service';
 import { IOC_TYPE } from '../../../config/type';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { IAction } from '../base.action';

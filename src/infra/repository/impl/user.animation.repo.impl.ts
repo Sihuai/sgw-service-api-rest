@@ -1,11 +1,11 @@
 import { provide } from "inversify-binding-decorators";
 import { IOC_TYPE } from "../../../config/type";
-import { UserAnimation } from "../../../domain/models/user.animation.playback";
+import { UserAnimation } from "../../../domain/models/user.animation";
 import { createConnection } from "../../utils/oct-orm";
 import { ArrayOr } from "../../utils/oct-orm/types/array.or.type";
 import { parseFilter } from "../../utils/oct-orm/utils/converter";
 import { ormSGWConnParam } from "../../utils/orm.sgw.conn.param";
-import { UserAnimationRepo } from "../user.animation.playback.repo";
+import { UserAnimationRepo } from "../user.animation.repo";
 
 @provide(IOC_TYPE.UserAnimationRepoImpl)
 export class UserAnimationRepoImpl implements UserAnimationRepo {

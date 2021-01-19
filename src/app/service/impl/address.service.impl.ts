@@ -38,6 +38,10 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
     return await this.addressRepo.selectAllByKey(keys);
   }
 
+  async findAllByKey(key) : Promise<Address[]> {
+    return await this.addressRepo.selectAllByKey(key);
+  }
+
   async findOneBy(filters) : Promise<Address> {
     return await this.addressRepo.selectOneBy(filters);
   }

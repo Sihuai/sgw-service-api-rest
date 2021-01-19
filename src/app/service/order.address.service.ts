@@ -3,7 +3,7 @@ import { BaseService } from './base.service';
 
 export interface OrderAddressService extends BaseService<OrderAddress> {
     findAllBy(filters) : Promise<OrderAddress[]>;
-    findOneBy(filters) : Promise<any>;
+    findOneBy(filters) : Promise<OrderAddress>;
     addOne(model: OrderAddress): Promise<any>;
     removeOne(model: OrderAddress): Promise<any>;
     removeBy(user: string, filters): Promise<any>;

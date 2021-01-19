@@ -23,6 +23,7 @@ export class CreateTrailAnimationAction implements IAction {
     const model = new GenericEdge();
     model._from = 'Animation/' + request.fromkey;
     model._to = 'Trail/' + request.tokey;
+    model.tag = 'Animation';
     model.userCreated = token.email;
     model.userLastUpdated = token.email;
     

@@ -32,6 +32,7 @@ export const IOC_TYPE = {
   UserAddressRepoImpl: Symbol.for('UserAddressRepoImpl'),
   UserAnimationRepoImpl: Symbol.for('UserAnimationRepoImpl'),
   UserPaymentAccountRepoImpl: Symbol.for('UserPaymentAccountRepoImpl'),
+  UserWalletRepoImpl: Symbol.for('UserWalletRepoImpl'),
 
   // 2. Action
   // - User
@@ -172,9 +173,9 @@ export const IOC_TYPE = {
   RemoveFromShopAction : Symbol.for('RemoveFromShopAction'),
   AddToShopAction : Symbol.for('AddToShopAction'),
   GetShopFromCouponAction : Symbol.for('GetShopFromCouponAction'),
-  // - Wallet
-  GetWalletAction : Symbol.for('GetWalletAction'),
-  DeleteWalletAction : Symbol.for('DeleteWalletAction'),
+  // - UserWallet
+  GetUserWalletAction : Symbol.for('GetUserWalletAction'),
+  DeleteUserWalletAction : Symbol.for('DeleteUserWalletAction'),
 
   // 3. Service
   AddressServiceImpl: Symbol.for('AddressServiceImpl'),
@@ -213,4 +214,5 @@ export const IOC_TYPE = {
   UserAddressServiceImpl: Symbol.for('UserAddressServiceImpl'),
   UserAnimationServiceImpl: Symbol.for('UserAnimationServiceImpl'),
   UserPaymentAccountServiceImpl: Symbol.for('UserPaymentAccountServiceImpl'),
+  UserWalletServiceImpl: Symbol.for('UserWalletServiceImpl'),
 };

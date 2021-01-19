@@ -34,7 +34,7 @@ export const bindings = new AsyncContainerModule(
     await require('../presentation/http/controller/trail.controller');
     await require('../presentation/http/controller/trail.detail.controller');
     await require('../presentation/http/controller/user.controller');
-    await require('../presentation/http/controller/wallet.controller');
+    await require('../presentation/http/controller/user.wallet.controller');
     
     // bind<any>(IOC_TYPE.AppConfigService).toDynamicValue(() => {
     //   return new AppConfigService({

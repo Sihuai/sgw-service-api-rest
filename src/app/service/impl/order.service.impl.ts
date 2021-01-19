@@ -12,12 +12,14 @@ import { Price } from '../../../domain/models/price';
 import { OrderRepo } from '../../../infra/repository/order.repo';
 import { isEmptyObject } from '../../../infra/utils/data.validator';
 import { AppErrorAlreadyExist } from '../../errors/already.exists';
+import { AddressService } from '../address.service';
 import { CartItemOrderItemService } from '../cart.item.order.item.service';
 import { CartItemService } from '../cart.item.service';
 import { OrderAddressService } from '../order.address.service';
 import { OrderItemService } from '../order.item.service';
 import { OrderOrderItemService } from '../order.order.item.service';
 import { OrderService } from '../order.service';
+import { UserWalletService } from '../user.wallet.service';
 import { AbstractBaseService } from './base.service.impl';
 
 @provide(IOC_TYPE.OrderServiceImpl)
@@ -29,24 +31,68 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
     @inject(IOC_TYPE.OrderItemServiceImpl) private orderItemService: OrderItemService,
     @inject(IOC_TYPE.OrderOrderItemServiceImpl) private orderOrderItemService: OrderOrderItemService,
     @inject(IOC_TYPE.OrderAddressServiceImpl) private orderAddressService: OrderAddressService,
+    @inject(IOC_TYPE.AddressServiceImpl) private addressService: AddressService,
+    @inject(IOC_TYPE.UserWalletServiceImpl) private userWalletService: UserWalletService,
   ) {
     super();
   }
 
   async page(filters, pageIndex: number, pageSize: number) : Promise<any> {
-    return await this.orderRepo.page(filters, pageIndex, pageSize);
+    const result = await this.orderRepo.page(filters, pageIndex, pageSize);
+
+    for (let order of result.data) {
+      const filters = {_to: 'Order/' + order._key, isActive: true};
+      const oaResult = await this.orderAddressService.findOneBy(filters);
+      if (isEmptyObject(oaResult) == true) continue;
+
+      const address = await this.addressService.findAllByKey(oaResult._from);
+      order.address = address;
+    }
+
+    return result;
   }
 
   async findAllBy(filters) : Promise<Order[]> {
-    return await this.orderRepo.selectAllBy(filters);
+    const result = await this.orderRepo.selectAllBy(filters);
+
+    for (let order of result) {
+      const filters = {_to: 'Order/' + order._key, isActive: true};
+      const oaResult = await this.orderAddressService.findOneBy(filters);
+      if (isEmptyObject(oaResult) == true) continue;
+
+      const address = await this.addressService.findAllByKey(oaResult._from);
+      order.address = address;
+    }
+
+    return result;
   }
 
   async findAllByKey(key) : Promise<Order[]> {
-    return await this.orderRepo.selectAllByKey(key);
+    const result = await this.orderRepo.selectAllByKey(key);
+
+    for (let order of result) {
+      const filters = {_to: 'Order/' + order._key, isActive: true};
+      const oaResult = await this.orderAddressService.findOneBy(filters);
+      if (isEmptyObject(oaResult) == true) continue;
+
+      const address = await this.addressService.findAllByKey(oaResult._from);
+      order.address = address;
+    }
+
+    return result;
   }
 
   async findOneBy(filters) : Promise<Order> {
-    return await this.orderRepo.selectOneBy(filters);
+    const result = await this.orderRepo.selectOneBy(filters);
+
+    const oaFilters = {_to: 'Order/' + result._key, isActive: true};
+    const oaResult = await this.orderAddressService.findOneBy(oaFilters);
+    if (isEmptyObject(oaResult) == false){
+      const address = await this.addressService.findAllByKey(oaResult._from);
+      result.address = address;
+    }
+
+    return result;
   }
 
   async addOne(email: string, addressKey: string, filters): Promise<any> {
@@ -154,8 +200,8 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
       // 5. Insert into OrderAddress edge
       if (addressKey != undefined && addressKey != '') {
         const oa = new OrderAddress();
-        oa._from = 'Order/' + oResult._key;
-        oa._to = 'OrderAddress/' + addressKey;
+        oa._from = 'Address/' + addressKey;
+        oa._to = 'Order/' + oResult._key;
         oa.userCreated = email;
         oa.userLastUpdated = email;
   
@@ -242,8 +288,7 @@ export class OrderServiceImpl extends AbstractBaseService<Order> implements Orde
 
       if (hasProductType == true) {
         // 6. Remove OrderAddress edge
-        const oa = new OrderAddress();
-        const oafilters = {_from: 'Order/' + oResult._key, isActive: true};
+        const oafilters = {_to: 'Order/' + oResult._key, isActive: true};
         const oaResult = await this.orderAddressService.removeBy(model.userLastUpdated, oafilters);
         if (oaResult == false) return -17;
         if (oaResult == -10) return -18;

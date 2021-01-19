@@ -23,6 +23,7 @@ import { OrderItemUserAnimationService } from '../order.item.user.animation.serv
 import { OrderItemUserAnimation } from '../../../domain/models/order.item.user.animation';
 import { OrderTypes } from '../../../domain/enums/order.types';
 import { GenericEdgeService } from '../generic.edge.service';
+import { UserWalletService } from '../user.wallet.service';
 
 @provide(IOC_TYPE.PaymentTransactionServiceImpl)
 export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTransaction> implements PaymentTransactionService {
@@ -39,6 +40,7 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
     @inject(IOC_TYPE.AnimationServiceImpl) private animationService: AnimationService,
     @inject(IOC_TYPE.UserAnimationServiceImpl) private userAnimationService: UserAnimationService,
     @inject(IOC_TYPE.OrderItemUserAnimationServiceImpl) private orderItemUserAnimationService: OrderItemUserAnimationService,
+    @inject(IOC_TYPE.UserWalletServiceImpl) private userWalletService: UserWalletService,
   ) {
     super();
   }
@@ -68,6 +70,10 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
         switch(orderItem.type)
         {
           case OrderTypes.PRODUCT:
+
+
+
+          
             break;
           case OrderTypes.TRAIL:
             // 2.2.1 Map user animation playback
@@ -76,23 +82,22 @@ export class PaymentTransactionServiceImpl extends AbstractBaseService<PaymentTr
 
             filters = {_to: cioi._from, isActive:false}; // CartItem key (isActive is false, mean is after create order, update the cart isActive to false)
             const ctp = await this.cartTrailProductService.findOneBy(filters);
- 
-            filters = {_to: ctp._from, isActive:true};  // TrailDetail key
-            const ttd = await this.genericEdgeService.findOneBy(filters);
+            
+            const ttd = await this.genericEdgeService.findOneBy({_from: ctp._from, isActive: true}); // TrailDetail key
 
-            filters = {_to: ttd._from, isActive:true};  // Trail key
-            const tap = await this.genericEdgeService.findOneBy(filters);
+            const tap = await this.genericEdgeService.findOneBy({_to: ttd._to, tag: 'Animation', isActive:true}); // Trail key
 
-            const ap = await this.animationService.findAllByKey(tap._from); // Animation key
+            const aps = await this.animationService.findAllByKey(tap._from); // Animation key
 
             const userAnimation = new UserAnimation();
-            userAnimation.type = ap[0].type;
-            userAnimation.orientation = ap[0].orientation;
-            userAnimation.nextPitStop = ap[0].nextPitStop;
-            userAnimation.buttons = ap[0].buttons;
-            userAnimation.icons = ap[0].icons;
+            userAnimation.type = aps[0].type;
+            userAnimation.orientation = aps[0].orientation;
+            userAnimation.nextPitStop = aps[0].nextPitStop;
+            userAnimation.buttons = aps[0].buttons;
+            userAnimation.icons = aps[0].icons;
             userAnimation.userCreated = email;
             userAnimation.userLastUpdated = email;
+            userAnimation.tag = tap._from; // Animation key, use this tag connect to GenericEdge get shop.
             userAnimation._key = orderItem._key; // Note: This is temp key value only provide for OrderItemUserAnimationService edge map.
 
             userAnimations.push(userAnimation);

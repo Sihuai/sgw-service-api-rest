@@ -110,6 +110,7 @@ export class Animation {
           this.nextPitStop = new PitStop();
           this.buttons = [];
           this.icons = [];
+          this.tag = '';
       }
   
       @Attribute()
@@ -122,4 +123,6 @@ export class Animation {
       buttons: Button[];
       @Attribute()
       icons: Icon[];
+      @Attribute()
+      tag: string;
   }

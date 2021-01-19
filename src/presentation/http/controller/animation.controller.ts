@@ -1949,6 +1949,7 @@ export class AnimationController implements interfaces.Controller {
     if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Order Item Key is empty!'));
     if (result == -2) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Next less than zero!'));
     if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'OrderItem & UserAnimation relation isnot exist!'));
+    if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to add to user wallet!'));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
    } catch (e) {

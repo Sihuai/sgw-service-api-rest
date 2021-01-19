@@ -8,6 +8,7 @@ import { normalizeSimpleDataForRead } from '../../../infra/utils/oct-orm/lib/uti
 import { CartItemDetailService } from '../cart.item.detail.service';
 import { CartItemService } from '../cart.item.service';
 import { CartTrailProductService } from '../cart.trail.product.service';
+import { ProductService } from '../product.service';
 import { TrailDetailService } from '../trail.detail.service';
 import { AbstractBaseService } from './base.service.impl';
 
@@ -17,6 +18,7 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
     @inject(IOC_TYPE.CartItemServiceImpl) private cartItemService: CartItemService,
     @inject(IOC_TYPE.CartTrailProductServiceImpl) private cartTrailProductService: CartTrailProductService,
     @inject(IOC_TYPE.TrailDetailServiceImpl) private trailDetailService: TrailDetailService,
+    @inject(IOC_TYPE.ProductServiceImpl) private productService: ProductService,
   ) {
     super();
   }
@@ -42,15 +44,17 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
     cartItemDetail.price = ciResult[0].price;
 
     // 3.1. Get trail/product detail
-    var ptResult;
+    var ptResults;
     switch(ciResult[0].type)
       {
         case OrderTypes.PRODUCT:
+          ptResults = await this.productService.findAllByKey(ctpResult._from);
+          cartItemDetail.options = ptResults[0].options;
           break;
         case OrderTypes.TRAIL:
-          ptResult = await this.trailDetailService.findAllByKey(ctpResult._from);
+          ptResults = await this.trailDetailService.findAllByKey(ctpResult._from);
 
-          for (let persona of ptResult[0].personas) {
+          for (let persona of ptResults[0].personas) {
             for (let content of persona.contents) {
               if (ciResult[0].options == undefined) continue;
               if (ciResult[0].options.persona == undefined) continue;
@@ -63,7 +67,7 @@ export class CartItemDetailServiceImpl extends AbstractBaseService<CartItemDetai
             }
           }
 
-          cartItemDetail.options.personas = ptResult[0].personas;
+          cartItemDetail.options.personas = ptResults[0].personas;
           break;
       }
 

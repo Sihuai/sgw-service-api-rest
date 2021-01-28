@@ -53,7 +53,7 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       const addresses = await this.findAllBy({_from: 'Users/' + user._key});
 
       if (isEmptyObject(addresses) == true || addresses == -10) {
-        model.isDefault = true
+        model.isDefault = false
       } else {
         if (model.isDefault == true) {
           for (let address of addresses) {

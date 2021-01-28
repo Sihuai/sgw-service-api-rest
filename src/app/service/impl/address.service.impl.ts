@@ -50,11 +50,12 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
     try {
       const userFilters = {email:model.userCreated, isActive:true};
       const user = await this.userService.findOneBy(userFilters);
-      
-      if (model.isDefault == true) {
-        const filters = {_from: 'Users/' + user._key};
-        const addresses = await this.findAllBy(filters);
-        if (isEmptyObject(addresses) == false && addresses != -10) {
+      const addresses = await this.findAllBy({_from: 'Users/' + user._key});
+
+      if (isEmptyObject(addresses) == true || addresses == -10) {
+        model.isDefault = true
+      } else {
+        if (model.isDefault == true) {
           for (let address of addresses) {
             if (address.isDefault == true) return -11;
           }
@@ -79,6 +80,18 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
 
   async editOne(model: Address): Promise<any> {
     try {
+      if (model.isDefault == true) {
+        const userFilters = {email:model.userLastUpdated, isActive:true};
+        const user = await this.userService.findOneBy(userFilters);
+
+        const addresses = await this.findAllBy({_from: 'Users/' + user._key});
+        if (isEmptyObject(addresses) == false && addresses != -10) {
+          for (let address of addresses) {
+            if (address.isDefault == true) return -11;
+          }
+        }
+      }
+
       return await this.addressRepo.update(model);
     } catch (e) {
       throw e;

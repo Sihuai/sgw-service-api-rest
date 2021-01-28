@@ -99,6 +99,7 @@ export const IOC_TYPE = {
   EditAddressAction : Symbol.for('EditAddressAction'),
   GetAddressAction : Symbol.for('GetAddressAction'),
   DeleteAddressAction : Symbol.for('DeleteAddressAction'),
+  AsDefaultAction : Symbol.for('AsDefaultAction'),
   // - Animation Playback
   CreateAnimationAction : Symbol.for('CreateAnimationAction'),
   EditAnimationAction : Symbol.for('EditAnimationAction'),

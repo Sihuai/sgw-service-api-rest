@@ -39,6 +39,7 @@ export const createContainer = async () => {
   await require('../infra/repository/impl/user.animation.repo.impl');
   await require('../infra/repository/impl/user.payment.account.repo.impl');
   await require('../infra/repository/impl/user.wallet.repo.impl');
+  await require('../infra/repository/impl/user.avatar.repo.impl');
   
   // 2. Service
   await require('../app/service/impl/address.service.impl');
@@ -77,6 +78,7 @@ export const createContainer = async () => {
   await require('../app/service/impl/user.animation.service.impl');
   await require('../app/service/impl/user.payment.account.service.impl');
   await require('../app/service/impl/user.wallet.service.impl');
+  await require('../app/service/impl/user.avatar.service.impl');
   await require('../app/third.party/impl/stripe.service.impl');
   
   await container.loadAsync(bindings);

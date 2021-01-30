@@ -18,7 +18,7 @@ import { getUserFromToken } from '../../../infra/utils/security';
 import { GetUserWalletAction } from '../../actions/user.wallet/get';
 import { DeleteUserWalletAction } from '../../actions/user.wallet/delete';
 
-@controller('/userwallet')
+@controller('/user/wallet')
 export class UserWalletController implements interfaces.Controller {
   constructor(
     @inject(IOC_TYPE.GetUserWalletAction) private getUserWalletAction: GetUserWalletAction,

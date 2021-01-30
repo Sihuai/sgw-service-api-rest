@@ -33,11 +33,14 @@ export const IOC_TYPE = {
   UserAnimationRepoImpl: Symbol.for('UserAnimationRepoImpl'),
   UserPaymentAccountRepoImpl: Symbol.for('UserPaymentAccountRepoImpl'),
   UserWalletRepoImpl: Symbol.for('UserWalletRepoImpl'),
+  UserAvatarRepoImpl: Symbol.for('UserAvatarRepoImpl'),
 
   // 2. Action
   // - User
   GetUserAction: Symbol.for('GetUserAction'),
   EditUserAction: Symbol.for('EditUserAction'),
+  AvatarUploadAction: Symbol.for('AvatarUploadAction'),
+  AvatarGetAction: Symbol.for('AvatarGetAction'),
   // - Auth
   RegisterUserAction: Symbol.for('RegisterUserAction'),
   SigninAuthAction: Symbol.for('SigninAuthAction'),
@@ -216,4 +219,5 @@ export const IOC_TYPE = {
   UserAnimationServiceImpl: Symbol.for('UserAnimationServiceImpl'),
   UserPaymentAccountServiceImpl: Symbol.for('UserPaymentAccountServiceImpl'),
   UserWalletServiceImpl: Symbol.for('UserWalletServiceImpl'),
+  UserAvatarServiceImpl: Symbol.for('UserAvatarServiceImpl'),
 };

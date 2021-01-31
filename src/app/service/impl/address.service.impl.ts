@@ -57,7 +57,14 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       } else {
         if (model.isDefault == true) {
           for (let address of addresses) {
-            if (address.isDefault == true) return -11;
+            if (address.isDefault == true) {
+              address.isDefault = false;
+              address.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+              address.userLastUpdated = model.userLastUpdated;
+
+              const aResult = await this.addressRepo.update(address);
+              if (isEmptyObject(aResult) == true) return -11;
+            }
           }
         }
       }
@@ -69,7 +76,7 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
       userAddress._from = 'Users/' + user._key;
       userAddress._to = 'Address/' + result._key;
       const uaResult = await this.userAddressService.addOne(userAddress);
-      if (isEmptyObject(uaResult) == true) result -12;
+      if (isEmptyObject(uaResult) == true) return -12;
 
       return result;
     } catch (e) {
@@ -87,7 +94,14 @@ export class AddressServiceImpl extends AbstractBaseService<Address> implements 
         const addresses = await this.findAllBy({_from: 'Users/' + user._key});
         if (isEmptyObject(addresses) == false && addresses != -10) {
           for (let address of addresses) {
-            if (address.isDefault == true) return -11;
+            if (address.isDefault == true) {
+              address.isDefault = false;
+              address.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+              address.userLastUpdated = model.userLastUpdated;
+              
+              const aResult = await this.addressRepo.update(address);
+              if (isEmptyObject(aResult) == true) return -11;
+            }
           }
         }
       }

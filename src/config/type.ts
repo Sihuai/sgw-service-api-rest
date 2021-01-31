@@ -48,6 +48,7 @@ export const IOC_TYPE = {
   GetTokenAction: Symbol.for('GetTokenAction'),
   ResetPWRequestUserAction : Symbol.for('ResetPWRequestUserAction'),
   ResetPWExecuteUserAction : Symbol.for('ResetPWExecuteUserAction'),
+  ResetPWAction : Symbol.for('ResetPWAction'),
   // - Home
   GetHomeAction: Symbol.for('GetHomeAction'),
   // - BillBoard

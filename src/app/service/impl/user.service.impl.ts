@@ -59,6 +59,14 @@ export class UserServiceImpl extends AbstractBaseService<User> implements UserSe
     }
   }
 
+  async resetPW(model: User): Promise<any> {
+    try {
+      return await this.userRepo.update(model);
+    } catch(e) {
+      throw e;
+    }
+  }
+
   async resetPWRequest(filters): Promise<any> {
     try {
       const result = await this.findOneBy(filters);

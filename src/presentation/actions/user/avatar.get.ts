@@ -24,6 +24,7 @@ export class AvatarGetAction implements IAction {
 
     const edgeFilters = {_to: 'User/' + user._key, tag: 'UserAvatar', isActive: true};
     const edgeResult = await this.genericEdgeService.findOneBy(edgeFilters);
+    if (isEmptyObject(edgeResult) == true) return -2; // UserAvatar isnot existed!;
 
     const uaResult = await this.userAvatarService.findAllByKey(edgeResult._from);
 

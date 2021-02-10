@@ -727,6 +727,7 @@ export class UserController implements interfaces.Controller {
 
      const result = await this.avatarGetAction.execute(token);
      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'User isnot existed!'));
+     if (result == -2) response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
 
      response.status(ResponseDataCode.OK).json(ResponseSuccess(result));
    } catch (e) {

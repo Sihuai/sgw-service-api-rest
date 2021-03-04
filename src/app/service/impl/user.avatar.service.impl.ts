@@ -93,4 +93,47 @@ export class UserAvatarServiceImpl extends AbstractBaseService<UserAvatar> imple
       throw e;
     }
   }
+
+  async removeOne(userkey: string, model: UserAvatar): Promise<any> {
+    try {
+      // 1. Get all active avatar
+      const geFilters = {_to: 'User/' + userkey, tag: 'UserAvatar', isActive: true};
+      const geResult = await this.genericEdgeService.findAllBy(geFilters);
+
+      if (isEmptyObject(geResult) == false) {
+        const keys: Array<string> = [];
+
+        for (let data of geResult) {
+          keys.push(data._from);
+
+          data.isActive = false;
+          data.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+          data.userLastUpdated = model.userLastUpdated;
+        }
+        
+        const oldUAs = await this.userAvatarRepo.selectAllByKey(keys);
+        for (let oldUA of oldUAs) {
+          oldUA.isActive = false;
+          oldUA.datetimeLastEdited = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+          oldUA.userLastUpdated = model.userLastUpdated;
+        }
+
+        // 2. Remove all active generic edge
+        for (let data of geResult) {
+          const result = await this.genericEdgeService.removeOne(data);
+          if (isEmptyObject(result) == true) return -10;
+        }
+        // 3. Remove all active user avatar
+        for (let data of oldUAs) {
+          const result = await this.userAvatarRepo.update(data);
+          if (isEmptyObject(result) == true) return -11;
+        }
+      }
+
+      return true;
+    } catch (e) {
+      if (e.message.match('duplicate key value violates unique constraint')) throw new AppErrorAlreadyExist(e);
+      throw e;
+    }
+  }
 }

@@ -3,6 +3,7 @@ import { ExpressRequest } from '../../utils/request.data';
 import { inject } from 'inversify';
 import {
   controller,
+  httpDelete,
   httpGet,
   httpPost,
   interfaces,
@@ -20,6 +21,7 @@ import { EditUserAction } from '../../actions/user/edit';
 import { getUserFromToken } from '../../../infra/utils/security';
 import { AvatarUploadAction } from '../../actions/user/avatar.upload';
 import { AvatarGetAction } from '../../actions/user/avatar.get';
+import { AvatarRemoveAction } from '../../actions/user/avatar.remove';
 
 const upload = multer({ storage: multer.memoryStorage(),
   fileFilter: (req, file, callback) => { if (!file) {
@@ -39,6 +41,7 @@ export class UserController implements interfaces.Controller {
     @inject(IOC_TYPE.EditUserAction) private editUserAction: EditUserAction,
     @inject(IOC_TYPE.AvatarUploadAction) private avatarUploadAction: AvatarUploadAction,
     @inject(IOC_TYPE.AvatarGetAction) private avatarGetAction: AvatarGetAction,
+    @inject(IOC_TYPE.AvatarRemoveAction) private avatarRemoveAction: AvatarRemoveAction,
   ) { }
 
   /**
@@ -736,4 +739,150 @@ export class UserController implements interfaces.Controller {
      next(e);
    }
  }
+
+  /**
+  * @swagger
+  * /user/avatar/remove:
+  *   delete:
+  *     summary: Remove avatar from user.
+  *     description: Remove avatar from user.
+  *     security:
+  *       - apikey: []
+  *     responses:
+  *       200:
+  *         description: Delete Success.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 200
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: ""
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       601:
+  *         description: Invalid Token.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 601
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Invalid Token!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       602:
+  *         description: Unexpected.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 602
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Unexpected!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       603:
+  *         description: Validation Error.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 603
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Email is empty!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       604:
+  *         description: Not Authorized.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 604
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Not Authorized"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  *       606:
+  *         description: Token Time Out.
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 code:
+  *                   type: integer
+  *                   description: Response code.
+  *                   example: 606
+  *                 msg:
+  *                   type: string
+  *                   description: Response message.
+  *                   example: "Token Time Out!"
+  *                 data:
+  *                   type: string
+  *                   description: Response data.
+  *                   example: ""
+  */
+  @httpDelete('/avatar/remove')
+  private async removeAvatar(
+    @requestHeaders('authorization') authHeader: string,
+    @request() request: Request, @response() response: Response, @next() next: Function,
+  ) {
+    try {
+      const token = getUserFromToken(authHeader, request.cookies['r-token']);
+      
+      const result = await this.avatarRemoveAction.execute(token);
+      if (result == -1) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'User isnot existed!'));
+
+      if (result == -10) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove old Avatar relation!'));
+      if (result == -11) return response.status(ResponseDataCode.ValidationError).json(ResponseFailure(ResponseDataCode.ValidationError, 'Fail to remove old Avatar!'));
+
+      response.status(ResponseDataCode.OK).json(ResponseSuccess(''));
+    } catch (e) {
+      const code = getResponseDataCode(e.name);
+      response.status(code).json(ResponseFailure(code, e.stack));
+      next(e);
+    }
+  }
 }

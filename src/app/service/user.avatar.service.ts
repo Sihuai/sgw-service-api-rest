@@ -7,4 +7,5 @@ export interface UserAvatarService extends BaseService<UserAvatar> {
     findAllByKey(keys) : Promise<UserAvatar[]>;
     findOneBy(filters) : Promise<UserAvatar>;
     addOne(userkey: string, model: UserAvatar): Promise<any>;
+    removeOne(userkey: string, model: UserAvatar): Promise<any>;
 }

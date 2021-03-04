@@ -41,6 +41,7 @@ export const IOC_TYPE = {
   EditUserAction: Symbol.for('EditUserAction'),
   AvatarUploadAction: Symbol.for('AvatarUploadAction'),
   AvatarGetAction: Symbol.for('AvatarGetAction'),
+  AvatarRemoveAction: Symbol.for('AvatarRemoveAction'),
   // - Auth
   RegisterUserAction: Symbol.for('RegisterUserAction'),
   SigninAuthAction: Symbol.for('SigninAuthAction'),
